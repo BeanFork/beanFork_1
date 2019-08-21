@@ -7,6 +7,7 @@ registerUser = function (username, email, password) {
 
 }
 validateEmail = function (email) {
+    console.log("Validate Email");
     //check if email exists in db- "user"
 
 }
