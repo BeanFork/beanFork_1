@@ -17,6 +17,7 @@ var registerUser = function(username, emailid, password) {
   };
   
   var userProfile = function(username, emailid, password, typedCode) {
+    console.log("User Profile");
     // Call validateCode() and verify the typed code with the verification code in db- "user"
     //If validateCode() returns true, store username , email and hashed password in db
   };
