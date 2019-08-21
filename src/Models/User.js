@@ -2,6 +2,7 @@ var registerUser = function(username, emailid, password) {
     //check for mailid format with the mailidFormat.js in utils
     //check if email already exist in the db -"user" using the validateEmail() function
     // call generateCode function in user.js , passing emailid as argument
+    console.log("new");
   };
   var validateEmail = function(emailid) {
     //check if email exists in db- "user"
