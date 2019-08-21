@@ -1,38 +1,28 @@
-registerUser = function (username, email, password) {
-
-    //check if email already exist in the db -"user" using the validateEmail function
-
-    // store username , email and hashed password in db (confirm pass) 
-
-
-}
-validateEmail = function (email) {
-    console.log("Validate Email");
+var registerUser = function(username, emailid, password) {
+    //check for mailid format with the mailidFormat.js in utils
+    //check if email already exist in the db -"user" using the validateEmail() function
+    // call generateCode function in user.js , passing emailid as argument
+  };
+  var validateEmail = function(emailid) {
     //check if email exists in db- "user"
-
-}
-loginUser = function (username, password) {
-
+  };
+  var loginUser = function(username, password) {
     // if the username and password in db- "user" exists. return true
-
-
-}
-generateCode = function (email) {
-    //generate code 
-
+  };
+  var generateCode = function(emailid) {
+    //generate code
     // store the code in the db "user"
-
-    //send email and code to a "generateMail" in util
-
-
-}
-validateCode = function (codeTyped, email) {
-
-    // if verification code of corresponding email is same as the typed code return true
-
-}
-updatePassword = function (email, password) {
-
+    //send email address and code to a "generateMail" in utils
+  };
+  
+  var userProfile = function(username, emailid, password, typedCode) {
+    // Call validateCode() and verify the typed code with the verification code in db- "user"
+    //If validateCode() returns true, store username , email and hashed password in db
+  };
+  
+  var validateCode = function(codeTyped, emailid) {
+    // if verification code of corresponding email is same as the typed code and return true
+  };
+  var updatePassword = function(emailid, password) {
     // update the old password with the new password in the db- "user" with corresponding email.
-}
-
+  };
