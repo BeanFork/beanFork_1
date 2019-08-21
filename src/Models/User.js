@@ -23,6 +23,7 @@ var registerUser = function(username, emailid, password) {
   };
   
   var validateCode = function(codeTyped, emailid) {
+    console.log("validateCode");
     // if verification code of corresponding email is same as the typed code and return true
   };
   var updatePassword = function(emailid, password) {
