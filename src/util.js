@@ -15,6 +15,7 @@ generateMail = function(email,code){
 
 
 
-var passwordConfirmation = function(){
+var passwordConfirmation = function(password, confirmPassword){
+
     
 }
