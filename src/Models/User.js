@@ -8,7 +8,8 @@ var registerUser = function(username, emailid, password) {
   };
   var loginUser = function(username, password) {
     console.log("Login User");
-    // if the username and password in db- "user" exists. return true
+    // if the username and password in db- "user" exists, return true
+  
   };
   var generateCode = function(emailid) {
     //generate code
