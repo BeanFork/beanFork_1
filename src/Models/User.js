@@ -7,7 +7,9 @@ var registerUser = function(username, emailid, password) {
     //check if email exists in db- "user"
   };
   var loginUser = function(username, password) {
-    // if the username and password in db- "user" exists. return true
+    console.log("Login User");
+    // if the username and password in db- "user" exists, return true
+  
   };
   var generateCode = function(emailid) {
     //generate code
@@ -16,11 +18,13 @@ var registerUser = function(username, emailid, password) {
   };
   
   var userProfile = function(username, emailid, password, typedCode) {
+    console.log("User Profile");
     // Call validateCode() and verify the typed code with the verification code in db- "user"
     //If validateCode() returns true, store username , email and hashed password in db
   };
   
   var validateCode = function(codeTyped, emailid) {
+    console.log("validateCode");
     // if verification code of corresponding email is same as the typed code and return true
   };
   var updatePassword = function(emailid, password) {
