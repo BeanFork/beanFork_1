@@ -4,11 +4,6 @@ generateMail = function(email,code){
 
 
 
-
-
-
-
-
 // Check Mail ID format (For eg : user@gmail.com)
 
 
