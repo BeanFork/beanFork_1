@@ -18,6 +18,3 @@
   var validateCode = function(codeTyped, emailid) {
     // if verification code of corresponding email is same as the typed code and return true
   };
-  var updatePassword = function(emailid, password) {
-    // update the old password with the new password in the db- "user" with corresponding email.
-  };
