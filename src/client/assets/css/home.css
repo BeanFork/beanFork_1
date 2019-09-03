@@ -1,0 +1,17 @@
+
+header {
+    background-color: #0bddec;
+    padding: 15px;
+    text-align: left;
+    font-size: 25px;
+    color: #000000;
+    font-family: 'Courier New', Courier, monospace;
+}
+.logo{
+    float: left;
+    height: 50px;
+    width: 75px;
+    padding: 25px;
+    margin: 15px 10px 10px 10px ; 
+
+}
