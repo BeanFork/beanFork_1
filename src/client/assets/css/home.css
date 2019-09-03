@@ -1,9 +1,9 @@
 
-header {
+.header {
     background-color: #0bddec;
-    padding: 15px;
+    padding: 5px;
     text-align: left;
-    font-size: 25px;
+    font-size: 28px;
     color: #000000;
     font-family: 'Courier New', Courier, monospace;
 }
@@ -11,7 +11,32 @@ header {
     float: left;
     height: 50px;
     width: 75px;
-    padding: 25px;
-    margin: 15px 10px 10px 10px ; 
+    padding: 10 10px 10px 0;
+    margin: 35px 10px 10px 10px ; 
 
 }
+
+#email {
+margin : -50px 0px 0px 1100px;
+padding: 10px;
+position: absolute;
+}
+
+#password {
+
+margin : -50px 0px 0px 1275px;
+padding: 10px;
+position: absolute;
+    }
+
+ 
+#login-button {
+
+    margin : -45px 0px 10px 1465px;
+    position: absolute; 
+    font-family : Arial, Helvetica, sans-serif;
+    font-size: 20px;
+
+
+        }
+       
