@@ -1,5 +1,5 @@
 header {
-  background-color: #0bddec;
+  background-color:#0bddec;
   padding: 40px;
   text-align: left;
   font-size: 25px;
@@ -7,7 +7,7 @@ header {
 }
 .logo{
   float: left;
-  height: 50px;
+  height: 65px;
   width: 70px;
   padding: 10px;
   margin: 15px 0px 10px 10px;   
