@@ -1,0 +1,59 @@
+header {
+  background-color: #0bddec;
+  padding: 40px;
+  text-align: left;
+  font-size: 25px;
+  color: #000000;
+}
+.logo {
+  float: left;
+  height: 50px;
+  width: 70px;
+  padding: 10px;
+  margin: 15px 0px 10px 10px;
+}
+
+span {
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.discussioncontainer {
+  width: 500px;
+  /* float:right;  */
+  /* border: 1px solid rgb(3, 3, 3); */
+  height: 700px;
+  margin: 20px;
+  margin-left: 30%;
+  line-height: 40px;
+  font-family: "Times New Roman", Times, serif;
+}
+.discussioncontainer form label {
+  font-size: 30px;
+}
+.discussioncontainer form textarea {
+  /* height:100px;
+    font-size: 20px; */
+  /* padding-top: -20;
+   padding-left: 0;
+   line-height: 1em; */
+
+  font-size: 20px;
+
+  /* padding-top: 0;
+   padding-left: 0; */
+}
+.discussioncontainer h3 {
+  font-size: 3em;
+}
+
+.clearfix {
+  display: table;
+}
+.cancelbtn,
+.createbtn {
+  width: 200px;
+  height: 40px;
+  margin-left: 55px;
+}
