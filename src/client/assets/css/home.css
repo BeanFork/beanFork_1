@@ -1,22 +1,111 @@
-
-#header {
+/* Banner - constant for all the pages 
+*/
+header {
     background-color: #0bddec;
-    padding: 1px;
+    padding: 40px;
     text-align: left;
     font-size: 25px;
     color: #000000;
-    font-family: 'Courier New', Courier, monospace;
-
-}
-.logo{
+  }
+  .logo{
     float: left;
     height: 50px;
     width: 70px;
     padding: 10px;
     margin: 15px 0px 10px 10px;   
+  
+  
+  }
+  
+
+span{
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+
+
+  /* 
+  Variable Elements
+  */
+
+.container{
+    width: available;
+    height: available;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.leftpane {
+    margin: 0px 0px 0px -100px;
+    width: 20%;
+    min-width: 40px;
+    min-height: 700px;
+    height: available;
+    float: left;
+    background-color: azure;
+    text-align: center;
 
 
 }
+
+.middlepane {
+
+    width: 10%;
+    min-width: 950px;
+    min-height: 700px;
+    height: available;
+    float: left;
+    background-color: #eeeeeb;
+    text-align: center;
+
+}
+
+
+
+.rightpane {
+
+    width: 200%;
+    min-width: 350px;
+    min-height: 700px;
+    height: available;
+    float: right;
+    background-color:#a1a19a;
+    text-align: center;
+
+}
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .container{
     width: available;

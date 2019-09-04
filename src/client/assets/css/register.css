@@ -1,3 +1,22 @@
+header {
+  background-color: #0bddec;
+  padding: 40px;
+  text-align: left;
+  font-size: 25px;
+  color: #000000;
+}
+.logo{
+  float: left;
+  height: 50px;
+  width: 70px;
+  padding: 10px;
+  margin: 15px 0px 10px 10px;   
+
+
+}
+
+
+
 .signupcontainer {
     /* margin-top: 0%;
     margin-left: 60%;
@@ -17,6 +36,7 @@ height: 700px;
 margin: 20px;
 margin-right: 5%;
 line-height: 40px;
+font-family: 'Times New Roman', Times, serif;
   }
   .cancelbtn,.signupbtn{
       width: 250px;
@@ -34,28 +54,14 @@ margin: 20px;
 /* border: 1px solid rgb(3, 3, 3); */
 margin-left: 5%;
   }
-  header {
-  background-color: #0bddec;
-  padding: 15px;
-  text-align: left;
-  font-size: 25px;
-  color: #000000;
+
+
+span{
+  font-size: 30px;
+  font-weight: bold;
   font-family: 'Courier New', Courier, monospace;
 }
 
-span{
-  font-size: 3em;
-  font-weight: bold;
-  
-}
-.logo{
-  float: left;
-  height: 50px;
-  width: 75px;
-  padding: 25px;
-  margin: 15px 10px 10px 10px ; 
-
-}
 
 label{
   font-size: 25px;
@@ -63,20 +69,14 @@ label{
 input{
   height:40px;
 }
-.title{
-  margin-left: 5%;
-  font-size: 35px;
-  float:left;
-}
-.logincontainer{
-  margin-left:60%;
-  float:right;
-}
+
+
 form{
   float: right;
   margin-right : 100px;
   letter-spacing: 1px;
   font-size :17px;
+  margin-top : -20px;
 
 }
 
