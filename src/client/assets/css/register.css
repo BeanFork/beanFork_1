@@ -34,6 +34,10 @@ form input {
   height: 30px;
 }
 
+form button {
+  border: none;
+  background: none;
+}
 /* SIGNUP CONTAINER */
 
 .signupcontainer {
