@@ -17,7 +17,6 @@ function signup() {
     });
 }
 
-function sendMail() {}
 
 function login() {
   superagent
@@ -34,6 +33,7 @@ function login() {
       }
     });
 }
+
 
 function forgotpassword() {}
 
