@@ -17,6 +17,7 @@
  
      <form>
             <table>
+              
                     <tr>
                         <td><b>UserName</b></td>
                         <td><b>Password</b></td>
@@ -29,7 +30,10 @@
                             <input type="password" placeholder="Password"/>
                         </td>
                         <td>
-                            <input type="submit" value="Login"/>
+                            <input type="submit" value="Login" onclick="login()"/>
+                        </td>
+                        <td>
+                            <button type="button" value="forgotpassword" onclick="forgotpassword()">forgot password?</button>
                         </td>
                     </tr>
                 </table>
@@ -87,8 +91,8 @@
       <br />
       <div class="clearfix">
           <br/>
-            <button type="button" class="cancelbtn">Cancel</button>
-            <button type="submit" class="signupbtn">Sign Up</button>
+            <button type="button" class="cancelbtn" onclick="cancelSignup()">Cancel</button>
+            <button type="submit" class="signupbtn" onclick="signup()">Sign Up</button>
       </div>
     </div>
     <div class="introcontainer">
