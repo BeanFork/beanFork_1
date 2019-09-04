@@ -16,21 +16,21 @@ function checkPassword() {
 
 function passwordStrength() {
   var password = document.getElementById("password").value;
-  var strongRegex = new RegExp(
+  var strong = new RegExp(
     "^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$",
     "g"
   );
-  var mediumRegex = new RegExp(
+  var medium = new RegExp(
     "^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$",
     "g"
   );
-  var enoughRegex = new RegExp("(?=.{6,}).*", "g");
-  if (strongRegex.test(password)) {
-    document.getElementById("passwordmessage").innerHTML = "<p>STRONG!!!!</p>";
-  } else if (mediumRegex.test(password)) {
-    document.getElementById("passwordmessage").innerHTML = "<p>Medium!!!</p>";
-  } else if (enoughRegex.test(password)) {
-    document.getElementById("passwordmessage").innerHTML = "<p>Weak!</p>";
+  var enough = new RegExp("(?=.{6,}).*", "g");
+  if (strong.test(password)) {
+    document.getElementById("passwordmessage").innerHTML = "<p>STRONG!!!</p>";
+  } else if (medium.test(password)) {
+    document.getElementById("passwordmessage").innerHTML = "<p>MEDIUM!!</p>";
+  } else if (enough.test(password)) {
+    document.getElementById("passwordmessage").innerHTML = "<p>WEAK!</p>";
   } else {
     document.getElementById("passwordmessage").innerHTML =
       "<p>Enter valid input</p>";
