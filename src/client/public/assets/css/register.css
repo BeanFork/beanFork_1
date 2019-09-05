@@ -43,3 +43,19 @@
   padding: 5px 20px;
   text-align: left;
 }
+.banner{
+  background-color: #31d9df;
+  color: #fff;
+  padding: 5px 20px;
+  text-align: left;
+  font-size: 20px;
+ 
+  
+  }
+  .banner h1{
+    color: #61696d;
+    font-size: 60px;
+    font-family: 'Courier New', Courier, monospace;
+
+  }
+
