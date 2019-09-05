@@ -10,7 +10,13 @@
     font-style: inherit;
   }
 
- 
+  
+  .welcome{
+    color:white;
+    font-size: 20px;
+    margin: 0px 10px 10px 10px ;
+  }
+
   .container-fluid {
     padding: 60px 50px;
   }
