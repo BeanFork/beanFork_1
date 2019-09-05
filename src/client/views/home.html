@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-    <link href="../assets/css/home.css" rel="stylesheet" type="text/css">
+    <link href="../public/assets/css/home.css" rel="stylesheet" type="text/css">
 
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -18,27 +18,33 @@
 </head>
 
 <body>
+    <style>
+        
+    .jumbotron{
+    background-color: #31d9df;
+    color: #fff;
+    padding: 5px 20px;
+    text-align: left;
+  } 
+    </style>
     
 
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <img src="../assets/img/bean.gif" alt=" " class="logo"> </img>
-                <a class="navbar-brand" href="#">BeanFork</a>
+    <div class="jumbotron text-center">
+        <img class = "logo" src = " ../public/assets/img/bean.gif">
+        <h1>BeanFork</h1> <br>  
+        <p> A Forum Discussion Page</p>  
+      
             </div>
+          </div>
+    
+      
 
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Welcome User</a></li>
-
-            </ul>
-        </div>
-    </nav>
 
     <!-------------------------- Banner Portion-------------------------------------------->
 
 
 
-
+<!-- 
     <div class="container">
 
         <div class="leftpane">
@@ -112,8 +118,77 @@
 
         </div>
     </div>
+     -->
 
 
+
+
+
+     <div class="container-fluid">
+        <div class="text-center">
+          <h2></h2>
+          <h4>Choose a payment plan that works for you</h4>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="panel panel-default text-center">
+              <div class="panel-heading">
+                <h1>Basic</h1>
+              </div>
+              <div class="panel-body">
+                <p><strong>20</strong> Lorem</p>
+                <p><strong>15</strong> Ipsum</p>
+                <p><strong>5</strong> Dolor</p>
+                <p><strong>2</strong> Sit</p>
+                <p><strong>Endless</strong> Amet</p>
+              </div>
+              <div class="panel-footer">
+                <h3>$19</h3>
+                <h4>per month</h4>
+                <button class="btn btn-lg">Sign Up</button>
+              </div>
+            </div> 
+          </div> 
+          <div class="col-sm-4">
+            <div class="panel panel-default text-center">
+              <div class="panel-heading">
+                <h1>Pro</h1>
+              </div>
+              <div class="panel-body">
+                <p><strong>50</strong> Lorem</p>
+                <p><strong>25</strong> Ipsum</p>
+                <p><strong>10</strong> Dolor</p>
+                <p><strong>5</strong> Sit</p>
+                <p><strong>Endless</strong> Amet</p>
+              </div>
+              <div class="panel-footer">
+                <h3>$29</h3>
+                <h4>per month</h4>
+                <button class="btn btn-lg">Sign Up</button>
+              </div>
+            </div> 
+          </div> 
+         <div class="col-sm-4">
+            <div class="panel panel-default text-center">
+              <div class="panel-heading">
+                <h1>Premium</h1>
+              </div>
+              <div class="panel-body">
+                <p><strong>100</strong> Lorem</p>
+                <p><strong>50</strong> Ipsum</p>
+                <p><strong>25</strong> Dolor</p>
+                <p><strong>10</strong> Sit</p>
+                <p><strong>Endless</strong> Amet</p>
+              </div>
+              <div class="panel-footer">
+                <h3>$49</h3>
+                <h4>per month</h4>
+                <button class="btn btn-lg">Sign Up</button>
+              </div>
+            </div> 
+          </div> 
+        </div>
+      </div> 
 </body>
 
 </html>
