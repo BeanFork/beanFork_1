@@ -1,19 +1,24 @@
 /* Banner - constant for all the pages 
 */
-  .logo {
+  .logo{
     float: left;
-    width: 70px;
+    width: 100px;
     padding: 10px;
     margin: 0px 10px 10px 0px;
   }
   h3 {
     font-style: inherit;
   }
-  .navbar-header {
-    height: 20px;
+
+  
+  .welcome{
+    color:white;
+    font-size: 20px;
+    margin: 0px 10px 10px 10px ;
   }
-  .navbar-brand {
-    padding: 20px 0px 0px 0px !important;
+
+  .container-fluid {
+    padding: 60px 50px;
   }
   
   button {
