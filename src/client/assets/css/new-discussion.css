@@ -7,10 +7,9 @@ header {
 }
 .logo {
   float: left;
-  height: 50px;
   width: 70px;
   padding: 10px;
-  margin: 15px 0px 10px 10px;
+  margin: 0px 10px 10px 0px; 
 }
 
 span {
@@ -21,8 +20,7 @@ span {
 
 .discussioncontainer {
   width: 500px;
-  /* float:right;  */
-  /* border: 1px solid rgb(3, 3, 3); */
+ 
   height: 700px;
   margin: 20px;
   margin-left: 30%;
@@ -30,19 +28,11 @@ span {
   font-family: "Times New Roman", Times, serif;
 }
 .discussioncontainer form label {
-  font-size: 30px;
+  font-size: 20px;
 }
 .discussioncontainer form textarea {
-  /* height:100px;
-    font-size: 20px; */
-  /* padding-top: -20;
-   padding-left: 0;
-   line-height: 1em; */
-
-  font-size: 20px;
-
-  /* padding-top: 0;
-   padding-left: 0; */
+font-size: 20px;
+  
 }
 .discussioncontainer h3 {
   font-size: 3em;
@@ -51,9 +41,14 @@ span {
 .clearfix {
   display: table;
 }
-.cancelbtn,
-.createbtn {
-  width: 200px;
+button{
+  width: 150px;
   height: 40px;
-  margin-left: 55px;
-}
+  color: black;
+  
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  }

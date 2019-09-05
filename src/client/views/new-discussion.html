@@ -1,19 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Forum Discussion</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../assets/css/new-discussion.css"
-    />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link href="../assets/css/new-discussion.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script
+        src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
+    <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
+  <title> New Discussiom</title>
   </head>
 
-  <body>
-        <img src = "../assets/img/bean.gif" alt = "logo" class = "logo"> </img>
-    <header>
-      <span> BeanFork</span>
-    </header>
+  <body><img src="../assets/img/bean.gif" alt=" " class="logo"> </img>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <img src="../assets/img/bean.gif" alt=" " class="logo"> </img>
+                <a class="navbar-brand" href="#">BeanFork</a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Welcome Preeti</a></li>
+
+            </ul>
+        </div>
+    </nav>
     <div class="discussioncontainer">
             <h3>Create New Discussion</h3>
             <form name="create-discussion" id="create-discussion">
@@ -29,9 +47,9 @@
               <textarea cols="60"
              rows="10" id="discussionDescription" name="textbox2" size=70></textarea></p>
               <br/>
-              <div class="clearfix">
+              <div class="button">
                     <button type="reset" class="cancelbtn">Cancel</button>
-            <button type="submit" class="createbtn">Create</button>
+            <button type="button" class="createbtn">Create</button>
                   
               </div>
                
