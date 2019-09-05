@@ -20,7 +20,7 @@ span {
 
 .discussioncontainer {
   width: 500px;
- 
+ position: absolute;
   height: 700px;
   margin: 20px;
   margin-left: 30%;
@@ -52,4 +52,25 @@ button{
   font-size: 12px;
   margin: 4px 2px;
   cursor: pointer;
+  }
+  .banner{
+    background-color: #31d9df;
+    color: #fff;
+    padding: 5px 20px;
+    text-align: left;
+    font-size: 20px;
+   
+    
+    }
+    .banner h1{
+      color: #61696d;
+      font-size: 60px;
+      font-family: 'Courier New', Courier, monospace;
+  
+    }
+  
+  .welcome{
+    color: #61696d;
+    font-size: 20px;
+    margin: 0px 10px 10px 10px ;
   }
