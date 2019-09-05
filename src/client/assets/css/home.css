@@ -1,21 +1,23 @@
 /* Banner - constant for all the pages 
 */
 header {
-  background-color: #0bddec;
-  padding: 40px;
-  text-align: left;
-  font-size: 25px;
-  color: #000000;
-}
-.logo{
-  float: left;
-  height: 50px;
-  width: 70px;
-  padding: 10px;
-  margin: 15px 0px 10px 10px;   
 
-
-}
+    background-color: #0bddec;
+    padding: 40px;
+    text-align: left;
+    font-size: 25px;
+    color: #000000;
+  }
+  .logo{
+    float: left;
+    height: 65px;
+    width: 70px;
+    padding: 10px;
+    margin: 15px 0px 10px 10px;   
+  
+  
+  }
+  
 
 
 span{
