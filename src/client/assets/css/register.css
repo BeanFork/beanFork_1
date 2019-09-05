@@ -1,3 +1,5 @@
+/* HEADER */
+
 header {
   background-color:#0bddec;
   padding: 40px;
@@ -5,79 +7,85 @@ header {
   font-size: 25px;
   color: #000000;
 }
-.logo{
+.logo {
   float: left;
   height: 65px;
   width: 70px;
   padding: 10px;
-  margin: 15px 0px 10px 10px;   
-
-
+  margin: 15px 0px 10px 10px;
 }
-
-
-
-.signupcontainer {
-    /* margin-top: 0%;
-    margin-left: 60%;
-    margin-right: 5%; */
-    /* width: 350px;
-    border: 1px solid rgb(3, 3, 3);
-    padding: 15px;
-    line-height: 30px; */
-    /* width: 80%;
-  float: left;
-      margin-right: 10px;
-      display: inline-block; */
-      width:550px; 
-float:right; 
-/* border: 1px solid rgb(3, 3, 3); */
-height: 700px;
-margin: 20px;
-margin-right: 5%;
-line-height: 40px;
-font-family: 'Times New Roman', Times, serif;
-  }
-  .cancelbtn,.signupbtn{
-      width: 250px;
-      height: 40px;
-  }
-  .clearfix{
-      display: table
-  }
-  .introcontainer{
-      
-      width:800px; 
-height: 700px; 
-float:left; 
-margin: 20px;
-/* border: 1px solid rgb(3, 3, 3); */
-margin-left: 5%;
-  }
-
-
-span{
+span {
   font-size: 30px;
   font-weight: bold;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 
+/* LOGIN FORM */
 
-label{
+form {
+  float: right;
+  margin-right: 100px;
+  letter-spacing: 1px;
+  font-size: 17px;
+  margin-top: -20px;
+}
+
+form input {
+  height: 30px;
+}
+
+form button {
+  border: none;
+  background: none;
+}
+/* SIGNUP CONTAINER */
+
+.signupcontainer {
+  width: 550px;
+  float: right;
+  height: 700px;
+  margin: 20px;
+  margin-right: 5%;
+  line-height: 40px;
+  font-family: "Times New Roman", Times, serif;
+}
+.signupcontainer label {
   font-size: 25px;
 }
-input{
-  height:40px;
+.signupcontainer input {
+  height: 40px;
+}
+.signupcontainer p{
+  line-height: 1;
+}
+.clearfix {
+  display: table;
+}
+.cancelbtn,
+.signupbtn {
+  width: 230px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+/* INTRO CONTAINER */
+
+.introcontainer {
+  width: 800px;
+  height: 700px;
+  float: left;
+  margin: 20px;
+
+  margin-left: 5%;
+}
+.introcontainer p {
+  line-height: 2;
+  font-style: oblique;
 }
 
 
-form{
-  float: right;
-  margin-right : 100px;
-  letter-spacing: 1px;
-  font-size :17px;
-  margin-top : -20px;
 
-}
 
-       
+
+
+

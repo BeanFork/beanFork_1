@@ -1,6 +1,7 @@
 /* Banner - constant for all the pages 
 */
 header {
+
     background-color: #0bddec;
     padding: 40px;
     text-align: left;
@@ -18,47 +19,47 @@ header {
   }
   
 
+
 span{
-    font-size: 30px;
-    font-weight: bold;
-    font-family: 'Courier New', Courier, monospace;
-  }
+  font-size: 30px;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+}
 
 
 
-  /* 
-  Variable Elements
-  */
+/* 
+Variable Elements
+*/
 
 .container{
-    width: available;
-    height: available;
-    font-family: Arial, Helvetica, sans-serif;
+  width: available;
+  height: available;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 
 .leftpane {
-    margin: 0px 0px 0px -100px;
-    width: 20%;
-    min-width: 40px;
-    min-height: 700px;
-    height: available;
-    float: left;
-    background-color: azure;
-    text-align: center;
+  margin: 0px 0px 0px -5px;
+  min-width: 40px;
+  min-height: 700px;
+  height: available;
+  float: left;
+  background-color: azure;
+  text-align: center;
 
 
 }
 
 .middlepane {
 
-    width: 10%;
-    min-width: 950px;
-    min-height: 700px;
-    height: available;
-    float: left;
-    background-color: #eeeeeb;
-    text-align: center;
+  width: 10%;
+  min-width: 900px;
+  min-height: 700px;
+  height: available;
+  float: left;
+  background-color: #eeeeeb;
+  text-align: center;
 
 }
 
@@ -66,86 +67,48 @@ span{
 
 .rightpane {
 
-    width: 200%;
-    min-width: 350px;
-    min-height: 700px;
-    height: available;
-    float: right;
-    background-color:#a1a19a;
-    text-align: center;
+  width: 5%;
+  min-width: 343px;
+  min-height: 700px;
+  height: available;
+  float: right;
+  background-color:#a1a19a;
+  text-align: center;
 
 }
 
-  
+.topic{
 
 
+  text-align: left;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.container{
-    width: available;
-    height: available;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 
-.leftpane {
-    margin: 0px 0px 0px -100px;
-    width: 25%;
-    min-width: 40px;
-    min-height: 700px;
-    height: available;
-    float: left;
-    background-color: azure;
-    text-align: center;
+.post{
+
+
+  text-align: left
+
 }
 
-.middlepane {
+.comment{
 
-    width: 5%;
-    min-width: 900px;
-    min-height: 700px;
-    height: available;
-    float: left;
-    background-color: #eeeeeb;
-    text-align: center;
+
+margin: 0px 0px -20px 10px; 
+margin: 400px 9px;
+position: absolute;
+
 }
 
-
-
-.rightpane {
-
-    width: 20%;
-    margin: 0px 0px 0px 0px;
-    min-width: 348px;
-    min-height: 700px;
-    height: available;
-    float: right;
-    background-color:#a1a19a;
-    text-align: center;
+.button {
+  background-color: #e0e0e0;
+  border: none;
+  color: black;
+  padding: 15px 25px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 420px -20px 20px 430px;
+  cursor: pointer;
 }

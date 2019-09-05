@@ -7,6 +7,9 @@
       BeanFork - Login or Register
     </title>
     <link href = "../assets/css/register.css" rel = "stylesheet" type = "text/css">
+    <script>
+      
+    </script>
   </head>
   <body>  
       <img src = "../assets/img/bean.gif" alt = "logo" class = "logo"> </img>
@@ -17,19 +20,23 @@
  
      <form>
             <table>
+              
                     <tr>
                         <td><b>UserName</b></td>
                         <td><b>Password</b></td>
                     </tr>
                     <tr>
                         <td>
-                            <input type="text" placeholder="Username"/>
+                            <input id="loginUsername"type="text" placeholder="Username"/>
                         </td>
                         <td>
-                            <input type="password" placeholder="Password"/>
+                            <input id="loginPassword"type="password" placeholder="Password"/>
                         </td>
                         <td>
-                            <input type="submit" value="Login"/>
+                            <input type="submit" value="Login" onclick="login()"/>
+                        </td>
+                        <td>
+                            <button type="button" value="forgotpassword" onclick="forgotpassword()">forgot password?</button>
                         </td>
                     </tr>
                 </table>
@@ -45,20 +52,19 @@
         id="email"
         type="text"
         placeholder="Enter Email"
-        name="email"
-        size=80
+        size="80"
+        onkeyup="mailidFormat()"
         required
       />
       <br />
-
+      <p id="idValidation"></p>
       <label><b>UserName</b></label>
       <br />
       <input
         id="username"
         type="text"
         placeholder="Enter UserName"
-        name="username"
-        size=80
+        size="80"
         required
       />
       <br />
@@ -69,26 +75,28 @@
         id="password"
         type="password"
         placeholder="Enter Password"
-        name="psw"
-        size=80
+        onkeyup="passwordStrength()"
+        size="80"
         required
       />
       <br />
+      <p id="passwordmessage">* Must contain atleast 8 character that are the combination of letters in both uppercase and lowercase,numbers and symbols</p>
       <label><b>Confirm Password</b></label>
       <br />
       <input
         id="confirmpassword"
         type="password"
         placeholder="Confirm Password"
-        name="psw-confirm"
-        size=80
+        onkeyup="checkPassword()"
+        size="80"
         required
       />
+      <span id="message"></span>
       <br />
       <div class="clearfix">
           <br/>
-            <button type="button" class="cancelbtn">Cancel</button>
-            <button type="submit" class="signupbtn">Sign Up</button>
+            <button type="reset" class="cancelbtn" onclick="cancelSignup()">Cancel</button>
+            <button id="submit" type="submit" class="signupbtn" onclick="signup()">Sign Up</button>
       </div>
     </div>
     <div class="introcontainer">
