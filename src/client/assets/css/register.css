@@ -1,62 +1,8 @@
-/* HEADER */
-
-header {
-  background-color:#0bddec;
-  padding: 40px;
-  text-align: left;
-  font-size: 25px;
-  color: #000000;
-}
 .logo {
   float: left;
-  height: 65px;
-  width: 70px;
+  width: 100px;
   padding: 10px;
-  margin: 15px 0px 10px 10px;
-}
-span {
-  font-size: 30px;
-  font-weight: bold;
-  font-family: "Courier New", Courier, monospace;
-}
-
-/* LOGIN FORM */
-
-form {
-  float: right;
-  margin-right: 100px;
-  letter-spacing: 1px;
-  font-size: 17px;
-  margin-top: -20px;
-}
-
-form input {
-  height: 30px;
-}
-
-form button {
-  border: none;
-  background: none;
-}
-/* SIGNUP CONTAINER */
-
-.signupcontainer {
-  width: 550px;
-  float: right;
-  height: 700px;
-  margin: 20px;
-  margin-right: 5%;
-  line-height: 40px;
-  font-family: "Times New Roman", Times, serif;
-}
-.signupcontainer label {
-  font-size: 25px;
-}
-.signupcontainer input {
-  height: 40px;
-}
-.signupcontainer p{
-  line-height: 1;
+  margin: 0px 10px 10px 0px;
 }
 .clearfix {
   display: table;
@@ -68,24 +14,32 @@ form button {
   margin-right: 10px;
 }
 
-/* INTRO CONTAINER */
+.navbar-header {
+  height: 20px;
+}
+.navbar-brand {
+  padding: 20px 0px 0px 0px !important;
+}
 
-.introcontainer {
-  width: 800px;
-  height: 700px;
-  float: left;
-  margin: 20px;
-
+.col-lg-4 {
+  background-color: rgb(172, 201, 201);
   margin-left: 5%;
+  height: 600px;
+  margin-top: 4%;
 }
-.introcontainer p {
-  line-height: 2;
-  font-style: oblique;
+.col-lg-6 {
+  margin-top: 4%;
+  background-color: rgb(176, 212, 212);
+  margin-left: 5%;
+  height: 600px;
 }
-
-
-
-
-
-
-
+.login {
+  margin-top: 10px;
+  margin-right: 30px;
+}
+.icon {
+  background-color: #31d9df;
+  color: #fff;
+  padding: 5px 20px;
+  text-align: left;
+}
