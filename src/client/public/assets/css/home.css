@@ -10,15 +10,31 @@
     font-style: inherit;
   }
 
+  .banner{
+    background-color: #31d9df;
+    color: #fff;
+    padding: 5px 20px;
+    text-align: left;
+    font-size: 20px;
+   
+    
+    }
+    .banner h1{
+      color: #61696d;
+      font-size: 60px;
+      font-family: 'Courier New', Courier, monospace;
+  
+    }
   
   .welcome{
-    color:white;
+    color: #61696d;
     font-size: 20px;
     margin: 0px 10px 10px 10px ;
   }
 
   .container-fluid {
-    padding: 60px 50px;
+    padding: 10px 10px;
+    margin: 0px 1000px 1000px 20px;
   }
   
   button {
