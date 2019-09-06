@@ -19,22 +19,26 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
     <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
-    <script src="../util.js"></script>
-    <script src="../assets/js/register.js"></script>
+    <script src="util.js"></script>
+    <script src="assets/js/register.js"></script>
     <title>
       BeanFork - Login or Register
     </title>
-    <link href = "../public/assets/css/register.css" rel = "stylesheet" type = "text/css">
+    <link href = "assets/css/register.css" rel = "stylesheet" type = "text/css">
     <script>
       
     </script>
   </head>
 
   <body>
+
+  <!-- BANNER -->
+
+
     <ul class="nav navbar-nav navbar-right">
-      <li>
+     
         <a class="login" href="#"
-          ><form>
+          ><form action="/login" method="POST">
             <input
               id="loginUsername"
               class="form-control "
@@ -49,25 +53,21 @@
               placeholder="Password"
               name="psw"
             />
-            <button type="submit" onclick="login()">Login</button>
-            <button type="button">forgotpassword?</button>
+            <button class="btn"type="submit" onclick="login()">Login</button>
+            <button class="btn"type="button">forgotpassword?</button>
           </form></a
         >
-      </li>
+      
     </ul>
     <div class="banner text-left">
-        <img class = "logo" src = " ../public/assets/img/bean.gif">
+        <img class = "logo" src = " assets/img/bean.gif">
         <h1><b> BeanFork </b></h1> <br>  
             </div>
           </div>
 
 
 
-
-
-
-
-          
+<!-- CONTAINER -->
 
     <div class="container-fluid">
       <div class="row">
@@ -83,12 +83,12 @@
             </p>
           </blockquote>
           <img
-            src="../public/assets/img/screenshot.png"
+            src="assets/img/screenshot.png"
             class="img-thumbnail"
             alt="Cinque Terre"
           />
         </div>
-        <div class="col-lg-4 ">
+        <div id= "signupcontainer" class="col-lg-4 ">
           <h1>Sign Up</h1>
 
           <label><b>Email</b></label>
@@ -145,15 +145,16 @@
           />
           <span id="message"></span>
           <br />
+          <span id="verificationfield"></span>
           <div class="clearfix">
             <br />
-            <button type="reset" class="btn cancelbtn" onclick="cancelSignup()">
+            <button class="btn btn-primary btn-block" type="reset" onclick="cancelSignup()">
               Cancel
             </button>
             <button
+            class="btn btn-primary btn-block"
               id="submit"
               type="submit"
-              class="btn signupbtn"
               onclick="signup()"
             >
               Sign Up

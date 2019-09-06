@@ -32,6 +32,7 @@ span {
 }
 .discussioncontainer form textarea {
 font-size: 20px;
+resize: none
   
 }
 .discussioncontainer h3 {
