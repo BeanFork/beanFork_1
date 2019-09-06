@@ -29,14 +29,35 @@
   .welcome{
     color: #61696d;
     font-size: 20px;
-    margin: 0px 10px 10px 10px ;
+    margin: 0px 10px 10px 10px;
   }
 
-  .container-fluid {
-    padding: 10px 10px;
-    margin: 0px 1000px 1000px 20px;
+  .banner input[type = "text"]{
+
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 6px 230px;
+    border: 1px solid rgb(143, 165, 165);
+    margin-left: -8.5%;
+    margin-bottom: 1%;
   }
   
+  .form-inline {
+    position: absolute;
+    margin-left: 20%;
+    margin-top: -3%;
+    width: 800px;
+    background-color: #31d9df;
+    color: #61696d;
+
+  }
+
+
+.container-fluid {
+  padding: 10px 10px;
+  margin: 0px 10px 1000px 20px;
+  }
+
+
   button {
     width: 150px;
     height: 40px;
@@ -46,6 +67,55 @@
     font-size: 12px;
     margin: 4px 2px;
     cursor: pointer;
+  }
+
+  .comment{
+    background-color: #f8ffff;
+    color: #61696d;
+    font-size: 15px;
+    margin-left: 0%;
+    position: absolute;
+    margin-top: 50%;
+  }
+  
+  #button-add{
+    background-color: #31d9df;
+    color: #61696d;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 16px 22px;
+    font-weight: bold;
+    position: absolute;
+    margin-top: 54%;
+    margin-left: 85%;
+  }
+  .leftpane{
+
+    margin-top: 0%;
+    background-color: azure;
+    height: 700px;
+    border: 1px solid rgb(235, 229, 229);
+
+  }
+
+  .middlepane{
+
+    margin-top: 0%;
+    background-color: #4ff4ff;
+    height: 530px;
+    border: 1px solid rgb(235, 229, 229);
+  
+
+
+  }
+
+  .rightpane{
+
+    margin-top: 0%;
+    background-color: grey;
+    border: 1px solid rgb(235, 229, 229);
+    height: 700px;
+
   }
 
 
