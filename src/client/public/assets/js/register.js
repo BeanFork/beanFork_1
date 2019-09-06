@@ -1,6 +1,9 @@
 function signup() {
   var Verificationcode = generateCode();
-  sendMail(Verificationcode, document.getElementById("email").value);
+  // sendMail(Verificationcode, document.getElementById("email").value);
+  var data="<input type='text' name='name'> ";
+  
+  document.getElementById("signupcontainer").innerHTML=data
   superagent
     .post("/signup")
     .send({
