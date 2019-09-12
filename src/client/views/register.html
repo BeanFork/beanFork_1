@@ -24,51 +24,46 @@
     <title>
       BeanFork - Login or Register
     </title>
-    <link href = "assets/css/register.css" rel = "stylesheet" type = "text/css">
-    <script>
-      
-    </script>
+    <link href="assets/css/register.css" rel="stylesheet" type="text/css" />
+    <script></script>
   </head>
 
   <body>
-
-  <!-- BANNER -->
-
+    <!-- BANNER -->
 
     <ul class="nav logincontainer">
-     <div id="logincontainer">
-      <input
-      id="loginUsername"
-      class="form-control "
-      type="text"
-      placeholder="Username"
-      name="username"
-    />
-    <input
-      id="loginPassword"
-      class="form-control "
-      type="password"
-      placeholder="Password"
-      name="password"
-    />
-    <button class="btn"type="submit" onclick="login()">Login</button>
-    <button class="btn"type="button" onclick="forgotpassword()">forgotpassword?</button>
-    <br/>
-    <span id="loginverification"></span>
-     </div>
-       
-            
-          
-      
+      <div id="logincontainer">
+        <!-- <form action="/home" method="POST"> -->
+          <input
+            id="loginUsername"
+            class="form-control "
+            type="text"
+            placeholder="Username"
+            name="username"
+          />
+          <input
+            id="loginPassword"
+            class="form-control "
+            type="password"
+            placeholder="Password"
+            name="password"
+          />
+          <button class="btn" type="submit" onclick="login()">Login</button>
+          <button class="btn" type="button" onclick="forgotpassword()">
+            forgotpassword?
+          </button>
+          <br />
+          <span id="loginverification"></span>
+        <!-- </form> -->
+      </div>
     </ul>
     <div class="banner text-left">
-        <img class = "logo" src = " assets/img/bean.gif">
-        <h1><b> BeanFork </b></h1> <br>  
-            </div>
+      <img class="logo" src=" assets/img/bean.gif" />
+      <h1><b> BeanFork </b></h1>
+      <br />
+    </div>
 
-
-
-<!-- CONTAINER -->
+    <!-- CONTAINER -->
 
     <div class="container-fluid">
       <div class="row">
@@ -89,8 +84,7 @@
             alt="Cinque Terre"
           />
         </div>
-        <div id= "signupcontainer" class="col-lg-4 ">
-          
+        <div id="signupcontainer" class="col-lg-4 ">
           <h1>Sign Up</h1>
 
           <label><b>Email</b></label>
@@ -99,9 +93,10 @@
             class="form-control input-lg"
             id="email"
             type="text"
+            autocomplete="off"
             placeholder="Enter Email"
             size="80"
-            onkeyup="mailidFormat(); emailExistence()"
+            onkeyup="mailidFormat()"
             required
           />
           <br />
@@ -113,9 +108,10 @@
             class="form-control input-lg"
             id="username"
             type="text"
+            autocomplete="off"
             placeholder="Enter UserName"
             size="80"
-            onkeyup="userExistence()"
+            onkeyup="UsernameLength()"
             required
           />
           <br />
@@ -140,14 +136,14 @@
           <br />
           <div id="new">
             <input
-            class="form-control input-lg"
-            id="confirmpassword"
-            type="password"
-            placeholder="Confirm Password"
-            onkeyup="checkPassword()"
-            size="80"
-            required
-          />
+              class="form-control input-lg"
+              id="confirmpassword"
+              type="password"
+              placeholder="Confirm Password"
+              onkeyup="checkPassword()"
+              size="80"
+              required
+            />
           </div>
           <span id="message"></span>
           <br />
@@ -155,11 +151,16 @@
           <!-- <span id="otpalert"></span> -->
           <div class="clearfix btn-group">
             <br />
-            <button class="btn btn-primary cancelbtn" id="cancel" type="reset" onclick="cancelSignup()">
+            <button
+              class="btn btn-primary cancelbtn"
+              id="cancel"
+              type="reset"
+              onclick="cancelSignup()"
+            >
               Cancel
             </button>
             <button
-            class="btn btn-primary signupbtn"
+              class="btn btn-primary signupbtn"
               id="submit"
               type="submit"
               onclick="signup()"
@@ -168,20 +169,34 @@
             </button>
           </div>
         </div>
-        <div class= "col-lg-4 hide  " id="new1" >
-          <label><b>Enter OTP</b></label>
+        <div class="col-lg-4 hide  " id="new1">
+          <br/>
+          <br/>
+          <br/>
+           <h1 style="text-align: center">One step more!!</h1>
+          <br/>
+          <label style="font-size: 30px"><b>Enter Verification code</b></label>
+          <br/>
           <input
-          class="form-control input-lg"
-          id="otp"
-          type="text"
-          placeholder="OTP"
-          size="80"
-          required
-        />
+            class="form-control input-lg"
+            autocomplete="off"
+            id="Confirmcode"
+            type="text"
+            placeholder="code"
+            size="80"
+            required
+          />
+          <br/>
+          <span id="verificationcomment"></span>
+          <button
+              class="btn btn-block btn-primary"
+              
+              type="submit"
+              onclick="verificationconfirm()"
+            >confirm</button>
+
         </div>
       </div>
-      
     </div>
-    
   </body>
 </html>

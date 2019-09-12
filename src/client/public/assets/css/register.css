@@ -77,3 +77,6 @@ display: block !important
 .hide{
 display: none !important;
 }
+.otpimage{
+  margin-left: 80%
+}

@@ -1,5 +1,6 @@
 function signup() {
   var Verificationcode = generateCode();
+  console.log(Verificationcode)
   // sendMail(Verificationcode, document.getElementById("email").value);
   // var data="<input type='text' name='name'> ";
 
@@ -8,22 +9,13 @@ function signup() {
   var username = document.getElementById("username").value;
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
-  //   document.getElementById("confirmpassword").value = "";
-  //   document.getElementById("username").value = "";
-  //   document.getElementById("email").value = "";
-  //   document.getElementById("password").value = "";
-  //   document.getElementById("submit").style.visibility = 'hidden';
-  //   document.getElementById("cancel").style.visibility = 'hidden';
-  // document.getElementById("confirm").style.visibility = 'visible';
   document.getElementById("signupcontainer").classList.add("hide");
+  //localStorage.setItem('localemail1',email);
 
   document.getElementById("signupcontainer").classList.remove("show");
-  // var h1 = document.createElement('h1');
-  // h1.innerHTML = document.getElementById("new").innerHTML;
+
   document.getElementById("new1").classList.add("show");
   document.getElementById("new1").classList.remove("hide");
-  // var container=document.getElementById("signupcontainer");
-  // container.innerHTML="<p>Helllo</p>"
   superagent
     .post("/signup")
     .send({
@@ -35,29 +27,14 @@ function signup() {
     .end(function(err, result) {
       if (err) {
         console.log(err);
-      } else {
-        //   document.getElementById("verificationfield").innerHTML="<input class="form-control input-lg" id="confirmpassword" type="password" placeholder="Confirm Password"
-        //   onkeyup="checkPassword()"
-        //   size="80"
-        //   required
-        // />"
+      }
+       else{
+         console.log("this is signup result", result)
+         localStorage.setItem("localid",result.text.id)
+       }
         // var div1 =document.createElement("div");
         // div1.innerHTML=document.getElementById("new1").innerHTML;
         // document.getElementById("new").appendChild(div1);
-        // document.getElementById("otpalert").innerHTML ="<p>Enter the OTP send to the registered MailId</p>"
-        // var res = JSON.parse(result.text);
-        // console.log(res);
-        // if (res.status && res.type === "emailuser") {
-        //   document.getElementById("verificationfield").innerHTML =
-        //     "<p>Email and Username already exists</p>";
-        // } else if (res.result && res.type === "user") {
-        //   document.getElementById("verificationfield").innerHTML =
-        //     "<p>UserName already exists</p>";
-        // } else if (res.result && res.type === "email") {
-        //   document.getElementById("verificationfield").innerHTML =
-        //     "<p>EmailId already exists</p>";
-        // }
-      }
     });
 }
 
@@ -75,14 +52,16 @@ function login() {
     .end(function(err, result) {
       if (err) {
         console.log(err);
+        document.getElementById("loginverification").innerHTML = "<p>Username or password is incorrect</p>";
       } else {
         var res = JSON.parse(result.text);
-        if (!res.state) {
+        localStorage.setItem('localid',res.id);
+        // if (!res.state) {
           $("html").html(res.html);
-        } else {
-          document.getElementById("loginverification").innerHTML =
-            "<p>Username or password is incorrect</p>";
-        }
+        // } else {
+        //   document.getElementById("loginverification").innerHTML =
+        //     "<p>Username or password is incorrect</p>";
+        // }
       }
     });
 }
@@ -102,6 +81,30 @@ function cancelSignup() {
   document.getElementById("email").value = "";
   document.getElementById("password").value = "";
 }
+function mailidFormat() {
+  var email = document.getElementById("email").value;
+  var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+  if (reg.test(email) === false) {
+    document.getElementById("idValidation").innerHTML =
+      "<p>Enter valid input</p>";
+      document.getElementById("submit").disabled=true;
+      
+  } else {
+    document.getElementById("idValidation").innerHTML = " ";
+    emailExistence();
+    
+  }
+}
+
+function UsernameLength(){
+  var usernamelength=document.getElementById("username").value.length;
+  if(usernamelength<5){
+    document.getElementById("usernamecheck").innerHTML="<p>Username must contain minimum of 5 character</p>"
+  }
+  else {
+    userExistence()
+  }
+}
 
 function userExistence() {
   superagent
@@ -110,14 +113,14 @@ function userExistence() {
       username: document.getElementById("username").value
     })
     .end(function(err, result) {
-      console.log("this is result", result);
+      //console.log("this is result", result);
       var res = JSON.parse(result.text);
-      console.log(res);
+      //console.log(res);
       if (res.status) {
         document.getElementById("usernamecheck").innerHTML =
           "<p>Username already exists</p>";
       } else {
-        document.getElementById("usernamecheck").innerHTML = "";
+        document.getElementById("usernamecheck").innerHTML = "<p>Unique!!!</p>";
       }
     });
 }
@@ -128,7 +131,7 @@ function emailExistence() {
     .send({ email: document.getElementById("email").value })
     .end(function(err, result) {
       var res = JSON.parse(result.text);
-      console.log(res);
+      //console.log(res);
       if (res.status) {
         document.getElementById("emailcheck").innerHTML =
           "<p>Email already exists</p>";
@@ -137,3 +140,50 @@ function emailExistence() {
       }
     });
 }
+
+function verificationconfirm(){
+  var id=localStorage.getItem('localid');
+  
+  //console.log(document.getElementById("Confirmcode").value);
+  superagent
+  .post("/code")
+  .send({code: document.getElementById("Confirmcode").value,id:id})
+  .end(function(err,result){
+    if(err){
+      document.getElementById("verificationcomment").innerHTML="<p>Verification code is incorrect</p>"
+    }
+    else{
+      $("html").html(result.text);
+    }
+  })
+}
+
+
+function newDiscussion(){
+  superagent
+  .post("/newdiscussion")
+  .end(function(err,result){
+      $("html").html(result.text)
+  })
+}
+
+function createDiscussion(){
+  var topic= document.getElementById("discussionTopic").value;
+  var description =document.getElementById("discussionDescription").value;
+  console.log("topic",topic.length);
+  console.log("description",description.length)
+  var id =localStorage.getItem("localid")
+  if(topic.length>0 && description.length >0){
+    superagent
+    .post("/creatediscussion")
+    .send({topic : topic , description:description , id :id})
+    .end(function(err,result){
+
+    })
+  }
+  else(
+    document.getElementById("discussion").innerHTML="<p>***Both the fields are mandatory</p>"
+  )
+  
+}
+
