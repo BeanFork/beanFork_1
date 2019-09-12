@@ -24,14 +24,19 @@ function passwordStrength() {
   );
   var enough = new RegExp("(?=.{6,}).*");
   if (strong.test(password)) {
+    // document.getElementById("password").style.backgroundColor="rgb(133,211,137)";
     document.getElementById("passwordmessage").innerHTML = "<p>STRONG!!!</p>";
+    
   } else if (medium.test(password)) {
-    document.getElementById("passwordmessage").innerHTML = "<p>MEDIUM!!</p>";
+    document.getElementById("passwordmessage").innerHTML = "<p>MEDIUM!!Must contain atleast 8 character that are the combination of letters in both uppercase and lowercase,numbers and symbols</p>";
+    // document.getElementById("password").style.backgroundColor="rgb(211,207,125)";
   } else if (enough.test(password)) {
-    document.getElementById("passwordmessage").innerHTML = "<p>WEAK!</p>";
+    document.getElementById("passwordmessage").innerHTML = "<p>WEAK!!Must contain atleast 8 character that are the combination of letters in both uppercase and lowercase,numbers and symbols</p>";
+    // document.getElementById("password").style.backgroundColor="rgb(231,148,148)";
   } else {
     document.getElementById("passwordmessage").innerHTML =
       "<p>Enter valid input</p>";
+      document.getElementById("submit").disabled=true;
   }
 }
 
@@ -41,8 +46,11 @@ function mailidFormat() {
   if (reg.test(email) === false) {
     document.getElementById("idValidation").innerHTML =
       "<p>Enter valid input</p>";
+      document.getElementById("submit").disabled=true;
+      
   } else {
     document.getElementById("idValidation").innerHTML = " ";
+    
   }
 }
 

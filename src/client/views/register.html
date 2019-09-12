@@ -8,14 +8,14 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
     />
-    <link href="../assets/css/register.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/register.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
     />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
     <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
@@ -24,50 +24,46 @@
     <title>
       BeanFork - Login or Register
     </title>
-    <link href = "assets/css/register.css" rel = "stylesheet" type = "text/css">
-    <script>
-      
-    </script>
+    <link href="assets/css/register.css" rel="stylesheet" type="text/css" />
+    <script></script>
   </head>
 
   <body>
+    <!-- BANNER -->
 
-  <!-- BANNER -->
-
-
-    <ul class="nav navbar-nav navbar-right">
-     
-        <a class="login" href="#"
-          ><form action="/login" method="POST">
-            <input
-              id="loginUsername"
-              class="form-control "
-              type="text"
-              placeholder="Username"
-              name="username"
-            />
-            <input
-              id="loginPassword"
-              class="form-control "
-              type="password"
-              placeholder="Password"
-              name="psw"
-            />
-            <button class="btn"type="submit" onclick="login()">Login</button>
-            <button class="btn"type="button">forgotpassword?</button>
-          </form></a
-        >
-      
+    <ul class="nav logincontainer">
+      <div id="logincontainer">
+        <!-- <form action="/home" method="POST"> -->
+          <input
+            id="loginUsername"
+            class="form-control "
+            type="text"
+            placeholder="Username"
+            name="username"
+          />
+          <input
+            id="loginPassword"
+            class="form-control "
+            type="password"
+            placeholder="Password"
+            name="password"
+          />
+          <button class="btn" type="submit" onclick="login()">Login</button>
+          <button class="btn" type="button" onclick="forgotpassword()">
+            forgotpassword?
+          </button>
+          <br />
+          <span id="loginverification"></span>
+        <!-- </form> -->
+      </div>
     </ul>
     <div class="banner text-left">
-        <img class = "logo" src = " assets/img/bean.gif">
-        <h1><b> BeanFork </b></h1> <br>  
-            </div>
-          </div>
+      <img class="logo" src=" assets/img/bean.gif" />
+      <h1><b> BeanFork </b></h1>
+      <br />
+    </div>
 
-
-
-<!-- CONTAINER -->
+    <!-- CONTAINER -->
 
     <div class="container-fluid">
       <div class="row">
@@ -88,7 +84,7 @@
             alt="Cinque Terre"
           />
         </div>
-        <div id= "signupcontainer" class="col-lg-4 ">
+        <div id="signupcontainer" class="col-lg-4 ">
           <h1>Sign Up</h1>
 
           <label><b>Email</b></label>
@@ -97,6 +93,7 @@
             class="form-control input-lg"
             id="email"
             type="text"
+            autocomplete="off"
             placeholder="Enter Email"
             size="80"
             onkeyup="mailidFormat()"
@@ -104,18 +101,21 @@
           />
           <br />
           <p id="idValidation"></p>
+          <span id="emailcheck"></span>
           <label><b>UserName</b></label>
           <br />
           <input
             class="form-control input-lg"
             id="username"
             type="text"
+            autocomplete="off"
             placeholder="Enter UserName"
             size="80"
+            onkeyup="UsernameLength()"
             required
           />
           <br />
-
+          <span id="usernamecheck"></span>
           <label><b>Password</b></label>
           <br />
           <input
@@ -134,25 +134,33 @@
           </p>
           <label><b>Confirm Password</b></label>
           <br />
-          <input
-            class="form-control input-lg"
-            id="confirmpassword"
-            type="password"
-            placeholder="Confirm Password"
-            onkeyup="checkPassword()"
-            size="80"
-            required
-          />
+          <div id="new">
+            <input
+              class="form-control input-lg"
+              id="confirmpassword"
+              type="password"
+              placeholder="Confirm Password"
+              onkeyup="checkPassword()"
+              size="80"
+              required
+            />
+          </div>
           <span id="message"></span>
           <br />
           <span id="verificationfield"></span>
-          <div class="clearfix">
+          <!-- <span id="otpalert"></span> -->
+          <div class="clearfix btn-group">
             <br />
-            <button class="btn btn-primary btn-block" type="reset" onclick="cancelSignup()">
+            <button
+              class="btn btn-primary cancelbtn"
+              id="cancel"
+              type="reset"
+              onclick="cancelSignup()"
+            >
               Cancel
             </button>
             <button
-            class="btn btn-primary btn-block"
+              class="btn btn-primary signupbtn"
               id="submit"
               type="submit"
               onclick="signup()"
@@ -160,6 +168,33 @@
               Sign Up
             </button>
           </div>
+        </div>
+        <div class="col-lg-4 hide  " id="new1">
+          <br/>
+          <br/>
+          <br/>
+           <h1 style="text-align: center">One step more!!</h1>
+          <br/>
+          <label style="font-size: 30px"><b>Enter Verification code</b></label>
+          <br/>
+          <input
+            class="form-control input-lg"
+            autocomplete="off"
+            id="Confirmcode"
+            type="text"
+            placeholder="code"
+            size="80"
+            required
+          />
+          <br/>
+          <span id="verificationcomment"></span>
+          <button
+              class="btn btn-block btn-primary"
+              
+              type="submit"
+              onclick="verificationconfirm()"
+            >confirm</button>
+
         </div>
       </div>
     </div>

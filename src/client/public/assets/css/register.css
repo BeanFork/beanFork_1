@@ -11,7 +11,7 @@
 .signupbtn {
   width: 230px;
   height: 40px;
-  margin-right: 10px;
+  margin-right: 35px;
 }
 
 .navbar-header {
@@ -24,14 +24,21 @@
 .col-lg-4 {
   background-color: rgb(172, 201, 201);
   margin-left: 5%;
-  height: 600px;
-  margin-top: 4%;
+  height: 670px;
+  margin-top: 2%;
+}
+.new1 {
+  background-color: rgb(172, 201, 201);
+  margin-left: 60%;
+  margin-right: 5%;
+  height: 670px;
+  margin-top: 2%;
 }
 .col-lg-6 {
-  margin-top: 4%;
+  margin-top: 2%;
   background-color: rgb(176, 212, 212);
   margin-left: 5%;
-  height: 600px;
+  height: 670px;
 }
 .login {
   margin-top: 10px;
@@ -58,4 +65,18 @@
     font-family: 'Courier New', Courier, monospace;
 
   }
-
+ .logincontainer{
+   float: right!important;
+   margin-right: 10px;
+   margin-top : 5px;
+ }
+ 
+.show{
+display: block !important
+}
+.hide{
+display: none !important;
+}
+.otpimage{
+  margin-left: 80%
+}

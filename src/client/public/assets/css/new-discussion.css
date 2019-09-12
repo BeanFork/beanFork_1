@@ -17,7 +17,9 @@ span {
   font-weight: bold;
   font-family: "Courier New", Courier, monospace;
 }
-
+textarea{
+  resize: none;
+}
 .discussioncontainer {
   width: 500px;
  position: absolute;
@@ -74,4 +76,10 @@ button{
     color: #61696d;
     font-size: 20px;
     margin: 0px 10px 10px 10px ;
+  }
+
+  #discussion{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: normal;
   }
