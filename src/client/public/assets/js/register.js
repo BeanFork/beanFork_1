@@ -1,6 +1,8 @@
+
+
+
 function signup() {
-  var Verificationcode = generateCode();
-  console.log(Verificationcode)
+  
   // sendMail(Verificationcode, document.getElementById("email").value);
   // var data="<input type='text' name='name'> ";
 
@@ -22,20 +24,33 @@ function signup() {
       username: username,
       email: email,
       password: password,
-      code: Verificationcode
     })
     .end(function(err, result) {
       if (err) {
         console.log(err);
       }
        else{
-         console.log("this is signup result", result)
-         localStorage.setItem("localid",result.text.id)
+        var res = JSON.parse(result.text);
+         if(res.status){
+           signupverification(res.email);
+         }
        }
-        // var div1 =document.createElement("div");
-        // div1.innerHTML=document.getElementById("new1").innerHTML;
-        // document.getElementById("new").appendChild(div1);
     });
+}
+function signupverification(email){
+  superagent
+  .post("/signupverification")
+  .send({email:email})
+  .end(function(err,result){
+    if(err){
+      console.log(err);
+    }
+    else{
+      var res = JSON.parse(result.text);
+      localStorage.setItem('localid',res.id);
+
+    }
+  })
 }
 
 function login() {
@@ -56,12 +71,7 @@ function login() {
       } else {
         var res = JSON.parse(result.text);
         localStorage.setItem('localid',res.id);
-        // if (!res.state) {
           $("html").html(res.html);
-        // } else {
-        //   document.getElementById("loginverification").innerHTML =
-        //     "<p>Username or password is incorrect</p>";
-        // }
       }
     });
 }
@@ -178,12 +188,30 @@ function createDiscussion(){
     .post("/creatediscussion")
     .send({topic : topic , description:description , id :id})
     .end(function(err,result){
-
+        if(err){
+          console.log(err)
+        }
+        else{
+          var res = JSON.parse(result.text);
+          console.log("rendering",res)
+          renderpost(res)
+        }
     })
   }
   else(
     document.getElementById("discussion").innerHTML="<p>***Both the fields are mandatory</p>"
   )
   
+}
+
+function renderpost(post){
+  const markup =`<h1>${post.topic}</h1>
+  <article class="post">
+    <h3>User-1</h3>
+    <h4>Posted 3 hrs ago</h4>
+    <p class="content">
+      ${post.description}
+    </p>`
+  document.getElementById(".post_content").insertAdjacentHTML("afterbegin",markup);
 }
 

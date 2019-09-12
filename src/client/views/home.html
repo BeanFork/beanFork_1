@@ -19,12 +19,12 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
     <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
     <script>
-    //   function login() {
-    //     console.log(hello);
-    //     superagent.post("/newdiscussion").end(function(err, result) {
-    //       $("html").html(result.text);
-    //     });
-    //   }
+      //   function login() {
+      //     console.log(hello);
+      //     superagent.post("/newdiscussion").end(function(err, result) {
+      //       $("html").html(result.text);
+      //     });
+      //   }
     </script>
   </head>
 
@@ -80,14 +80,15 @@
             </button>
             <!-- <button class="btn" type="submit" onclick="newDiscussion()">Login</button> -->
             <h1>Trending Topics</h1>
-
-            <article class="topic">
-              <h2>My Topic-1</h2>
-              <h4>Published Time</h4>
-              <p>
-                An apple is a sweet, edible fruit produced by an apple tree...
-              </p>
-            </article>
+            <div>
+              <article class="topic">
+                <h2>My Topic-1</h2>
+                <h4>Published Time</h4>
+                <p>
+                  An apple is a sweet, edible fruit produced by an apple tree...
+                </p>
+              </article>
+            </div>
 
             <article class="topic">
               <h2>My Topic-2</h2>
@@ -109,29 +110,30 @@
 
         <div class="col-lg-5">
           <div class="middlepane">
-            <h1>Topic-1</h1>
-            <article class="post">
-              <h3>User-1</h3>
-              <h4>Posted 3 hrs ago</h4>
-              <p class="content">
-                A paragraph is a self-contained unit of a discourse in writing
-                dealing with a particular point or idea. A paragraph consists of
-                one or more sentences. Though not required by the syntax of any
-                language,
-              </p>
-
-              <form>
-                <textarea
-                  class="comment"
-                  rows="5"
-                  cols="70"
-                  value="Comment Below"
-                  placeholder="Enter Your Comments Here..."
-                >
-                </textarea>
-                <input id="button-add" type="submit" value="Add" />
-              </form>
+              <div class="post_content">
+                    <h1>Topic-1</h1>
+                    <article class="post">
+                      <h3>User-1</h3>
+                      <h4>Posted 3 hrs ago</h4>
+                      <p class="content">
+                        A paragraph is a self-contained unit of a discourse in writing
+                        dealing with a particular point or idea. A paragraph consists of
+                        one or more sentences. Though not required by the syntax of any
+                        language,
+                      </p>
             </article>
+        </div>
+            <form>
+                    <textarea
+                      class="comment"
+                      rows="5"
+                      cols="70"
+                      value="Comment Below"
+                      placeholder="Enter Your Comments Here..."
+                    >
+                    </textarea>
+                    <input id="button-add" type="submit" value="Add" />
+                  </form>
           </div>
         </div>
 
