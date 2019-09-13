@@ -225,7 +225,7 @@ function renderpost(postdata){
       ${postdata.post[0].description}
     </p>`
   document.getElementById("post_content").insertAdjacentHTML("afterbegin",markup);
-  //document.getElementById("post_content").innerHTML="<p>It is working</p>"
+  document.getElementById("post_content").innerHTML="<p>It is working</p>"
 }
 
 function local(){
