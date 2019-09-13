@@ -23,6 +23,7 @@ var nameSchema = new mongoose.Schema({
     {
       topic: String,
       description: String,
+      posttime: Number,
       comments: [
         {
           userid: String,
@@ -43,7 +44,7 @@ app.use(express.static(path.join(__dirname, "../client/public")));
 // app.use('/forgotpassword',require('./routes/api/user/forgotpassword'))
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/views/register.html"));
+  res.sendFile(path.join(__dirname, "../client/public/views/register.html"));
 });
 
 //signup and sending verification code
@@ -67,7 +68,7 @@ app.post("/signup", (req, res) => {
       from: "beanforkaccess@gmail.com",
       to: req.body.email,
       subject: "Forgot Password",
-      text: "Verification code is " + req.body.code
+      text: "Verification code is " + Verificationcode
     },
     function(err) {
       if (err) console.log(err);
@@ -101,7 +102,7 @@ app.post("/code", (req, res, next) => {
     console.log(req.body.code);
     if (result) {
       if (result.code === req.body.code) {
-        res.sendFile(path.join(__dirname, "../client/views/home.html"));
+        res.sendFile(path.join(__dirname, "../client/public/views/home.html"));
       } else {
         next({ status: 404, message: "Verification code is incorrect" });
       }
@@ -114,7 +115,7 @@ app.post("/code", (req, res, next) => {
 
 //login
 
-const html = fs.readFileSync(path.join(__dirname, "../client/views/home.html"));
+const html = fs.readFileSync(path.join(__dirname, "../client/public/views/home.html"));
 
 app.post("/home", (req, res, next) => {
   userprofile.findOne({ username: req.body.username }, function(err, result) {
@@ -165,7 +166,7 @@ app.post("/email", (req, res) => {
 //Rendering Forgot password
 
 app.post("/forgotpassword", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/views/forgot-password.html"));
+  res.sendFile(path.join(__dirname, "../client/public/views/forgot-password.html"));
 });
 
 /**HOME.HTML */
@@ -174,22 +175,25 @@ app.post("/forgotpassword", (req, res) => {
 //Rendering new discussion.html
 
 app.post("/newdiscussion", (req, res, next) => {
-  res.sendFile(path.join(__dirname, "../client/views/new-discussion.html"));
+  res.sendFile(path.join(__dirname, "../client/public/views/new-discussion.html"));
 });
 
 
 //Creting the new discussion 
 
+
 app.post("/creatediscussion", (req, res, next) => {
   userprofile.findOne({ _id: req.body.id }, function(err, result) {
     var postobject = {
       topic: req.body.topic,
-      description: req.body.description
+      description: req.body.description,
+      posttime: req.body.posttime
     };
-    result.post.push(postobject);
+    result.post.unshift(postobject);
     console.log("final result", result);
     result.save();
-    res.send(result);
+    res.json({ html: html.toString(), postdata: result});
+   //res.send(result);
   });
 });
 

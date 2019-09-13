@@ -97,7 +97,7 @@ function mailidFormat() {
   if (reg.test(email) === false) {
     document.getElementById("idValidation").innerHTML =
       "<p>Enter valid input</p>";
-      document.getElementById("submit").disabled=true;
+      //document.getElementById("submit").disabled=true;
       
   } else {
     document.getElementById("idValidation").innerHTML = " ";
@@ -129,8 +129,10 @@ function userExistence() {
       if (res.status) {
         document.getElementById("usernamecheck").innerHTML =
           "<p>Username already exists</p>";
+          localStorage.setItem("User",false)
       } else {
         document.getElementById("usernamecheck").innerHTML = "<p>Unique!!!</p>";
+        localStorage.setItem("User",true)
       }
     });
 }
@@ -145,8 +147,11 @@ function emailExistence() {
       if (res.status) {
         document.getElementById("emailcheck").innerHTML =
           "<p>Email already exists</p>";
+          localStorage.setItem("Mail",false)
       } else {
         document.getElementById("emailcheck").innerHTML = "";
+        localStorage.setItem("Mail",true)
+        local()
       }
     });
 }
@@ -180,22 +185,27 @@ function newDiscussion(){
 function createDiscussion(){
   var topic= document.getElementById("discussionTopic").value;
   var description =document.getElementById("discussionDescription").value;
+  var posttime =Date.parse(new Date());
   console.log("topic",topic.length);
   console.log("description",description.length)
   var id =localStorage.getItem("localid")
   if(topic.length>0 && description.length >0){
     superagent
     .post("/creatediscussion")
-    .send({topic : topic , description:description , id :id})
+    .send({topic : topic , description:description , id :id ,posttime:posttime})
     .end(function(err,result){
+      var res = JSON.parse(result.text);
         if(err){
           console.log(err)
         }
         else{
-          var res = JSON.parse(result.text);
+          
           console.log("rendering",res)
-          renderpost(res)
+          //renderpost(res.postdata)
+          $("html").html(res.html);
+          //renderpost(res.postdata)
         }
+        renderpost(res.postdata)
     })
   }
   else(
@@ -204,14 +214,26 @@ function createDiscussion(){
   
 }
 
-function renderpost(post){
-  const markup =`<h1>${post.topic}</h1>
+
+function renderpost(postdata){
+  console.log("render",postdata.post[0].topic);
+  const markup =`<h1>${postdata.post[0].topic}</h1>
   <article class="post">
     <h3>User-1</h3>
     <h4>Posted 3 hrs ago</h4>
     <p class="content">
-      ${post.description}
+      ${postdata.post[0].description}
     </p>`
-  document.getElementById(".post_content").insertAdjacentHTML("afterbegin",markup);
+  document.getElementById("post_content").insertAdjacentHTML("afterbegin",markup);
+  document.getElementById("post_content").innerHTML="<p>It is working</p>"
 }
 
+function local(){
+  mail =localStorage.getItem("Mail");
+  user =localStorage.getItem("User");
+  password =localStorage.getItem("Password");
+  confirmpass =localStorage.getItem("confirmpassword");
+  if(mail && user && password && confirmpass){
+    document.getElementById("submit").disabled =false;
+  }
+}
