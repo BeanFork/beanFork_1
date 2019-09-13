@@ -5,11 +5,13 @@ function checkPassword() {
       document.getElementById("confirmpassword").value
     ) {
       document.getElementById("message").innerHTML = " ";
-      document.getElementById("submit").disabled = false;
+      localStorage.setItem("confirmpassword",true)
+      //document.getElementById("submit").disabled = false;
     } else {
       document.getElementById("message").innerHTML =
         "Must match the previous entry";
-      document.getElementById("submit").disabled = true;
+        localStorage.setItem("confirmpassword",false)
+      //document.getElementById("submit").disabled = true;
     }
   }
 }
@@ -26,33 +28,43 @@ function passwordStrength() {
   if (strong.test(password)) {
     // document.getElementById("password").style.backgroundColor="rgb(133,211,137)";
     document.getElementById("passwordmessage").innerHTML = "<p>STRONG!!!</p>";
+    //document.getElementById("submit").disabled=false;
+    localStorage.setItem("Password",true)
     
   } else if (medium.test(password)) {
     document.getElementById("passwordmessage").innerHTML = "<p>MEDIUM!!Must contain atleast 8 character that are the combination of letters in both uppercase and lowercase,numbers and symbols</p>";
     // document.getElementById("password").style.backgroundColor="rgb(211,207,125)";
+    //document.getElementById("submit").disabled=true;
+    localStorage.setItem("Password",false)
   } else if (enough.test(password)) {
     document.getElementById("passwordmessage").innerHTML = "<p>WEAK!!Must contain atleast 8 character that are the combination of letters in both uppercase and lowercase,numbers and symbols</p>";
     // document.getElementById("password").style.backgroundColor="rgb(231,148,148)";
+    //document.getElementById("submit").disabled=true;
+    localStorage.setItem("Password",false)
   } else {
     document.getElementById("passwordmessage").innerHTML =
       "<p>Enter valid input</p>";
-      document.getElementById("submit").disabled=true;
+    //document.getElementById("submit").disabled=true;
+    localStorage.setItem("Password",false)
   }
 }
 
-function mailidFormat() {
-  var email = document.getElementById("email").value;
-  var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-  if (reg.test(email) === false) {
-    document.getElementById("idValidation").innerHTML =
-      "<p>Enter valid input</p>";
-      document.getElementById("submit").disabled=true;
+// function mailidFormat() {
+//   var email = document.getElementById("email").value;
+//   var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+//   if (reg.test(email) === false) {
+//     document.getElementById("idValidation").innerHTML =
+//       "<p>Enter valid input</p>";
+//       //document.getElementById("submit").disabled=true;
+//       localStorage.setItem("Mail",false)
       
-  } else {
-    document.getElementById("idValidation").innerHTML = " ";
+//   } else {
+//     document.getElementById("idValidation").innerHTML = " ";
+//     //document.getElementById("submit").disabled=false;
+//     localStorage.setItem("Mail",true)
     
-  }
-}
+//   }
+// }
 
 function generateCode() {
   return Math.random()
