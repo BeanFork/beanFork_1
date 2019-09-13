@@ -102,7 +102,8 @@ app.post("/code", (req, res, next) => {
     console.log(req.body.code);
     if (result) {
       if (result.code === req.body.code) {
-        res.sendFile(path.join(__dirname, "../client/public/views/home.html"));
+        //res.sendFile(path.join(__dirname, "../client/public/views/home.html"));
+        res.send({status:true})
       } else {
         next({ status: 404, message: "Verification code is incorrect" });
       }
@@ -126,7 +127,8 @@ app.post("/home", (req, res, next) => {
       var password = bcrypt.compareSync(req.body.password, result.password);
       if (password) {
         console.log("password exists");
-        res.json({ html: html.toString(), state: false, id: result._id });
+        //res.json({ html: html.toString(), state: false, id: result._id });
+        res.send({status:true})
         //res.sendFile(path.join(__dirname, "../client/views/home.html"));
       } else {
         next({ status: 404, message: "username or password not found" });
@@ -166,7 +168,8 @@ app.post("/email", (req, res) => {
 //Rendering Forgot password
 
 app.post("/forgotpassword", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/public/views/forgot-password.html"));
+  //res.sendFile(path.join(__dirname, "../client/public/views/forgot-password.html"));
+  res.send({status:true})
 });
 
 /**HOME.HTML */
