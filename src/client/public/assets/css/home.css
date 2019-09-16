@@ -2,9 +2,9 @@
 */
 .logo {
   float: left;
-  width: 100px;
+  width: 70px;
   padding: 10px;
-  margin: 45px 10px 10px 0px;
+  margin: 35px 10px 10px 0px;
 }
 h3 {
   font-style: inherit;
@@ -25,10 +25,12 @@ h3 {
   margin-top: 58px;
 }
 
+
+
 .welcome {
   color: #61696d;
   font-size: 20px;
-  margin: 30px 10px 10px 10px;
+  margin: 35px 10px 10px 10px;
 }
 
 /* Search Bar
@@ -87,7 +89,7 @@ button {
   font-size: 15px;
   margin-left: 2%;
   position: absolute;
-  margin-top: 77%;
+  margin-top: 60%;
   resize: none;
 }
 
@@ -99,7 +101,7 @@ button {
   padding: 16px 22px;
   font-weight: bold;
   position: absolute;
-  margin-top: 80%;
+  margin-top: 60%;
   margin-left: 88%;
 }
 .leftpane {

@@ -9,9 +9,14 @@ header {
   float: left;
   width: 70px;
   padding: 10px;
-  margin: 0px 10px 10px 0px; 
+  margin: 20px 10px 10px 0px; 
 }
 
+
+.glyphicon-envelope,
+.glyphicon {
+  font-size: 100%;
+}
 span {
   font-size: 30px;
   font-weight: bold;
