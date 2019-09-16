@@ -25,15 +25,14 @@
       BeanFork - Login or Register
     </title>
     <link href="assets/css/register.css" rel="stylesheet" type="text/css" />
-    <script></script>
   </head>
+  <div class="container1" id="container1">
+    <body>
+      <!-- BANNER -->
 
-  <body>
-    <!-- BANNER -->
-
-    <ul class="nav logincontainer">
-      <div id="logincontainer">
-        <!-- <form action="/home" method="POST"> -->
+      <ul class="nav logincontainer">
+        <div id="logincontainer">
+          <!-- <form action="/home" method="POST"> -->
           <input
             id="loginUsername"
             class="form-control "
@@ -54,157 +53,160 @@
           </button>
           <br />
           <span id="loginverification"></span>
-        <!-- </form> -->
-      </div>
-    </ul>
-    <div class="banner text-left">
-      <img class="logo" src=" assets/img/bean.gif" />
-      <h1><b> BeanFork </b></h1>
-      <br />
-    </div>
-
-    <!-- CONTAINER -->
-
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-6">
-          <h1>Intro about page</h1>
-          <blockquote>
-            <p>
-              A Web forum is a website or section of a website that allows
-              visitors to communicate with each other by posting messages. Most
-              forums allow anonymous visitors to view forum postings, but
-              require you to create an account in order to post messages in the
-              forum.
-            </p>
-          </blockquote>
-          <img
-            src="assets/img/screenshot.png"
-            class="img-thumbnail"
-            alt="Cinque Terre"
-          />
+          <!-- </form> -->
         </div>
-        <div id="signupcontainer" class="col-lg-4 ">
-          <form >
-              <h1>Sign Up</h1>
+      </ul>
+      <div class="banner text-left">
+        <img class="logo" src=" assets/img/bean.gif" />
+        <h1><b> BeanFork </b></h1>
+        <br />
+      </div>
 
-              <label><b>Email</b></label>
-              <br />
-              <input
-                class="form-control input-lg"
-                id="email"
-                type="text"
-                autocomplete="off"
-                placeholder="Enter Email"
-                size="80"
-                name="email"
-                onkeyup="mailidFormat()"
-                required
-              />
-              <br />
-              <p id="idValidation"></p>
-              <span id="emailcheck"></span>
-              <label><b>UserName</b></label>
-              <br />
-              <input
-                class="form-control input-lg"
-                id="username"
-                type="text"
-                autocomplete="off"
-                placeholder="Enter UserName"
-                size="80"
-                name="username"
-                onkeyup="UsernameLength()"
-                required
-              />
-              <br />
-              <span id="usernamecheck"></span>
-              <label><b>Password</b></label>
-              <br />
-              <input
-                class="form-control input-lg"
-                id="password"
-                type="password"
-                placeholder="Enter Password"
-                onkeyup="passwordStrength()"
-                size="80"
-                name="password"
-                required
-              />
-              <br />
-              <p id="passwordmessage">
-                * Must contain atleast 8 character that are the combination of
-                letters in both uppercase and lowercase,numbers and symbols
+      <!-- CONTAINER -->
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6">
+            <h1>Intro about page</h1>
+            <blockquote>
+              <p>
+                A Web forum is a website or section of a website that allows
+                visitors to communicate with each other by posting messages.
+                Most forums allow anonymous visitors to view forum postings, but
+                require you to create an account in order to post messages in
+                the forum.
               </p>
-              <label><b>Confirm Password</b></label>
-              <br />
-              <div id="new">
-                <input
-                  class="form-control input-lg"
-                  id="confirmpassword"
-                  type="password"
-                  placeholder="Confirm Password"
-                  onkeyup="checkPassword()"
-                  size="80"
-                  name="confirmpassword"
-                  required
-                />
-              </div>
-              <span id="message"></span>
-              <br />
-              <span id="verificationfield"></span>
-              <!-- <span id="otpalert"></span> -->
-              <div class="clearfix btn-group">
-                <br />
-                <button
-                  class="btn btn-primary cancelbtn"
-                  id="cancel"
-                  type="reset"
-                  onclick="cancelSignup()"
-                >
-                  Cancel
-                </button>
-                <button
-                  class="btn btn-primary signupbtn"
-                  id="submit"
-                  type="submit"
-                  onclick="signup()"
-                  disabled
-                >
-                  Sign Up
-                </button>
-              </div>
-          </form>
-        
+            </blockquote>
+            <img
+              src="assets/img/screenshot.png"
+              class="img-thumbnail"
+              alt="Cinque Terre"
+            />
           </div>
-        
-        <div class="col-lg-4 hide  " id="new1">
-          <br/>
-          <br/>
-          <br/>
-           <h1 style="text-align: center">One step more!!</h1>
-          <br/>
-          <label style="font-size: 30px"><b>Enter Verification code</b></label>
-          <br/>
-          <input
-            class="form-control input-lg"
-            autocomplete="off"
-            id="Confirmcode"
-            type="text"
-            placeholder="code"
-            size="80"
-            required
-          />
-          <br/>
-          <span id="verificationcomment"></span>
-          <button
+          <div id="signupcontainer" class="col-lg-4 ">
+            <!-- <form > -->
+            <h1>Sign Up</h1>
+
+            <label><b>Email</b></label>
+            <br />
+            <input
+              class="form-control input-lg"
+              id="email"
+              type="text"
+              autocomplete="off"
+              placeholder="Enter Email"
+              size="80"
+              name="email"
+              onkeyup="mailidFormat()"
+              required
+            />
+            <br />
+            <p id="idValidation"></p>
+            <span id="emailcheck"></span>
+            <label><b>UserName</b></label>
+            <br />
+            <input
+              class="form-control input-lg"
+              id="username"
+              type="text"
+              autocomplete="off"
+              placeholder="Enter UserName"
+              size="80"
+              name="username"
+              onkeyup="UsernameLength()"
+              required
+            />
+            <br />
+            <span id="usernamecheck"></span>
+            <label><b>Password</b></label>
+            <br />
+            <input
+              class="form-control input-lg"
+              id="password"
+              type="password"
+              placeholder="Enter Password"
+              onkeyup="passwordStrength()"
+              size="80"
+              name="password"
+              required
+            />
+            <br />
+            <p id="passwordmessage">
+              * Must contain atleast 8 character that are the combination of
+              letters in both uppercase and lowercase,numbers and symbols
+            </p>
+            <label><b>Confirm Password</b></label>
+            <br />
+            <div id="new">
+              <input
+                class="form-control input-lg"
+                id="confirmpassword"
+                type="password"
+                placeholder="Confirm Password"
+                onkeyup="checkPassword()"
+                size="80"
+                name="confirmpassword"
+                required
+              />
+            </div>
+            <span id="message"></span>
+            <br />
+            <span id="verificationfield"></span>
+            <!-- <span id="otpalert"></span> -->
+            <div class="clearfix btn-group">
+              <br />
+              <button
+                class="btn btn-primary cancelbtn"
+                id="cancel"
+                type="reset"
+                onclick="cancelSignup()"
+              >
+                Cancel
+              </button>
+              <button
+                class="btn btn-primary signupbtn"
+                id="submit"
+                type="submit"
+                onclick="signup()"
+                disabled
+              >
+                Sign Up
+              </button>
+            </div>
+            <!-- </form> -->
+          </div>
+
+          <div class="col-lg-4 hide" id="new1">
+            <br />
+            <br />
+            <br />
+            <h1 style="text-align: center">One step more!!</h1>
+            <br />
+            <label style="font-size: 30px"
+              ><b>Enter Verification code</b></label
+            >
+            <br />
+            <input
+              class="form-control input-lg"
+              autocomplete="off"
+              id="Confirmcode"
+              type="text"
+              placeholder="code"
+              size="80"
+              required
+            />
+            <br />
+            <span id="verificationcomment"></span>
+            <button
               class="btn btn-block btn-primary"
-              
               type="submit"
               onclick="verificationconfirm()"
-            >confirm</button>
+            >
+              confirm
+            </button>
           </div>
         </div>
       </div>
-  </body>
+    </body>
+  </div>
 </html>
