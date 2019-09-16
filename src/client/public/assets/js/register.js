@@ -1,4 +1,5 @@
-var jsonRes;
+//var jsonRes;
+var localid;
 function signup() {
   // sendMail(Verificationcode, document.getElementById("email").value);
   // var data="<input type='text' name='name'> ";
@@ -34,6 +35,7 @@ function signup() {
     });
 }
 function signupverification(email) {
+  console.log("email",email);
   superagent
     .post("/signupverification")
     .send({ email: email })
@@ -42,7 +44,8 @@ function signupverification(email) {
         console.log(err);
       } else {
         var res = JSON.parse(result.text);
-        localStorage.setItem("localid", res.id);
+        localid =res.id;
+        //localStorage.setItem("localid", res.id);
       }
     });
 }
@@ -64,15 +67,17 @@ function login() {
         document.getElementById("loginverification").innerHTML =
           "<p>Username or password is incorrect</p>";
       } else {
-        // var res = JSON.parse(result.text);
+        var res = JSON.parse(result.text);
         // localStorage.setItem('localid',res.id);
         //   $("html").html(res.html);
-        if (result.status) {
+        localid = res.id;
+        if (res.status) {
           $(document).ready(function() {
             $("#container1").load("/views/home.html", function() {
               console.log("load is performed");
             });
           });
+          document.getElementById
         }
       }
     });
@@ -164,8 +169,8 @@ function emailExistence() {
 }
 
 function verificationconfirm() {
-  var id = localStorage.getItem("localid");
-
+  //var id = localStorage.getItem("localid");
+ var id = localid;
   //console.log(document.getElementById("Confirmcode").value);
   superagent
     .post("/code")
@@ -221,7 +226,7 @@ function createDiscussion() {
           } catch (e) {
             console.log(e);
           }
-          jsonRes = res.postdata;
+          //jsonRes = res.postdata;
           renderpost(res.postdata);
         }
       });
@@ -235,16 +240,16 @@ function renderpost(postdata) {
   console.log("render", postdata.post[0].topic);
   const markup = `<h1>${postdata.post[0].topic}</h1>
   <article class="post">
-    <h3>User-1</h3>
-    <h4>Posted 3 hrs ago</h4>
-    <p class="content">
+    <h3>${postdata.username}</h3>
+    <font size="2">Posted 3 hrs ago</font></br>
+    <font size="4" class="content">
       ${postdata.post[0].description}
-    </p>`;
+    </font>`;
   document
     .getElementById("post_content")
     .insertAdjacentHTML("afterbegin", markup);
   //document.getElementById("post_content").innerHTML="<p>It is working</p>"
-  console.log(jsonRes);
+  //console.log(jsonRes);
 }
 
 function local() {
