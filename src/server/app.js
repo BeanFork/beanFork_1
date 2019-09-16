@@ -182,6 +182,8 @@ app.post("/newdiscussion", (req, res, next) => {
 });
 
 
+
+
 //Creting the new discussion 
 
 
@@ -223,9 +225,10 @@ app.post("/sendcode", (req, res) => {
         .slice(-8);
       console.log(verificationCode)
       
-      console.log("email already exists so updated the code")
-      user.code = req.body.code;
+      user.code = verificationCode;
+
       user.save();
+      console.log(user)
       res.send({ status: true })
     }
     else {
@@ -261,10 +264,10 @@ app.post("/sendcode", (req, res) => {
 app.post("/submitcode", (req, res) => {
 
   //res.sendFile(__dirname + "/view/changePassword.html")
-  userprofile.findOne({ email: req.body.inputemail }, function (err, result) {
+  userprofile.findOne({ email: req.body.email }, function (err, result) {
 
     if (result) {
-      if (result.code === req.body.inputcode) {
+      if (result.code === req.body.code) {
         console.log("code is true");
         res.send({ status: true });
       } else {

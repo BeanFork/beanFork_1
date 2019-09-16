@@ -1,10 +1,6 @@
 
 function sendcode() {
 
-//     var verificationCode = Math.random()
-//         .toString(36)
-//         .slice(-8);
-//    console.log(verificationCode)
     superagent
         .post("/sendcode")
         .send({
@@ -35,8 +31,8 @@ function confirmcode() {
     superagent
         .post("/submitcode")
         .send({
-            inputcode: document.getElementById("input-code").value,
-            inputemail: document.getElementById("input-email").value,
+            code: document.getElementById("input-code").value,
+            email: document.getElementById("input-email").value,
         })
         .end(function (err, result) {
 
