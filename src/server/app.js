@@ -7,8 +7,7 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 const fs = require("fs");
 var bcrypt = require("bcrypt");
-var nodemailer = require("nodemailer");
-var cors = require('cors');    
+var nodemailer = require("nodemailer");  
 
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/userprofile");
@@ -37,7 +36,7 @@ var nameSchema = new mongoose.Schema({
 
 });
 var userprofile = mongoose.model("User", nameSchema);
-app.use(cors());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -129,7 +128,7 @@ app.post("/home", (req, res, next) => {
       if (password) {
         console.log("password exists");
         //res.json({ html: html.toString(), state: false, id: result._id });
-        res.send({status:true,id : result._id, username : result.username})
+        res.send({status:true, userData : result})
         //res.sendFile(path.join(__dirname, "../client/views/home.html"));
       } else {
         next({ status: 404, message: "username or password not found" });
@@ -180,7 +179,7 @@ app.post("/forgotpassword", (req, res) => {
 //Rendering new discussion.html
 
 app.post("/newdiscussion", (req, res, next) => {
-  res.sendFile(path.join(__dirname, "../client/public/views/new-discussion.html"));
+  res.send({status:true})
 });
 
 
@@ -191,6 +190,9 @@ app.post("/newdiscussion", (req, res, next) => {
 
 app.post("/creatediscussion", (req, res, next) => {
   userprofile.findOne({ _id: req.body.id }, function (err, result) {
+    if(err){
+      console.log(errrorrr)
+    }
     var postobject = {
       topic: req.body.topic,
       description: req.body.description,
@@ -199,7 +201,8 @@ app.post("/creatediscussion", (req, res, next) => {
     result.post.unshift(postobject);
     console.log("final result", result);
     result.save();
-    res.json({ html: html.toString(), postdata: result }); 
+    //res.send({status: true , postdata:result})
+    res.json({ status:true,html: html.toString(), postdata: result }); 
     //res.send(result);
   });
 });
