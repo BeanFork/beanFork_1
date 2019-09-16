@@ -8,6 +8,8 @@ var mongoose = require("mongoose");
 const fs = require("fs");
 var bcrypt = require("bcrypt");
 var nodemailer = require("nodemailer");
+var cors = require('cors');    
+
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/userprofile");
 /*mongoose.connect("mongodb+srv://beanforkaccess:Admin@123@beanfork-ddksd.mongodb.net/test?retryWrites=true&w=majority",{
@@ -35,7 +37,7 @@ var nameSchema = new mongoose.Schema({
 
 });
 var userprofile = mongoose.model("User", nameSchema);
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -197,7 +199,7 @@ app.post("/creatediscussion", (req, res, next) => {
     result.post.unshift(postobject);
     console.log("final result", result);
     result.save();
-    res.json({ html: html.toString(), postdata: result });
+    res.json({ html: html.toString(), postdata: result }); 
     //res.send(result);
   });
 });

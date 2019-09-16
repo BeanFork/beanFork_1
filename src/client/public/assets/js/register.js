@@ -75,9 +75,12 @@ function login() {
           $(document).ready(function() {
             $("#container1").load("/views/home.html", function() {
               console.log("load is performed");
+              console.log('Hello'+res.username);
+              document.getElementById("welcomeuser").inner=`<p>Welcome ${res.username}</p>`
+              
             });
           });
-          document.getElementById("welcomeuser").innerHTML="<p>Welcome ${res.username}</p>"
+       
         }
       }
     });
@@ -204,7 +207,7 @@ function createDiscussion() {
   var posttime = Date.parse(new Date());
   console.log("topic", topic.length);
   console.log("description", description.length);
-  var id = localStorage.getItem("localid");
+  var id = localid;
   if (topic.length > 0 && description.length > 0) {
     superagent
       .post("/creatediscussion")
@@ -215,10 +218,11 @@ function createDiscussion() {
         posttime: posttime
       })
       .end(function(err, result) {
-        var res = JSON.parse(result.text);
+       
         if (err) {
           console.log(err);
         } else {
+          var res = JSON.parse(result.text);
           //console.log("rendering",res)
           //renderpost(res.postdata)
           try {
