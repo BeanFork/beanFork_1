@@ -71,3 +71,18 @@ function generateCode() {
     .toString(36)
     .slice(-8);
 }
+
+function viewPassword() {
+  var x = document.getElementById("password");
+
+  var passStatus = document.getElementById('pass-status');
+  if (x.type === "password") {
+      x.type = "text";
+
+
+      passStatus.className = 'fa fa-eye-slash';
+  } else {
+      x.type = "password";
+      passStatus.className = 'fa fa-eye';
+  }
+}

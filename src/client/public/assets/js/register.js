@@ -88,7 +88,7 @@ function forgotpassword() {
     if (err) {
       console.log(err);
     }
-    //$("html").html(result.text);
+
     if (result.status) {
       $(document).ready(function() {
         $("#container1").load("/views/forgot-password.html", function() {
