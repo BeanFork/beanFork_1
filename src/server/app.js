@@ -88,7 +88,7 @@ app.post("/signupverification", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.send({ id: result._id });
+      res.send({ id:  result._id});
     }
   });
 });
@@ -207,7 +207,7 @@ app.use((error, req, res, next) => {
   res.sendStatus(error.status || 500);
 });
 app.listen(port, () => {
-  console.log("Server listenening to port" + port);
+  console.log("Server listenening to port " + port);
 });
 
 
