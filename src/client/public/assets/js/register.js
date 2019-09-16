@@ -75,9 +75,11 @@ function login() {
           $(document).ready(function() {
             $("#container1").load("/views/home.html", function() {
               console.log("load is performed");
+          document.getElementById("welcomeuser").innerHTML=`<p>Welcome ${res.username}</p>`
+
             });
           });
-          document.getElementById("welcomeuser").innerHTML="<p>Welcome ${res.username}</p>"
+         console.log(res.username)
         }
       }
     });

@@ -228,7 +228,7 @@ app.post("/sendcode", (req, res) => {
       user.code = verificationCode;
 
       user.save();
-      console.log(user)
+      
       res.send({ status: true })
     }
     else {
