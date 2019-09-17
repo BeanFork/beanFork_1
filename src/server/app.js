@@ -207,13 +207,6 @@ app.post("/creatediscussion", (req, res, next) => {
   });
 });
 
-app.use((error, req, res, next) => {
-  console.log(error);
-  res.sendStatus(error.status || 500);
-});
-app.listen(port, () => {
-  console.log("Server listenening to port " + port);
-});
 
 
 
@@ -305,3 +298,13 @@ app.post("/changepassword", (req, res) => {
       res.send({ status: false })
   })
 })
+
+
+
+app.use((error, req, res, next) => {
+  console.log(error);
+  res.sendStatus(error.status || 500);
+});
+app.listen(port, () => {
+  console.log("Server listenening to port " + port);
+});

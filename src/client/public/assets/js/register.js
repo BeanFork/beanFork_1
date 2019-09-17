@@ -339,7 +339,7 @@ function renderButtons(page, numResults, resperpage){
 
 
   function yourDiscussion(postdata){
-    renderResults(postdata.post,1);
+    renderResults(postdata.post,1,5);
     }
     
     function renderPosts(posts){
