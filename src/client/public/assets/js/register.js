@@ -305,13 +305,12 @@ function yourDiscussion(postdata) {
 }
 
 function renderResults(posts, page = 2, postsperpage) {
-  const startpoint = (page - 1) * postsperpage;
-  const endpoint = page * postsperpage;
-  posts.slice(startpoint, endpoint).forEach(renderPosts);
-  console.log("start", posts.slice(startpoint, endpoint));
+  const starting = (page - 1) * postsperpage;
+  const ending = page * postsperpage;
+  console.log("start", posts.slice(starting, ending));
 
-  posts.slice(startpoint).forEach(renderPosts);
-  renderButtons(page, posts.length);
+  posts.slice(starting, ending).forEach(renderPosts);
+  renderButtons(page, posts.length, postsperpage);
 }
 
 function renderPosts(posts) {
