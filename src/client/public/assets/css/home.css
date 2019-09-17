@@ -27,11 +27,6 @@ h3 {
 
 
 
-.welcome {
-  color: #61696d;
-  font-size: 20px;
-  margin: 35px 10px 10px 10px;
-}
 
 /* Search Bar
 */
@@ -57,6 +52,87 @@ h3 {
   left: -54px;
   height: 34px;
   width: 50px;
+}
+/*
+Your Account dropdown
+*/
+.dropdown {
+  float: left;
+  overflow: hidden;
+
+}
+
+.navbar {
+  color: #61696d;
+  font-size: 20px;
+  margin-top: 70%;
+  overflow: hidden;
+  
+}
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.dropdown  {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: #61696d;
+  background-color: inherit;
+  font-family: inherit;
+  background-color: #a0e3e5;
+  margin: 0;
+
+}
+
+.dropbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: #61696d;
+  background-color: inherit;
+  font-family: inherit;
+  background-color: #a0e3e5;
+  margin:0;
+
+
+
+}
+
+
+ .dropdown:hover {
+  background-color: #a0e1e5;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: none;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: none;
 }
 
 /* 
