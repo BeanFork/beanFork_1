@@ -307,10 +307,11 @@ function yourDiscussion(postdata) {
 function renderResults(posts, page = 2, postsperpage) {
   const startpoint = (page - 1) * postsperpage;
   const endpoint = page * postsperpage;
+  posts.slice(startpoint, endpoint).forEach(renderPosts);
   console.log("start", posts.slice(startpoint, endpoint));
 
-  posts.slice(startpoint, endpoint).forEach(renderPosts);
-  renderButtons(page, posts.length, postsperpage);
+  posts.slice(startpoint).forEach(renderPosts);
+  renderButtons(page, posts.length);
 }
 
 function renderPosts(posts) {
