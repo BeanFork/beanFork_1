@@ -8,6 +8,8 @@ var mongoose = require("mongoose");
 const fs = require("fs");
 var bcrypt = require("bcrypt");
 var nodemailer = require("nodemailer");
+ 
+
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/userprofile");
 /*mongoose.connect("mongodb+srv://beanforkaccess:Admin@123@beanfork-ddksd.mongodb.net/test?retryWrites=true&w=majority",{
@@ -88,7 +90,7 @@ app.post("/signupverification", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.send({ id: result._id });
+      res.send({ id:  result._id});
     }
   });
 });
@@ -179,6 +181,7 @@ app.post("/forgotpassword", (req, res) => {
 
 app.post("/newdiscussion", (req, res, next) => {
   res.sendFile(path.join(__dirname, "../client/public/views/new-discussion.html"));
+  
 });
 
 
@@ -197,7 +200,7 @@ app.post("/creatediscussion", (req, res, next) => {
     result.post.unshift(postobject);
     console.log("final result", result);
     result.save();
-    res.json({ html: html.toString(), postdata: result });
+    res.json({ html: html.toString(), postdata: result }); 
     //res.send(result);
   });
 });
@@ -207,7 +210,7 @@ app.use((error, req, res, next) => {
   res.sendStatus(error.status || 500);
 });
 app.listen(port, () => {
-  console.log("Server listenening to port" + port);
+  console.log("Server listenening to port " + port);
 });
 
 

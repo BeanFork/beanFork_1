@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon src/server/app.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,7 @@
     "nodemailer": "^6.3.0",
     "nodemon": "^1.19.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
 }

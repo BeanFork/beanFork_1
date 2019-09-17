@@ -2,9 +2,9 @@
 */
 .logo {
   float: left;
-  width: 100px;
+  width: 70px;
   padding: 10px;
-  margin: 45px 10px 10px 0px;
+  margin: 35px 10px 10px 0px;
 }
 h3 {
   font-style: inherit;
@@ -25,10 +25,12 @@ h3 {
   margin-top: 58px;
 }
 
+
+
 .welcome {
   color: #61696d;
   font-size: 20px;
-  margin: 30px 10px 10px 10px;
+  margin: 35px 10px 10px 10px;
 }
 
 /* Search Bar
@@ -85,9 +87,9 @@ button {
   background-color: #f8ffff;
   color: #61696d;
   font-size: 15px;
-  margin-left: 0%;
+  margin-left: 2%;
   position: absolute;
-  margin-top: 50%;
+  margin-top: 60%;
   resize: none;
 }
 
@@ -99,32 +101,48 @@ button {
   padding: 16px 22px;
   font-weight: bold;
   position: absolute;
-  margin-top: 54%;
-  margin-left: 85%;
+  margin-top: 60%;
+  margin-left: 88%;
 }
 .leftpane {
   margin-top: 0%;
   background-color: azure;
   height: 700px;
   border: 1px solid rgb(235, 229, 229);
+  width: 400  px;
 }
 
 .middlepane {
   margin-top: 0%;
-  background-color: #4ff4ff;
-  height: 530px;
+  background-color: #c2ebf0;
+  height: 700px;
   border: 1px solid rgb(235, 229, 229);
+  width: 800px;
+  margin-left: -29.5px;
 }
 
 .rightpane {
-  margin-top: 0%;
-  background-color: grey;
+  margin-top: 0px;
+  background-color: rgb(202, 224, 219);
   border: 1px solid rgb(235, 229, 229);
   height: 700px;
+  width: 550px;
 }
 .btn1{
   
   font-size: 20px; 
-  width: 19em;  height: 2em;
+  width: 25.9em;  height: 3em;
+  background-color: rgb(157, 206, 206);
+  color: #61696d;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-block;
+  border: 1px;
+  border-style: outset;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+
+
 }
 
