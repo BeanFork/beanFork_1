@@ -1,4 +1,5 @@
 
+var localdata;
 function sendcode() {
 
     superagent
@@ -26,7 +27,7 @@ function sendcode() {
 
 
 function confirmcode() {
-    localStorage.setItem('localemail', document.getElementById("input-email").value);
+    //localStorage.setItem('localemail', document.getElementById("input-email").value);
 
     superagent
         .post("/submitcode")
@@ -37,7 +38,7 @@ function confirmcode() {
         .end(function (err, result) {
 
             var res = JSON.parse(result.text)
-
+            localUser = res.userdata;
             if (res.status) {
                 console.log(res.status)
                 // $("html").html(res.html);
@@ -46,6 +47,7 @@ function confirmcode() {
                     $("#divcontainer").load("../../views/change-password.html #container2", function () {
 
                         console.log("load is performed")
+                        document.getElementById("welcomeuser").innerHTML = `<p> Welcome ${localUser.username}</p>`
                     });
                 });
             }
@@ -58,9 +60,9 @@ function confirmcode() {
 }
 
 function changepassword() {
-   
-localemail = localStorage.getItem('localemail');
-    
+
+    localemail = localStorage.getItem('localemail');
+
     console.log(localemail);
     superagent
         .post("/changepassword")
@@ -73,6 +75,18 @@ localemail = localStorage.getItem('localemail');
 
             if (res.status) {
                 console.log("password updated in db")
+                $(document).ready(function () {
+
+                    $("#container2").load("../../views/home.html", function () {
+
+                        console.log("load is performed")
+                        document.getElementById("welcomeuser").innerHTML = `<p> Welcome ${localUser.username}</p>
+                        <h5> your password is updated</h5>`
+                        yourDiscussion(res.userData);
+                        middleRenderPost(res.userData);
+                    });
+                });
+
             }
             else
                 console.log("not updated")

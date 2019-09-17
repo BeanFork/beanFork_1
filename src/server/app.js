@@ -1,4 +1,5 @@
 // Starting point of the application
+var utility=require("./util")
 var express = require("express");
 var app = express();
 var path = require("path");
@@ -50,30 +51,28 @@ app.get("/", (req, res) => {
 //signup and sending verification code
 
 app.post("/signup", (req, res) => {
-  var Verificationcode = Math.random()
-    .toString(36)
-    .slice(-8);
+  var ver=utility.verificationCode();
 
-  console.log(Verificationcode);
-  var transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: "beanforkaccess@gmail.com",
-      pass: "Admin@123"
-    }
-  });
+  console.log(ver);
+  // var transporter = nodemailer.createTransport({
+  //   service: "Gmail",
+  //   auth: {
+  //     user: "beanforkaccess@gmail.com",
+  //     pass: "Admin@123"
+  //   }
+  // });
 
-  transporter.sendMail(
-    {
-      from: "beanforkaccess@gmail.com",
-      to: req.body.email,
-      subject: "Forgot Password",
-      text: "Verification code is " + Verificationcode
-    },
-    function (err) {
-      if (err) console.log(err);
-    }
-  );
+  // transporter.sendMail(
+  //   {
+  //     from: "beanforkaccess@gmail.com",
+  //     to: req.body.email,
+  //     subject: "Forgot Password",
+  //     text: "Verification code is " + Verificationcode
+  //   },
+  //   function (err) {
+  //     if (err) console.log(err);
+  //   }
+  // );
   var User = new userprofile(req.body);
   User.password = bcrypt.hashSync(User.password, bcrypt.genSaltSync(8));
   User.code = Verificationcode;
@@ -116,6 +115,7 @@ app.post("/code", (req, res, next) => {
 
 //login
 
+//
 const html = fs.readFileSync(path.join(__dirname, "../client/public/views/home.html"));
 
 app.post("/home", (req, res, next) => {
@@ -127,9 +127,9 @@ app.post("/home", (req, res, next) => {
       var password = bcrypt.compareSync(req.body.password, result.password);
       if (password) {
         console.log("password exists");
-        //res.json({ html: html.toString(), state: false, id: result._id });
+        
         res.send({status:true, userData : result})
-        //res.sendFile(path.join(__dirname, "../client/views/home.html"));
+        
       } else {
         next({ status: 404, message: "username or password not found" });
       }
@@ -185,7 +185,7 @@ app.post("/newdiscussion", (req, res, next) => {
 
 
 
-//Creting the new discussion 
+//Creating the new discussion 
 
 
 app.post("/creatediscussion", (req, res, next) => {
@@ -199,10 +199,11 @@ app.post("/creatediscussion", (req, res, next) => {
       posttime: req.body.posttime
     };
     result.post.unshift(postobject);
-    console.log("final result", result);
+    // console.log("final result", result);
     result.save();
     //res.send({status: true , postdata:result})
-    res.json({ status:true,html: html.toString(), postdata: result }); 
+   // res.json({ status:true,html: html.toString(), postdata: result }); 
+   res.json({ status:true, postdata: result }); 
     //res.send(result);
   });
 });
@@ -233,7 +234,7 @@ app.post("/sendcode", (req, res) => {
       user.code = verificationCode;
 
       user.save();
-      console.log(user)
+      
       res.send({ status: true })
     }
     else {
@@ -274,7 +275,7 @@ app.post("/submitcode", (req, res) => {
     if (result) {
       if (result.code === req.body.code) {
         console.log("code is true");
-        res.send({ status: true });
+        res.send({ status: true ,userdata: result});
       } else {
         res.send({ status: false });
         console.log("code is false");
