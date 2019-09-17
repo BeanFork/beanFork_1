@@ -5,7 +5,7 @@ function signup() {
   // var data="<input type='text' name='name'> ";
 
   // document.getElementById("signupcontainer").innerHTML=data
-
+  
   var username = document.getElementById("username").value;
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
