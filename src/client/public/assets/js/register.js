@@ -330,7 +330,7 @@ function renderButtons(page, numResults, resperpage){
   const end = page * postsperpage;
   console.log("start",posts.slice(start,end));
   
-  posts.slice(start,end).forEach(renderPosts);
+  posts.slice(startpoint,endpoint).forEach(renderPosts);
   renderButtons(page,posts.length,postsperpage);
   
   }
