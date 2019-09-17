@@ -1,11 +1,12 @@
 var localUser;
 var localid;
+var discussionpage;
 function signup() {
   // sendMail(Verificationcode, document.getElementById("email").value);
   // var data="<input type='text' name='name'> ";
 
   // document.getElementById("signupcontainer").innerHTML=data
-  
+
   var username = document.getElementById("username").value;
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
@@ -78,7 +79,13 @@ function login() {
             $("#container1").load("/views/home.html", function() {
               console.log("load is performed");
               console.log("Hello" + res.username);
-              document.querySelector('.dropbtn').innerHTML = `<p><b>${localUser.username}</b></p>`;
+
+              document.getElementById(
+                "welcomeuser"
+              ).innerHTML = `<p>Welcome ${localUser.username}</p>`;
+              yourDiscussion(res.userData);
+              middleRenderPost(res.userData);
+
             });
           });
         }
@@ -184,10 +191,14 @@ function verificationconfirm() {
           "<p>Verification code is incorrect</p>";
       } else {
         //$("html").html(result.text);
-        if (result.status) {
+        var res = JSON.parse(result.text);
+        if (res.status) {
           $(document).ready(function() {
             $("#container1").load("/views/home.html", function() {
               console.log("load is performed");
+              document.getElementById(
+                "welcomeuser"
+              ).innerHTML = `<p>Welcome ${res.username}</p>`;
             });
           });
         }
@@ -234,29 +245,28 @@ function createDiscussion() {
           console.log("it is error", err);
         } else {
           var res = JSON.parse(result.text);
+          localUser = res.postdata;
           //console.log("rendering",res)
           //renderpost(res.postdata)
+          // postdata = res.postdata;
+          // console.log("global postdata",postdata)
           if (res.status) {
-            //    try{
-            //       $(document).ready(function() {
-            //         $("#container1").load("/views/home.html", function() {
-            //     });
-            // })}
-            // catch(e){
-            //   console.log(e)
-            // }
-
-            document.getElementById(
-              "welcomeuser"
-            ).innerHTML = `<p>Welcome ${localUser.username}</p>`;
             try {
-              $("html").html(res.html);
+              $(document).ready(function() {
+                $("#discussion-container").load("/views/home.html", function() {
+                  console.log("load is performed");
+                  middleRenderPost(res.postdata);
+                  yourDiscussion(res.postdata);
+                  //renderResults(res.postdata.post)
+                  document.getElementById(
+                    "welcomeuser"
+                  ).innerHTML = `<p>Welcome ${localUser.username}</p>`;
+                });
+              });
             } catch (e) {
               console.log(e);
             }
             //jsonRes = res.postdata;
-            middleRenderPost(res.postdata);
-            yourDiscussion(res.postdata);
           }
         }
       });
@@ -283,11 +293,12 @@ function createDiscussion() {
 // }
 
 function middleRenderPost(postdata) {
+  var time1 = calculateTime(postdata.post[0].posttime);
   console.log("render", postdata.post[0].topic);
   const markup = `<h1>${postdata.post[0].topic}</h1>
   <article class="post">
   <h3>${postdata.username}</h3>
-  <font size="2">Posted 3 hrs ago</font></br>
+  <font size="2">${time1}</font></br>
   <font size="4" class="content">
   ${postdata.post[0].description}
   </font>`;
@@ -297,12 +308,23 @@ function middleRenderPost(postdata) {
   //document.getElementById("post_content").innerHTML="<p>It is working</p>"
   //console.log(jsonRes);
 }
+document.getElementById("results__pages").addEventListener("click", e => {
+  const btn = e.target.closest(".btn-inline");
+  if (btn) {
+    const gotoPage = parseInt(btn.dataset.goto, 10);
+    document.getElementById("yourdiscussion").innerHTML = "";
+    document.getElementById("results__pages").innerHTML = "";
+    renderResults(localUser.post, gotoPage, 5);
+    discussionpage = gotoPage;
+    console.log("button", gotoPage);
+  }
+});
 
 function yourDiscussion(postdata) {
   renderResults(postdata.post, 1, 5);
 }
 
-function renderResults(posts, page = 2, postsperpage) {
+function renderResults(posts, page, postsperpage) {
   const starting = (page - 1) * postsperpage;
   const ending = page * postsperpage;
   console.log("start", posts.slice(starting, ending));
@@ -312,22 +334,29 @@ function renderResults(posts, page = 2, postsperpage) {
 }
 
 function renderPosts(posts) {
-  console.log("renderPosts", posts);
+  //console.log("renderPosts", posts);
   // for(var i=0;i<posts.length;i++){
+
+  var time = calculateTime(posts.posttime);
+
   var description = posts.description;
   if (description.length > 40) {
     description = description.slice(0, 20) + "...";
   }
-  const markup = `<article class="topic">
+  const markup = `
+  <a class="results__link" href="#${posts._id}
+  <article class="topic">
     <h2>${posts.topic}</h2>
-    <h4>Published Time</h4>
+    <h4>${time}</h4>
     <p>
     ${description}
     </p>
-    </article>`;
+    </article>
+    </a>
+`;
   document
     .getElementById("yourdiscussion")
-    .insertAdjacentHTML("afterbegin", markup);
+    .insertAdjacentHTML("beforeend", markup);
 }
 
 function renderButtons(page, numResults, resperpage) {
@@ -345,8 +374,8 @@ function renderButtons(page, numResults, resperpage) {
   } else if (page < pages) {
     //Both buttons
     console.log("both button");
-    button = `${createbutton(page, "prev")};
-  ${createbutton(page, "next")};`;
+    button = `${createbutton(page, "prev")}         
+  ${createbutton(page, "next")}`;
     //button=`<button>next</button>`
   } else if (page === pages && pages > 1) {
     //only previous button
@@ -378,4 +407,32 @@ function local() {
   if (mail && user && password && confirmpass) {
     document.getElementById("submit").disabled = false;
   }
+}
+
+function calculateTime(posttime) {
+  var posttime1 = Date.parse(new Date());
+  var diff = posttime1 - posttime;
+  var secs = Math.floor(diff / 1000);
+  var hours = Math.floor(diff / 1000 / 60 / 60);
+  //diff -= hours * 1000 * 60 * 60;
+  var minutes = Math.floor(diff / 1000 / 60);
+
+
+  if (hours == 0 && minutes == 0) {
+    if (secs == 0) var time = "Just now";
+    else if (secs == 1) var time = " 1 second ago";
+    else var time = secs + " seconds ago";
+  } else if (hours == 0 && minutes > 0) {
+    if (minutes == 1) {
+      var time = "1 minute ago";
+    }
+    var time = minutes + " minutes ago";
+  } else if (hours > 0) {
+    if (hours == 1) {
+      var time = "1 hour ago";
+    }
+    var time = hours + " hours ago";
+  }
+
+  return time;
 }
