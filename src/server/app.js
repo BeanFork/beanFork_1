@@ -51,31 +51,19 @@ app.get("/", (req, res) => {
 //signup and sending verification code
 
 app.post("/signup", (req, res) => {
-  var ver=utility.verificationCode();
+//  function verificationCode(){
+//     return Verificationcode = Math.random()
+//     .toString(36)
+//     .slice(-8);
+// }
+var verificationcode= utility.verificationCode();
 
-  console.log(ver);
-  // var transporter = nodemailer.createTransport({
-  //   service: "Gmail",
-  //   auth: {
-  //     user: "beanforkaccess@gmail.com",
-  //     pass: "Admin@123"
-  //   }
-  // });
+  console.log(verificationcode);
+  utility.sendMail(verificationcode);
 
-  // transporter.sendMail(
-  //   {
-  //     from: "beanforkaccess@gmail.com",
-  //     to: req.body.email,
-  //     subject: "Forgot Password",
-  //     text: "Verification code is " + Verificationcode
-  //   },
-  //   function (err) {
-  //     if (err) console.log(err);
-  //   }
-  // );
   var User = new userprofile(req.body);
   User.password = bcrypt.hashSync(User.password, bcrypt.genSaltSync(8));
-  User.code = Verificationcode;
+  User.code = verificationcode;
   User.save();
   console.log("email", req.body.email);
   res.send({ status: true, email: req.body.email });
@@ -102,7 +90,7 @@ app.post("/code", (req, res, next) => {
     if (result) {
       if (result.code === req.body.code) {
         //res.sendFile(path.join(__dirname, "../client/public/views/home.html"));
-        res.send({status:true})
+        res.send({status:true,username: result.username})
       } else {
         next({ status: 404, message: "Verification code is incorrect" });
       }

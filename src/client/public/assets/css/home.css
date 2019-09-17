@@ -146,3 +146,6 @@ button {
 
 }
 
+.results__link:link, .results__link:visited,.results__link:hover,
+.results__link--active {
+    background-color: #F9F5F3; }
