@@ -24,7 +24,5 @@
     "nodemailer": "^6.3.0",
     "nodemon": "^1.19.2"
   },
-  "dependencies": {
-    "cors": "^2.8.5"
-  }
+  "dependencies": {}
 }
