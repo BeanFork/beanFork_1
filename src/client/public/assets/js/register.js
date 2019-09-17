@@ -1,5 +1,6 @@
 var localUser;
 var localid;
+var discussionpage;
 function signup() {
   // sendMail(Verificationcode, document.getElementById("email").value);
   // var data="<input type='text' name='name'> ";
@@ -23,7 +24,7 @@ function signup() {
       email: email,
       password: password
     })
-    .end(function (err, result) {
+    .end(function(err, result) {
       if (err) {
         console.log(err);
       } else {
@@ -39,7 +40,7 @@ function signupverification(email) {
   superagent
     .post("/signupverification")
     .send({ email: email })
-    .end(function (err, result) {
+    .end(function(err, result) {
       if (err) {
         console.log(err);
       } else {
@@ -61,7 +62,7 @@ function login() {
       username: username,
       password: password
     })
-    .end(function (err, result) {
+    .end(function(err, result) {
       if (err) {
         console.log(err);
         document.getElementById("loginverification").innerHTML =
@@ -74,8 +75,8 @@ function login() {
         console.log("local user", localUser);
         localid = res.userData._id;
         if (res.status) {
-          $(document).ready(function () {
-            $("#container1").load("/views/home.html", function () {
+          $(document).ready(function() {
+            $("#container1").load("/views/home.html", function() {
               console.log("load is performed");
               console.log("Hello" + res.username);
               document.getElementById(
@@ -91,14 +92,14 @@ function login() {
 }
 
 function forgotpassword() {
-  superagent.post("/forgotpassword").end(function (err, result) {
+  superagent.post("/forgotpassword").end(function(err, result) {
     if (err) {
       console.log(err);
     }
 
     if (result.status) {
-      $(document).ready(function () {
-        $("#container1").load("/views/forgot-password.html", function () {
+      $(document).ready(function() {
+        $("#container1").load("/views/forgot-password.html", function() {
           console.log("load is performed");
         });
       });
@@ -141,7 +142,7 @@ function userExistence() {
     .send({
       username: document.getElementById("username").value
     })
-    .end(function (err, result) {
+    .end(function(err, result) {
       //console.log("this is result", result);
       var res = JSON.parse(result.text);
       //console.log(res);
@@ -160,7 +161,7 @@ function emailExistence() {
   superagent
     .post("/email")
     .send({ email: document.getElementById("email").value })
-    .end(function (err, result) {
+    .end(function(err, result) {
       var res = JSON.parse(result.text);
       //console.log(res);
       if (res.status) {
@@ -182,16 +183,20 @@ function verificationconfirm() {
   superagent
     .post("/code")
     .send({ code: document.getElementById("Confirmcode").value, id: id })
-    .end(function (err, result) {
+    .end(function(err, result) {
       if (err) {
         document.getElementById("verificationcomment").innerHTML =
           "<p>Verification code is incorrect</p>";
       } else {
         //$("html").html(result.text);
-        if (result.status) {
-          $(document).ready(function () {
-            $("#container1").load("/views/home.html", function () {
+        var res = JSON.parse(result.text);
+        if (res.status) {
+          $(document).ready(function() {
+            $("#container1").load("/views/home.html", function() {
               console.log("load is performed");
+              document.getElementById(
+                "welcomeuser"
+              ).innerHTML = `<p>Welcome ${res.username}</p>`;
             });
           });
         }
@@ -200,12 +205,12 @@ function verificationconfirm() {
 }
 
 function newDiscussion() {
-  superagent.post("/newdiscussion").end(function (err, result) {
+  superagent.post("/newdiscussion").end(function(err, result) {
     var res = JSON.parse(result.text);
 
     if (res.status) {
-      $(document).ready(function () {
-        $("#container1").load("/views/new-discussion.html", function () {
+      $(document).ready(function() {
+        $("#container1").load("/views/new-discussion.html", function() {
           console.log("load is performed");
           console.log("Hello" + res.username);
           document.getElementById(
@@ -233,28 +238,33 @@ function createDiscussion() {
         id: id,
         posttime: posttime
       })
-      .end(function (err, result) {
+      .end(function(err, result) {
         if (err) {
           console.log("it is error", err);
         } else {
           var res = JSON.parse(result.text);
+          localUser = res.postdata;
           //console.log("rendering",res)
           //renderpost(res.postdata)
+          // postdata = res.postdata;
+          // console.log("global postdata",postdata)
           if (res.status) {
             try {
-              $(document).ready(function () {
-                $("#discussion-container").load("/views/home.html", function () {
+              $(document).ready(function() {
+                $("#discussion-container").load("/views/home.html", function() {
                   console.log("load is performed");
                   middleRenderPost(res.postdata);
                   yourDiscussion(res.postdata);
-                  document.getElementById("welcomeuser").innerHTML = `<p>Welcome ${localUser.username}</p>`;
+                  //renderResults(res.postdata.post)
+                  document.getElementById(
+                    "welcomeuser"
+                  ).innerHTML = `<p>Welcome ${localUser.username}</p>`;
                 });
               });
             } catch (e) {
               console.log(e);
             }
             //jsonRes = res.postdata;
-
           }
         }
       });
@@ -281,8 +291,7 @@ function createDiscussion() {
 // }
 
 function middleRenderPost(postdata) {
-
-  var time1 = calculateTime(postdata.post[0].posttime)
+  var time1 = calculateTime(postdata.post[0].posttime);
   console.log("render", postdata.post[0].topic);
   const markup = `<h1>${postdata.post[0].topic}</h1>
   <article class="post">
@@ -297,12 +306,23 @@ function middleRenderPost(postdata) {
   //document.getElementById("post_content").innerHTML="<p>It is working</p>"
   //console.log(jsonRes);
 }
+document.getElementById("results__pages").addEventListener("click", e => {
+  const btn = e.target.closest(".btn-inline");
+  if (btn) {
+    const gotoPage = parseInt(btn.dataset.goto, 10);
+    document.getElementById("yourdiscussion").innerHTML = "";
+    document.getElementById("results__pages").innerHTML = "";
+    renderResults(localUser.post, gotoPage, 5);
+    discussionpage = gotoPage;
+    console.log("button", gotoPage);
+  }
+});
 
 function yourDiscussion(postdata) {
   renderResults(postdata.post, 1, 5);
 }
 
-function renderResults(posts, page = 2, postsperpage) {
+function renderResults(posts, page, postsperpage) {
   const starting = (page - 1) * postsperpage;
   const ending = page * postsperpage;
   console.log("start", posts.slice(starting, ending));
@@ -312,25 +332,26 @@ function renderResults(posts, page = 2, postsperpage) {
 }
 
 function renderPosts(posts) {
-
-
   //console.log("renderPosts", posts);
   // for(var i=0;i<posts.length;i++){
 
-  var time = calculateTime(posts.posttime)
-
+  var time = calculateTime(posts.posttime);
 
   var description = posts.description;
   if (description.length > 40) {
     description = description.slice(0, 20) + "...";
   }
-  const markup = `<article class="topic">
+  const markup = `
+  <a class="results__link" href="#${posts._id}
+  <article class="topic">
     <h2>${posts.topic}</h2>
     <h4>${time}</h4>
     <p>
     ${description}
     </p>
-    </article>`;
+    </article>
+    </a>
+`;
   document
     .getElementById("yourdiscussion")
     .insertAdjacentHTML("beforeend", markup);
@@ -351,8 +372,8 @@ function renderButtons(page, numResults, resperpage) {
   } else if (page < pages) {
     //Both buttons
     console.log("both button");
-    button = `${createbutton(page, "prev")};
-  ${createbutton(page, "next")};`;
+    button = `${createbutton(page, "prev")}         
+  ${createbutton(page, "next")}`;
     //button=`<button>next</button>`
   } else if (page === pages && pages > 1) {
     //only previous button
@@ -369,7 +390,7 @@ function createbutton(page, type) {
   const markup = `
     <button class="btn-inline results__btn--${type}" data-goto=${
     type === "prev" ? page - 1 : page + 1
-    }>
+  }>
     <span>Page ${type === "prev" ? page - 1 : page + 1}</span>
     </button>
     `;
@@ -388,24 +409,27 @@ function local() {
 
 function calculateTime(posttime) {
   var posttime1 = Date.parse(new Date());
-  var diff = posttime1 - posttime
-  var secs = Math.floor(diff / 1000)
+  var diff = posttime1 - posttime;
+  var secs = Math.floor(diff / 1000);
   var hours = Math.floor(diff / 1000 / 60 / 60);
-  diff -= hours * 1000 * 60 * 60;
+  //diff -= hours * 1000 * 60 * 60;
   var minutes = Math.floor(diff / 1000 / 60);
 
 
   if (hours == 0 && minutes == 0) {
-    if (secs == 0)
-      var time = "few seconds ago";
-    else
-      var time = secs + "seconds ago";
-  }
-  else if (hours == 0 && minutes > 0) {
-    var time = minutes + "minutes ago"
-  }
-  else if (hours > 0) {
-    var time = hours + "hours ago"
+    if (secs == 0) var time = "Just now";
+    else if (secs == 1) var time = " 1 second ago";
+    else var time = secs + " seconds ago";
+  } else if (hours == 0 && minutes > 0) {
+    if (minutes == 1) {
+      var time = "1 minute ago";
+    }
+    var time = minutes + " minutes ago";
+  } else if (hours > 0) {
+    if (hours == 1) {
+      var time = "1 hour ago";
+    }
+    var time = hours + " hours ago";
   }
 
   return time;
