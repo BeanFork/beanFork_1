@@ -79,11 +79,13 @@ function login() {
             $("#container1").load("/views/home.html", function() {
               console.log("load is performed");
               console.log("Hello" + res.username);
+
               document.getElementById(
                 "welcomeuser"
               ).innerHTML = `<p>Welcome ${localUser.username}</p>`;
               yourDiscussion(res.userData);
               middleRenderPost(res.userData);
+
             });
           });
         }
