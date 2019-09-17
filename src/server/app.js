@@ -7,8 +7,7 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 const fs = require("fs");
 var bcrypt = require("bcrypt");
-var nodemailer = require("nodemailer");
- 
+var nodemailer = require("nodemailer");  
 
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/userprofile");
@@ -117,7 +116,7 @@ app.post("/code", (req, res, next) => {
 
 //login
 
-const html = fs.readFileSync(path.join(__dirname, "../client/public/views/home.html"));
+// const html = fs.readFileSync(path.join(__dirname, "../client/public/views/home.html"));
 
 app.post("/home", (req, res, next) => {
   userprofile.findOne({ username: req.body.username }, function (err, result) {
@@ -128,9 +127,9 @@ app.post("/home", (req, res, next) => {
       var password = bcrypt.compareSync(req.body.password, result.password);
       if (password) {
         console.log("password exists");
-        //res.json({ html: html.toString(), state: false, id: result._id });
-        res.send({status:true,id : result._id, username : result.username})
-        //res.sendFile(path.join(__dirname, "../client/views/home.html"));
+        
+        res.send({status:true, userData : result})
+        
       } else {
         next({ status: 404, message: "username or password not found" });
       }
@@ -180,18 +179,20 @@ app.post("/forgotpassword", (req, res) => {
 //Rendering new discussion.html
 
 app.post("/newdiscussion", (req, res, next) => {
-  res.sendFile(path.join(__dirname, "../client/public/views/new-discussion.html"));
-  
+  res.send({status:true})
 });
 
 
 
 
-//Creting the new discussion 
+//Creating the new discussion 
 
 
 app.post("/creatediscussion", (req, res, next) => {
   userprofile.findOne({ _id: req.body.id }, function (err, result) {
+    if(err){
+      console.log(errrorrr)
+    }
     var postobject = {
       topic: req.body.topic,
       description: req.body.description,
@@ -200,7 +201,8 @@ app.post("/creatediscussion", (req, res, next) => {
     result.post.unshift(postobject);
     console.log("final result", result);
     result.save();
-    res.json({ html: html.toString(), postdata: result }); 
+    //res.send({status: true , postdata:result})
+    res.json({ status:true, postdata: result }); 
     //res.send(result);
   });
 });

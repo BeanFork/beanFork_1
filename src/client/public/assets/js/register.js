@@ -1,4 +1,4 @@
-//var jsonRes;
+var localUser;
 var localid;
 function signup() {
   // sendMail(Verificationcode, document.getElementById("email").value);
@@ -70,14 +70,16 @@ function login() {
         var res = JSON.parse(result.text);
         // localStorage.setItem('localid',res.id);
         //   $("html").html(res.html);
-        localid = res.id;
+        localUser = res.userData;
+        console.log("local user", localUser)
+        localid = res.userData._id;
         if (res.status) {
           $(document).ready(function() {
             $("#container1").load("/views/home.html", function() {
               console.log("load is performed");
               console.log('Hello'+res.username);
-              document.getElementById("welcomeuser").innerHTML=`<p>Welcome ${res.username}</p>`
-              
+              document.getElementById("welcomeuser").innerHTML=`<p>Welcome ${localUser.username}</p>`
+            
             });
           });
        
@@ -196,13 +198,21 @@ function verificationconfirm() {
 }
 
 function newDiscussion() {
+
   superagent.post("/newdiscussion").end(function(err, result) {
-    var res=JSON.parse(result.text)
-    $("html").html(result.text);
-    document.getElementById("welcomeuser1").innerHTML=`<p>Welcome ${res.username}</p>`
-    console.log(res.username)
-  });
-}
+    var res =  JSON.parse(result.text);
+
+    if (res.status) {
+      $(document).ready(function() {
+        $("#container1").load("/views/new-discussion.html", function() {
+          console.log("load is performed");
+          console.log('Hello'+res.username);
+          document.getElementById("welcomeuser").innerHTML=`<p>Welcome ${localUser.username}</p>`;
+   
+    });
+})
+    }});
+  }
 
 function createDiscussion() {
   var topic = document.getElementById("discussionTopic").value;
@@ -223,41 +233,54 @@ function createDiscussion() {
       .end(function(err, result) {
        
         if (err) {
-          console.log(err);
+          console.log("it is error",err);
         } else {
           var res = JSON.parse(result.text);
           //console.log("rendering",res)
           //renderpost(res.postdata)
+          if (res.status) {
+        //    try{
+        //       $(document).ready(function() {
+        //         $("#container1").load("/views/home.html", function() {
+        //     });
+        // })}
+        // catch(e){
+        //   console.log(e)
+        // }
+            
+            document.getElementById("welcomeuser").innerHTML=`<p>Welcome ${localUser.username}</p>`;
           try {
             $("html").html(res.html);
           } catch (e) {
             console.log(e);
           }
           //jsonRes = res.postdata;
-          renderpost(res.postdata);
+          middleRenderPost(res.postdata);
+          yourDiscussion(res.postdata);
         }
-      });
+      }
+    });
   } else
     document.getElementById("discussion").innerHTML =
       "<p>***Both the fields are mandatory</p>";
 }
 
-function renderpost(postdata) {
-  console.log("helllo");
-  console.log("render", postdata.post[0].topic);
-  const markup = `<h1>${postdata.post[0].topic}</h1>
-  <article class="post">
-    <h3>${postdata.username}</h3>
-    <font size="2">Posted 3 hrs ago</font></br>
-    <font size="4" class="content">
-      ${postdata.post[0].description}
-    </font>`;
-  document
-    .getElementById("post_content")
-    .insertAdjacentHTML("afterbegin", markup);
-  //document.getElementById("post_content").innerHTML="<p>It is working</p>"
-  //console.log(jsonRes);
-}
+// function renderpost(postdata) {
+//   console.log("helllo");
+//   console.log("render", postdata.post[0].topic);
+//   const markup = `<h1>${postdata.post[0].topic}</h1>
+//   <article class="post">
+//     <h3>${postdata.username}</h3>
+//     <font size="2">Posted 3 hrs ago</font></br>
+//     <font size="4" class="content">
+//       ${postdata.post[0].description}
+//     </font>`;
+//   document
+//     .getElementById("post_content")
+//     .insertAdjacentHTML("afterbegin", markup);
+//   //document.getElementById("post_content").innerHTML="<p>It is working</p>"
+//   //console.log(jsonRes);
+// }
 
 function local() {
   mail = localStorage.getItem("Mail");
@@ -268,3 +291,93 @@ function local() {
     document.getElementById("submit").disabled = false;
   }
 }
+
+
+function renderButtons(page, numResults, resperpage){
+  const pages = Math.ceil(numResults / resperpage);
+  console.log("resultsss",numResults + " "+resperpage + " " +pages+ " "+page)
+  let button;
+  if (page === 1 && pages > 1) {
+  // enable next button only
+  console.log("next button")
+  button=createbutton(page, "next");
+  //button=`<button>next</button>`
+  }
+  else if(page < pages)
+  {
+  //Both buttons
+  console.log("both button")
+  button=`${createbutton(page, "prev")};
+  ${createbutton(page, "next")};`;
+  //button=`<button>next</button>`
+  }
+  else if(page === pages && pages > 1)
+  {
+  //only previous button
+  console.log("previous button")
+  button=createbutton(page, "prev");
+  //button=`<button>next</button>`
+  }
+  document.getElementById("results__pages").insertAdjacentHTML('afterbegin',button);
+  }
+  
+  
+  
+  function renderResults(posts,page=2,postsperpage){
+  const start = (page-1) * postsperpage;
+  const end = page * postsperpage;
+  console.log("start",posts.slice(start,end));
+  
+  posts.slice(start,end).forEach(renderPosts);
+  renderButtons(page,posts.length,postsperpage);
+  
+  }
+
+
+
+  function yourDiscussion(postdata){
+    renderResults(postdata.post,1,5);
+    }
+    
+    function renderPosts(posts){
+    console.log("renderPosts",posts)
+    // for(var i=0;i<posts.length;i++){
+    var description =posts.description;
+    if(description.length>40){
+    description = description.slice(0,20)+ "..."
+    }
+    const markup = `<article class="topic">
+    <h2>${posts.topic}</h2>
+    <h4>Published Time</h4>
+    <p>
+    ${description}
+    </p>
+    </article>`
+    document.getElementById("yourdiscussion").insertAdjacentHTML("afterbegin",markup);
+    
+    }
+    
+    
+    function createbutton(page, type){
+    const markup =`
+    <button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+    <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+    </button>
+    `
+    return markup
+    };
+    function middleRenderPost(postdata) {
+    console.log("render", postdata.post[0].topic);
+    const markup = `<h1>${postdata.post[0].topic}</h1>
+    <article class="post">
+    <h3>${postdata.username}</h3>
+    <font size="2">Posted 3 hrs ago</font></br>
+    <font size="4" class="content">
+    ${postdata.post[0].description}
+    </font>`;
+    document
+    .getElementById("post_content")
+    .insertAdjacentHTML("afterbegin", markup);
+    //document.getElementById("post_content").innerHTML="<p>It is working</p>"
+    //console.log(jsonRes);
+    }
