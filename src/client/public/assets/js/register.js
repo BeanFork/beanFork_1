@@ -5,7 +5,7 @@ function signup() {
   // var data="<input type='text' name='name'> ";
 
   // document.getElementById("signupcontainer").innerHTML=data
-
+  
   var username = document.getElementById("username").value;
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
@@ -248,9 +248,11 @@ function createDiscussion() {
         //   console.log(e)
         // }
             
-            document.getElementById("welcomeuser").innerHTML=`<p>Welcome ${localUser.username}</p>`;
+            
           try {
+      
             $("html").html(res.html);
+            document.getElementById("welcomeuser").innerHTML=`<p>Welcome ${res.username}</p>`;
           } catch (e) {
             console.log(e);
           }
@@ -328,7 +330,7 @@ function renderButtons(page, numResults, resperpage){
   const end = page * postsperpage;
   console.log("start",posts.slice(start,end));
   
-  posts.slice(start,end).forEach(renderPosts);
+  posts.slice(startpoint,endpoint).forEach(renderPosts);
   renderButtons(page,posts.length,postsperpage);
   
   }
@@ -337,7 +339,7 @@ function renderButtons(page, numResults, resperpage){
 
 
   function yourDiscussion(postdata){
-    renderResults(postdata.post,1,5);
+    renderResults(postdata.post,1);
     }
     
     function renderPosts(posts){
