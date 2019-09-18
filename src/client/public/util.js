@@ -66,11 +66,6 @@ function passwordStrength() {
 //   }
 // }
 
-function generateCode() {
-  return Math.random()
-    .toString(36)
-    .slice(-8);
-}
 
 function viewPassword() {
   var x = document.getElementById("password");

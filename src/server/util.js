@@ -1,11 +1,11 @@
-function verificationCode(){
-    return Verificationcode = Math.random()
+var nodeMailer = require("nodemailer"); 
+//Generation of Verification code and sending the mail 
+function sendMail(email){
+     verificationCode = Math.random()
     .toString(36)
     .slice(-8);
-}
-
-function sendMail(verificationcode){
-    var transporter = nodemailer.createTransport({
+// Sending mail    
+    var transporter = nodeMailer.createTransport({
         service: "Gmail",
         auth: {
           user: "beanforkaccess@gmail.com",
@@ -16,16 +16,16 @@ function sendMail(verificationcode){
       transporter.sendMail(
         {
           from: "beanforkaccess@gmail.com",
-          to: req.body.email,
+          to: email,
           subject: "Forgot Password",
-          text: "Verification code is " + verificationcode
+          text: "Verification code is " + verificationCode
         },
         function (err) {
           if (err) console.log(err);
         }
       );
+      return verificationCode;
 }
 module.exports= {
-    verificationCode : verificationCode,
     sendMail : sendMail
 }

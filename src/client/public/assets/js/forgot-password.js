@@ -1,6 +1,6 @@
 
 var localdata;
-function sendcode() {
+function sendCode() {
 
     superagent
         .post("/sendcode")
@@ -26,7 +26,7 @@ function sendcode() {
 
 
 
-function confirmcode() {
+function confirmCode() {
     //localStorage.setItem('localemail', document.getElementById("input-email").value);
 
     superagent
@@ -59,7 +59,7 @@ function confirmcode() {
 
 }
 
-function changepassword() {
+function changePassword() {
 
     localemail = localStorage.getItem('localemail');
 
@@ -80,8 +80,7 @@ function changepassword() {
                     $("#container2").load("../../views/home.html", function () {
 
                         console.log("load is performed")
-                        document.getElementById("welcomeuser").innerHTML = `<p> Welcome ${localUser.username}</p>
-                        <h5> your password is updated</h5>`
+                   
                         yourDiscussion(res.userData);
                         middleRenderPost(res.userData);
                     });

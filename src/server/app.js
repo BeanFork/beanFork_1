@@ -1,5 +1,5 @@
 // Starting point of the application
-var utility=require("./util")
+var util =require("./util")
 var express = require("express");
 var app = express();
 var path = require("path");
@@ -8,7 +8,7 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 const fs = require("fs");
 var bcrypt = require("bcrypt");
-var nodemailer = require("nodemailer");  
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/userprofile");
@@ -25,10 +25,10 @@ var nameSchema = new mongoose.Schema({
     {
       topic: String,
       description: String,
-      posttime: Number,
+      postTime: Number,
       comments: [
         {
-          userid: String,
+          userId: String,
           comment: String
         }
       ]
@@ -36,7 +36,7 @@ var nameSchema = new mongoose.Schema({
   ],
 
 });
-var userprofile = mongoose.model("User", nameSchema);
+var userProfile = mongoose.model("User", nameSchema);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,15 +56,15 @@ app.post("/signup", (req, res) => {
 //     .toString(36)
 //     .slice(-8);
 // }
-var verificationcode= utility.verificationCode();
+var verificationCode = util.sendMail(req.body.email);
 
-  console.log(verificationcode);
-  utility.sendMail(verificationcode);
+  console.log(verificationCode);
 
-  var User = new userprofile(req.body);
-  User.password = bcrypt.hashSync(User.password, bcrypt.genSaltSync(8));
-  User.code = verificationcode;
-  User.save();
+
+  var user = new userProfile(req.body);
+  user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8));
+  user.code = verificationCode;
+  user.save();
   console.log("email", req.body.email);
   res.send({ status: true, email: req.body.email });
 });
@@ -72,7 +72,7 @@ var verificationcode= utility.verificationCode();
 //Fetching the id to the local host
 
 app.post("/signupverification", (req, res) => {
-  userprofile.findOne({ email: req.body.email }, function (err, result) {
+  userProfile.findOne({ email: req.body.email }, function (err, result) {
     if (err) {
       console.log(err);
     } else {
@@ -84,7 +84,7 @@ app.post("/signupverification", (req, res) => {
 //verification of code for signup
 
 app.post("/code", (req, res, next) => {
-  userprofile.findOne({ _id: req.body.id }, function (err, result) {
+  userProfile.findOne({ _id: req.body.id }, function (err, result) {
     console.log("this is code result", result);
     console.log(req.body.code);
     if (result) {
@@ -92,37 +92,38 @@ app.post("/code", (req, res, next) => {
         //res.sendFile(path.join(__dirname, "../client/public/views/home.html"));
         res.send({status:true,username: result.username})
       } else {
-        next({ status: 404, message: "Verification code is incorrect" });
+        next({ status: 401, message: "Verification code is incorrect" });
       }
     } else {
-      next({ status: 404, message: "Verification code is incorrect" });
+      next({ status: 401, message: "Verification code is incorrect" });
     }
   });
 });
 
 
-//login
+/*login
+*/
 
-//
-const html = fs.readFileSync(path.join(__dirname, "../client/public/views/home.html"));
+
+//const html = fs.readFileSync(path.join(__dirname, "../client/public/views/home.html"));
 
 app.post("/home", (req, res, next) => {
-  userprofile.findOne({ username: req.body.username }, function (err, result) {
+  userProfile.findOne({ username: req.body.username }, function (err, result) {
     console.log("findone", result);
     if (result) {
-      console.log("username exist");
+      console.log("username exists");
       console.log(req.body.password);
-      var password = bcrypt.compareSync(req.body.password, result.password);
-      if (password) {
+       
+      if (bcrypt.compareSync(req.body.password, result.password)) {
         console.log("password exists");
         
         res.send({status:true, userData : result})
         
       } else {
-        next({ status: 404, message: "username or password not found" });
+        next({ status: 401, message: "Incorrect Password" });
       }
     } else {
-      next({ status: 404, message: "username or password not found" });
+      next({ status: 401, message: "Incorrect Password" });
     }
   });
 });
@@ -130,7 +131,7 @@ app.post("/home", (req, res, next) => {
 //User Existence
 
 app.post("/user", (req, res) => {
-  userprofile.findOne({ username: req.body.username }, function (err, result) {
+  userProfile.findOne({ username: req.body.username }, function (err, result) {
     if (result) {
       res.send({ status: true });
     } else {
@@ -143,7 +144,7 @@ app.post("/user", (req, res) => {
 
 app.post("/email", (req, res) => {
   console.log(req.body);
-  userprofile.findOne({ email: req.body.email }, function (err, result) {
+  userProfile.findOne({ email: req.body.email }, function (err, result) {
     if (result) {
       res.send({ status: true });
     } else {
@@ -177,21 +178,21 @@ app.post("/newdiscussion", (req, res, next) => {
 
 
 app.post("/creatediscussion", (req, res, next) => {
-  userprofile.findOne({ _id: req.body.id }, function (err, result) {
+  userProfile.findOne({ _id: req.body.id }, function (err, result) {
     if(err){
-      console.log(errrorrr)
+      console.log(err);
     }
-    var postobject = {
+    var postObject = {
       topic: req.body.topic,
       description: req.body.description,
-      posttime: req.body.posttime
+      postTime: req.body.postTime
     };
-    result.post.unshift(postobject);
+    result.post.unshift(postObject);
     // console.log("final result", result);
     result.save();
     //res.send({status: true , postdata:result})
    // res.json({ status:true,html: html.toString(), postdata: result }); 
-   res.json({ status:true, postdata: result }); 
+   res.json({ status:true, postData: result }); 
     //res.send(result);
   });
 });
@@ -204,7 +205,7 @@ app.post("/creatediscussion", (req, res, next) => {
 app.post("/sendcode", (req, res) => {
 
 
-  userprofile.findOne({ email: req.body.email }, function (err, user) {
+  userProfile.findOne({ email: req.body.email }, function (err, user) {
 
     if (user) {
       var verificationCode = Math.random()
@@ -213,7 +214,7 @@ app.post("/sendcode", (req, res) => {
       console.log(verificationCode)
       
       user.code = verificationCode;
-
+      console.log("Hiiiii");
       user.save();
       
       res.send({ status: true })
@@ -251,7 +252,7 @@ app.post("/sendcode", (req, res) => {
 app.post("/submitcode", (req, res) => {
 
   //res.sendFile(__dirname + "/view/changePassword.html")
-  userprofile.findOne({ email: req.body.email }, function (err, result) {
+  userProfile.findOne({ email: req.body.email }, function (err, result) {
 
     if (result) {
       if (result.code === req.body.code) {
@@ -273,7 +274,7 @@ app.post("/submitcode", (req, res) => {
 
 app.post("/changepassword", (req, res) => {
 
-  userprofile.findOne({ email: req.body.email }, function (err, user) {
+  userProfile.findOne({ email: req.body.email }, function (err, user) {
     if (user) {
 
 
