@@ -9,7 +9,10 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
     />
     <link href="assets/css/home.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 
     <link
       rel="stylesheet"
@@ -19,14 +22,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
     <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
-    <script src = "assets/js/register.js"></script> 
+    <script src="assets/js/register.js"></script>
   </head>
 
   <body>
-    <ul class="nav navbar-nav navbar-right">
-    
-    </ul>
-    
+    <!-- <ul class="nav navbar-nav navbar-right"></ul> -->
+
     <div class="banner text-left">
       <img class="logo" src="assets/img/bean.gif" />
       <h1><b> BeanFork </b></h1>
@@ -68,11 +69,11 @@
             >
               Start New Discussion
             </button>
-           
+
             <h1>Trending Topics</h1>
             <div>
               <article class="topic">
-                <h2> Topic-1</h2>
+                <h2>Topic-1</h2>
                 <h4>Published Time</h4>
                 <p>
                   An apple is a sweet, edible fruit produced by an apple tree...
@@ -81,7 +82,7 @@
             </div>
 
             <article class="topic">
-              <h2> Topic-2</h2>
+              <h2>Topic-2</h2>
               <h4>Published Time</h4>
               <p>
                 An apple is a sweet, edible fruit produced by an apple tree...
@@ -89,7 +90,7 @@
             </article>
 
             <article class="topic">
-              <h2> Topic-3</h2>
+              <h2>Topic-3</h2>
               <h4>Published Time</h4>
               <p>
                 An apple is a sweet, edible fruit produced by an apple tree...
@@ -100,27 +101,30 @@
 
         <div class="col-lg-5">
           <div class="middlepane">
-              <div id="post_content">
+            <div id="post_content">
 
-        </div>
-            <form>
-                    <textarea
-                      class="comment"
-                      rows="5"
-                      cols="70"
-                      value="Comment Below"
-                      placeholder="Enter Your Comments Here..."
-                    >
-                    </textarea>
-                    <input id="button-add" type="submit" value="Add" />
-                  </form>
+            </div>
+            <div id="comment_content">
+
+            </div>
+            <textarea
+              id="commentBox"
+              class="comment"
+              rows="5"
+              cols="70"
+              value="Comment Below"
+              placeholder="Enter Your Comments Here..."
+            >
+            </textarea>
+            <!-- <input id="button-add" type="submit" onclick="addComment()" value="Add" /> -->
+            <button id="button-add" onclick="addComment()">add</button>
           </div>
         </div>
 
         <div class="col-lg-3">
           <div class="rightpane">
             <h1>Your Discussions</h1>
-            <div id= "yourdiscussion"></div>
+            <div id="yourdiscussion"></div>
             <div id="results__pages"></div>
           </div>
         </div>
