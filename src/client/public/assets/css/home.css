@@ -2,9 +2,11 @@
 */
 .logo {
   float: left;
-  width: 70px;
-  padding: 10px;
-  margin: 35px 10px 10px 0px;
+  width: 90px;
+  padding: 2px;
+  margin: 55px 10px 10px 0px;
+  border-radius: 40px;
+  border: 2px solid green
 }
 h3 {
   font-style: inherit;
@@ -17,6 +19,7 @@ h3 {
   text-align: left;
   font-size: 20px;
   margin-top: -40px;
+  height:auto;
 }
 .banner h1 {
   color: #61696d;
@@ -38,14 +41,27 @@ h3 {
   margin-left: -8.5%;
   margin-top: -10.5%;
 }
+
 .add-on .form-control:focus {
   text-align: left;
 }
 
+.btn-drop{
+
+  background-color: rgb(158, 212, 158);
+  margin: 50px 0px 0px 0px;
+  border: none;
+  border-radius: 8px;
+  color: #101c22;
+  
+}
+.text-center{
+    margin-left: 200px;
+}
 .input-group-btn {
   align-content: left;
 }
-.btn {
+.btn2 {
   border: #31d9df;
   border: 1px solid rgb(101, 187, 187);
   bottom: 58px;
@@ -56,84 +72,8 @@ h3 {
 /*
 Your Account dropdown
 */
-.dropdown {
-  float: left;
-  overflow: hidden;
-
-}
-
-.navbar {
-  color: #61696d;
-  font-size: 20px;
-  margin-top: 70%;
-  overflow: hidden;
-  
-}
-.navbar a {
-  float: left;
-  font-size: 16px;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-.dropdown  {
-  font-size: 16px;  
-  border: none;
-  outline: none;
-  color: #61696d;
-  background-color: inherit;
-  font-family: inherit;
-  background-color: #a0e3e5;
-  margin: 0;
-
-}
-
-.dropbtn {
-  font-size: 16px;  
-  border: none;
-  outline: none;
-  color: #61696d;
-  background-color: inherit;
-  font-family: inherit;
-  background-color: #a0e3e5;
-  margin:0;
 
 
-
-}
-
-
- .dropdown:hover {
-  background-color: #a0e1e5;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-
-}
-
-.dropdown-content a {
-  float: none;
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: none;
-  text-align: left;
-}
-
-.dropdown-content a:hover {
-  background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-  display: none;
-}
 
 /* 
 Variable Elements
@@ -148,16 +88,6 @@ Containers
   margin: 0px 10px 1000px 20px;
 }
 
-button {
-  width: 150px;
-  height: 40px;
-  color: black;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 12px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
 
 .comment {
   background-color: #f8ffff;
@@ -220,6 +150,11 @@ button {
   font-family: 'Courier New', Courier, monospace;
 
 
+}
+.dropdown{
+  
+  margin: 50px 50px 50px 50px;
+  float: right;
 }
 
 .results__link:link, .results__link:visited,.results__link:hover,
