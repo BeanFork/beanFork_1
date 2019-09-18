@@ -1,6 +1,6 @@
 var localUser;
 var localid;
-var discussionpage;
+
 function signup() {
   // sendMail(Verificationcode, document.getElementById("email").value);
   // var data="<input type='text' name='name'> ";
@@ -313,7 +313,7 @@ document.getElementById("results__pages").addEventListener("click", e => {
     document.getElementById("yourdiscussion").innerHTML = "";
     document.getElementById("results__pages").innerHTML = "";
     renderResults(localUser.post, gotoPage, 5);
-    discussionpage = gotoPage;
+    //discussionpage = gotoPage;
     console.log("button", gotoPage);
   }
 });
@@ -342,7 +342,7 @@ function renderPosts(posts) {
     description = description.slice(0, 20) + "...";
   }
   const markup = `
-  <a class="results__link" href="#${posts._id}
+  <a class="results__link" href="#${posts._id}"
   <article class="topic">
     <h2>${posts.topic}</h2>
     <h4>${time}</h4>
