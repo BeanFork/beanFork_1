@@ -32,7 +32,16 @@ var nameSchema = new mongoose.Schema({
         }
       ]
     }
-  ]
+  ],
+
+
+  tokens: [{
+    token: {
+      type: String,
+      required: true
+
+    }
+  }],
 });
 var userProfile = mongoose.model("User", nameSchema);
 

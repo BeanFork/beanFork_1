@@ -335,7 +335,7 @@ function renderPosts(posts) {
 
   var description = posts.description;
   if (description.length > 40) {
-    description = description.slice(0, 20) + "...";
+    description = description.slice(0, 80) + "...";
   }
   const markup = `
   <a class="results__link" href= "#${posts._id}"
@@ -387,7 +387,7 @@ function createButton(page, type) {
     <button class="btn-inline results__btn--${type}" data-goto=${
     type === "prev" ? page - 1 : page + 1
   }>
-    <span>Page ${type === "prev" ? page - 1 : page + 1}</span>
+    <span> ${type === "prev" ? "Prev" : "Next"}</span>
     </button>
     `;
   return markup;
