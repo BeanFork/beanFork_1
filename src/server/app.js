@@ -297,3 +297,13 @@ app.use((error, req, res, next) => {
 app.listen(port, () => {
   console.log("Server listenening to port " + port);
 });
+
+
+////////////////settingsPage
+
+app.post("/settings",(req,res)=>{
+
+  res.send({ status: true });
+  console.log("Setting in server side");
+
+});
