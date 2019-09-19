@@ -1,8 +1,7 @@
 var localUser;
 var localId;
-var discussionPage;
+var postId;
 function signup() {
-
   var username = document.getElementById("username").value;
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
@@ -12,8 +11,6 @@ function signup() {
 
   document.getElementById("new1").classList.add("show");
   document.getElementById("new1").classList.remove("hide");
-
-
 
   superagent
     .post("/signup")
@@ -102,7 +99,6 @@ function forgotPassword() {
     }
   });
 }
-
 
 function mailidFormat() {
   var email = document.getElementById("email").value;
@@ -249,7 +245,6 @@ function createDiscussion() {
                   middleRenderPost(res.postData);
                   yourDiscussion(res.postData);
                   //renderResults(res.postData.post)
-                 
                 });
               });
             } catch (e) {
@@ -282,6 +277,7 @@ function createDiscussion() {
 // }
 
 function middleRenderPost(postData) {
+  postId = postData.post[0]._id;
   var time = calculateTime(postData.post[0].postTime);
   console.log("render", postData.post[0].topic);
   const markup = `<h1>${postData.post[0].topic}</h1>
@@ -296,17 +292,13 @@ function middleRenderPost(postData) {
     .insertAdjacentHTML("afterbegin", markup);
   //document.getElementById("post_content").innerHTML="<p>It is working</p>"
   //console.log(jsonRes);
-
-
 }
 
-
 function yourDiscussion(postData) {
-  renderResults(postData.post, 1, 5); 
+  renderResults(postData.post, 1, 5);
 }
 
 function renderResults(posts, page, postsPerPage) {
-
   document.getElementById("results__pages").addEventListener("click", e => {
     const btn = e.target.closest(".btn-inline");
     if (btn) {
@@ -318,13 +310,21 @@ function renderResults(posts, page, postsPerPage) {
       console.log("button", gotoPage);
     }
   });
-  
-  const starting = (page - 1) * postsPerPage;
-  const ending = page * postsPerPage;
-  console.log("start", posts.slice(starting, ending));
+  if (posts.length > postsPerPage) {
+    const starting = (page - 1) * postsPerPage;
+    const ending = page * postsPerPage;
+    console.log("start", posts.slice(starting, ending));
 
-  posts.slice(starting, ending).forEach(renderPosts);
-  renderButtons(page, posts.length, postsPerPage);
+    posts.slice(starting, ending).forEach(renderPosts);
+    renderButtons(page, posts.length, postsPerPage);
+  }
+  else{
+    const starting = (page - 1) * postsPerPage;
+    const ending = page * postsPerPage;
+    console.log("start", posts.slice(starting, ending));
+
+    posts.slice(starting, ending).forEach(renderPosts);
+  }
 }
 
 function renderPosts(posts) {
@@ -386,7 +386,7 @@ function createButton(page, type) {
   const markup = `
     <button class="btn-inline results__btn--${type}" data-goto=${
     type === "prev" ? page - 1 : page + 1
-    }>
+  }>
     <span>Page ${type === "prev" ? page - 1 : page + 1}</span>
     </button>
     `;
@@ -395,7 +395,7 @@ function createButton(page, type) {
 
 function local() {
   mail = localStorage.getItem("Mail");
-  user = localStorage.getItem("User");  
+  user = localStorage.getItem("User");
   password = localStorage.getItem("Password");
   confirmPass = localStorage.getItem("confirmpassword");
   if (mail && user && password && confirmPass) {
@@ -428,4 +428,21 @@ function calculateTime(postTime) {
   }
 
   return time;
+}
+
+
+function addComment(){
+  var comment = document.getElementById("commentBox").value;
+  const markup = `
+  <h2>${comment}</h2>
+  `
+  document.getElementById("comment_content").insertAdjacentHTML("afterbegin",markup);
+  var userId =localId;
+  console.log("add comment"+ comment+"   "+userId+"   "+postId)
+  superagent
+  .post("/comment")
+  .send({comment : comment, userId : userId,postId : postId})
+  .end(function(err,result){
+
+  })
 }
