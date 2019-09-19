@@ -21,8 +21,12 @@ var nameSchema = new mongoose.Schema({
   email: String,
   password: String,
   code: String,
-  post: [
-    {
+
+});
+
+
+var postSchema =  new mongoose.Schema({
+      username: String,
       topic: String,
       description: String,
       postTime: Number,
@@ -33,10 +37,12 @@ var nameSchema = new mongoose.Schema({
         }
       ]
     }
-  ],
 
-});
+
+);
 var userProfile = mongoose.model("User", nameSchema);
+var postProfile = mongoose.model("Post", postSchema);
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -168,6 +174,8 @@ app.post("/forgotpassword", (req, res) => {
 //Rendering new discussion.html
 
 app.post("/newdiscussion", (req, res, next) => {
+
+
   res.send({status:true})
 });
 
@@ -178,24 +186,49 @@ app.post("/newdiscussion", (req, res, next) => {
 
 
 app.post("/creatediscussion", (req, res, next) => {
-  userProfile.findOne({ _id: req.body.id }, function (err, result) {
+  // userProfile.findOne({ _id: req.body.id }, function (err, result) {
+  //   if(err){
+  //     console.log(err);
+  //   }
+  userProfile.findOne({ username: req.body.username}, function (err, result) {
     if(err){
       console.log(err);
+      console.log("Post cannot be created");
     }
-    var postObject = {
-      topic: req.body.topic,
-      description: req.body.description,
-      postTime: req.body.postTime
-    };
-    result.post.unshift(postObject);
-    // console.log("final result", result);
-    result.save();
+    if(result) {
+      var post = new postProfile(req.body);
+      console.log(result.username);
+        post.username = result.username;
+    
+    post.save();
+    }
+    postProfile.findOne({}, function(error, resul) {
+      if(error) {
+        console.log("cannot find post");
+      }
+      if(resul){
+        console.log(result);
+        res.json({ status:true, postData:result});
+   
+      }else
+      {
+        console.log("Hii Thereeeeee");
+        res.send({status:false});
+   
+      
+       }
+
+     });
+    });
+  });
+
+  
     //res.send({status: true , postdata:result})
    // res.json({ status:true,html: html.toString(), postdata: result }); 
-   res.json({ status:true, postData: result }); 
+  
     //res.send(result);
-  });
-});
+  
+
 
 
 
@@ -208,13 +241,11 @@ app.post("/sendcode", (req, res) => {
   userProfile.findOne({ email: req.body.email }, function (err, user) {
 
     if (user) {
-      var verificationCode = Math.random()
-        .toString(36)
-        .slice(-8);
-      console.log(verificationCode)
+  
       
+      var verificationCode = util.sendMail(req.body.email);
       user.code = verificationCode;
-      console.log("Hiiiii");
+      console.log(verificationCode)
       user.save();
       
       res.send({ status: true })

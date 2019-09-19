@@ -198,7 +198,9 @@ function verificationConfirm() {
 }
 
 function newDiscussion() {
-  superagent.post("/newdiscussion").end(function(err, result) {
+  superagent.post("/newdiscussion")
+
+  .end(function(err, result) {
     var res = JSON.parse(result.text);
 
     if (res.status) {
@@ -226,6 +228,7 @@ function createDiscussion() {
     superagent
       .post("/creatediscussion")
       .send({
+        username: localUser.username,
         topic: topic,
         description: description,
         id: id,
