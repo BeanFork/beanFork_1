@@ -75,20 +75,20 @@
           <label><b>Email</b></label>
           <br />
           <input class="form-control input-lg" id="email" type="text" autocomplete="off" placeholder="Enter Email"
-            size="80" name="email" onblur="mailidFormat()" required />
+            size="80" name="email" onkeyup="mailidFormat()" required />
           <br />
           <p id="idValidation"></p>
           <span id="emailcheck"></span>
           <label><b>Username</b></label>
           <br />
           <input class="form-control input-lg" id="username" type="text" autocomplete="off" placeholder="Enter UserName"
-            size="80" name="username" onblur="usernameLength()" required />
+            size="80" name="username" onkeyup="usernameLength()" required />
           <br />
           <span id="usernamecheck"></span>
           <label><b>Password</b></label>
           <br />
           <input class="form-control input-lg" id="password" type="password" placeholder="Enter Password"
-            onblur="passwordStrength()" size="80" name="password" required />
+            onkeyup="passwordStrength()" size="80" name="password" required />
           <br />
           <p id="passwordmessage">
             * Must contain atleast 8 character that are the combination of
@@ -98,7 +98,7 @@
           <br />
           <div id="new">
             <input class="form-control input-lg" id="confirmpassword" type="password" placeholder="Confirm Password"
-              onblur="checkPassword()" size="80" name="confirmpassword" required />
+              onkeyup="checkPassword()" size="80" name="confirmpassword" required />
           </div>
           <span id="message"></span>
           <br />
