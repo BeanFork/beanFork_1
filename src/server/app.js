@@ -177,7 +177,7 @@ app.post("/creatediscussion", (req, res, next) => {
     result.save();
     //res.send({status: true , postdata:result})
     // res.json({ status:true,html: html.toString(), postdata: result });
-    res.json({ status: true, postData: result });
+    res.send({ status: true, postData: result });
     //res.send(result);
   });
 });
@@ -269,6 +269,27 @@ app.post("/comment", (req, res) => {
       console.log("error");
     }
   });
+});
+
+app.post("/middleRender", (req, res) => {
+  
+  userProfile.findOne({_id: req.body.userId}, function(err,user) {
+    
+    if(user){
+      for (var i = 0; i < user.post.length; i++) {
+        console.log(typeof(JSON.stringify(user.post[i]._id)));
+        console.log(typeof(JSON.stringify(req.body.postId)));
+        if (JSON.stringify(user.post[i]._id) === JSON.stringify(req.body.postId))
+        {
+          console.log("middlerendering working");
+          console.log("userprofile",user.post[i]);
+          res.send({userData:user.post[i], username: user.username});
+          break;
+        }
+
+      }
+    }
+  })
 });
 
 app.use((error, req, res, next) => {

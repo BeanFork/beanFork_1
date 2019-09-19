@@ -76,7 +76,13 @@ function login() {
               console.log("Hello" + res.username);
 
               yourDiscussion(res.userData);
-              middleRenderPost(res.userData);
+              postId = res.userData.post[0]._id;
+              middleRenderPost(
+                res.userData.username,
+                res.userData.post[0].topic,
+                res.userData.post[0].description,
+                res.userData.post[0].postTime
+              );
             });
           });
         }
@@ -242,7 +248,13 @@ function createDiscussion() {
               $(document).ready(function() {
                 $("#discussion-container").load("/views/home.html", function() {
                   console.log("load is performed");
-                  middleRenderPost(res.postData);
+                  //middleRenderPost(res.postData);
+                  middleRenderPost(
+                    res.postData.username,
+                    res.postData.post[0].topic,
+                    res.postData.post[0].description,
+                    res.postData.post[0].postTime
+                  );
                   yourDiscussion(res.postData);
                   //renderResults(res.postData.post)
                 });
@@ -276,16 +288,16 @@ function createDiscussion() {
 //   //console.log(jsonRes);
 // }
 
-function middleRenderPost(postData) {
-  postId = postData.post[0]._id;
-  var time = calculateTime(postData.post[0].postTime);
-  console.log("render", postData.post[0].topic);
-  const markup = `<h1>${postData.post[0].topic}</h1>
+function middleRenderPost(username, topic, description, postTime) {
+  document.getElementById("post_content").innerHTML="";
+  var time = calculateTime(postTime);
+  //console.log("render", postData.post[0].topic);
+  const markup = `<h1>${topic}</h1>
   <article class="post">
-  <h3>${postData.username}</h3>
+  <h3>${username}</h3>
   <font size="2">${time}</font></br>
   <font size="4" class="content">
-  ${postData.post[0].description}
+  ${description}
   </font>`;
   document
     .getElementById("post_content")
@@ -317,8 +329,7 @@ function renderResults(posts, page, postsPerPage) {
 
     posts.slice(starting, ending).forEach(renderPosts);
     renderButtons(page, posts.length, postsPerPage);
-  }
-  else{
+  } else {
     const starting = (page - 1) * postsPerPage;
     const ending = page * postsPerPage;
     console.log("start", posts.slice(starting, ending));
@@ -335,10 +346,10 @@ function renderPosts(posts) {
 
   var description = posts.description;
   if (description.length > 40) {
-    description = description.slice(0, 20) + "...";
+    description = description.slice(0, 80) + "...";
   }
   const markup = `
-  <a class="results__link" href= "#${posts._id}"
+  <a  onclick="getAttributes(this)" class="results__link" href= "#${posts._id}"
   <article class="topic">
     <h2>${posts.topic}</h2>
     <h4>${time}</h4>
@@ -352,6 +363,38 @@ function renderPosts(posts) {
     .getElementById("yourdiscussion")
     .insertAdjacentHTML("beforeend", markup);
 }
+
+
+function getAttributes(item) {
+  console.log("item", item);
+  console.log(item.href);
+
+  var urlArray = item.href.toString().split("#");
+  console.log("href", urlArray[1]);
+  console.log("type", typeof urlArray[1]);
+  var postid = urlArray[1];
+  console.log("Local id", localId);
+  superagent
+    .post("/middleRender")
+    .send({ postId: postid, userId: localId })
+    .end(function(err, result) {
+      if (err) {
+        console.log(error);
+      } else {
+        var res = JSON.parse(result.text);
+        middleRenderPost(
+          res.username,
+          res.userData.topic,
+          res.userData.description,
+          res.userData.postTime
+        );
+      }
+    });
+}
+// function location(item){
+//   location.href = baseURL + item.href;
+//   console.log("location" , location.href)
+// }
 
 function renderButtons(page, numResults, resPerPage) {
   const pages = Math.ceil(numResults / resPerPage);
@@ -387,7 +430,7 @@ function createButton(page, type) {
     <button class="btn-inline results__btn--${type}" data-goto=${
     type === "prev" ? page - 1 : page + 1
   }>
-    <span>Page ${type === "prev" ? page - 1 : page + 1}</span>
+    <span>${type === "prev" ? "Prev" : "Next"}</span>
     </button>
     `;
   return markup;
@@ -430,19 +473,18 @@ function calculateTime(postTime) {
   return time;
 }
 
-
-function addComment(){
+function addComment() {
   var comment = document.getElementById("commentBox").value;
   const markup = `
   <h2>${comment}</h2>
-  `
-  document.getElementById("comment_content").insertAdjacentHTML("afterbegin",markup);
-  var userId =localId;
-  console.log("add comment"+ comment+"   "+userId+"   "+postId)
+  `;
+  document
+    .getElementById("comment_content")
+    .insertAdjacentHTML("afterbegin", markup);
+  var userId = localId;
+  console.log("add comment" + comment + "   " + userId + "   " + postId);
   superagent
-  .post("/comment")
-  .send({comment : comment, userId : userId,postId : postId})
-  .end(function(err,result){
-
-  })
+    .post("/comment")
+    .send({ comment: comment, userId: userId, postId: postId })
+    .end(function(err, result) {});
 }
