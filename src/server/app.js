@@ -1,9 +1,9 @@
 // Starting point of the application
-var util =require("./util")
+var util = require("./util")
 var express = require("express");
 var app = express();
 var path = require("path");
-var port = 5000;
+var port = 5001;
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 const fs = require("fs");
@@ -36,6 +36,23 @@ var nameSchema = new mongoose.Schema({
   ],
 
 });
+
+var postSchema = new mongoose.Schema({
+  username: String,
+  topic: String,
+  description: String,
+  postTime: Number,
+  userid: String,
+  comments: [
+    {
+      userId: String,
+      comment: String
+    }
+  ],
+});
+
+
+var postProfile = mongoose.model("Post", postSchema);
 var userProfile = mongoose.model("User", nameSchema);
 
 app.use(bodyParser.json());
@@ -51,12 +68,12 @@ app.get("/", (req, res) => {
 //signup and sending verification code
 
 app.post("/signup", (req, res) => {
-//  function verificationCode(){
-//     return Verificationcode = Math.random()
-//     .toString(36)
-//     .slice(-8);
-// }
-var verificationCode = util.sendMail(req.body.email);
+  //  function verificationCode(){
+  //     return Verificationcode = Math.random()
+  //     .toString(36)
+  //     .slice(-8);
+  // }
+  var verificationCode = util.sendMail(req.body.email);
 
   console.log(verificationCode);
 
@@ -76,7 +93,7 @@ app.post("/signupverification", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.send({ id:  result._id});
+      res.send({ id: result._id });
     }
   });
 });
@@ -90,7 +107,7 @@ app.post("/code", (req, res, next) => {
     if (result) {
       if (result.code === req.body.code) {
         //res.sendFile(path.join(__dirname, "../client/public/views/home.html"));
-        res.send({status:true,username: result.username})
+        res.send({ status: true, username: result.username })
       } else {
         next({ status: 401, message: "Verification code is incorrect" });
       }
@@ -109,16 +126,16 @@ app.post("/code", (req, res, next) => {
 
 app.post("/home", (req, res, next) => {
   userProfile.findOne({ username: req.body.username }, function (err, result) {
-    console.log("findone", result);
+
     if (result) {
       console.log("username exists");
       console.log(req.body.password);
-       
+
       if (bcrypt.compareSync(req.body.password, result.password)) {
         console.log("password exists");
-        
-        res.send({status:true, userData : result})
-        
+
+        res.send({ status: true, userData: result })
+
       } else {
         next({ status: 401, message: "Incorrect Password" });
       }
@@ -168,7 +185,10 @@ app.post("/forgotpassword", (req, res) => {
 //Rendering new discussion.html
 
 app.post("/newdiscussion", (req, res, next) => {
-  res.send({status:true})
+
+
+  res.send({ status: true })
+
 });
 
 
@@ -179,7 +199,7 @@ app.post("/newdiscussion", (req, res, next) => {
 
 app.post("/creatediscussion", (req, res, next) => {
   userProfile.findOne({ _id: req.body.id }, function (err, result) {
-    if(err){
+    if (err) {
       console.log(err);
     }
     var postObject = {
@@ -191,12 +211,37 @@ app.post("/creatediscussion", (req, res, next) => {
     // console.log("final result", result);
     result.save();
     //res.send({status: true , postdata:result})
-   // res.json({ status:true,html: html.toString(), postdata: result }); 
-   res.json({ status:true, postData: result }); 
-    //res.send(result);
-  });
-});
+    // res.json({ status:true,html: html.toString(), postdata: result }); 
+    var post = new postProfile(req.body);
+    post.save();
 
+    postProfile.findOne({ postid: req.body.postid }, function (err, result1) {
+      if (err) {
+        console.log(err);
+      }
+
+      result1.topic = req.body.topic,
+        result1.description = req.body.description,
+        result1.postTime = req.body.postTime,
+        result1.username = req.body.username
+
+      result1.save();
+      
+
+
+      postProfile.find({},function(err,result2){
+         if(err){
+           console.log(err);
+         }
+         console.log("res2",result2)
+
+         res.json({ status: true, postData: result, trendData: result2 });
+      }).sort({postTime:-1}).limit(5)
+    });
+  });
+  //res.send(result);
+
+})
 
 
 
@@ -212,11 +257,11 @@ app.post("/sendcode", (req, res) => {
         .toString(36)
         .slice(-8);
       console.log(verificationCode)
-      
+
       user.code = verificationCode;
       console.log("Hiiiii");
       user.save();
-      
+
       res.send({ status: true })
     }
     else {
@@ -257,7 +302,7 @@ app.post("/submitcode", (req, res) => {
     if (result) {
       if (result.code === req.body.code) {
         console.log("code is true");
-        res.send({ status: true ,userdata: result});
+        res.send({ status: true, userdata: result });
       } else {
         res.send({ status: false });
         console.log("code is false");

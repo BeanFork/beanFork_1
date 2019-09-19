@@ -22,7 +22,7 @@ function signup() {
       email: email,
       password: password
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
         console.log(err);
       } else {
@@ -38,7 +38,7 @@ function signupVerification(email) {
   superagent
     .post("/signupverification")
     .send({ email: email })
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
         console.log(err);
       } else {
@@ -60,7 +60,7 @@ function login() {
       username: username,
       password: password
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
         console.log(err);
         document.getElementById("loginverification").innerHTML =
@@ -70,16 +70,18 @@ function login() {
         // localStorage.setItem('localId',res.id);
         //   $("html").html(res.html);
         localUser = res.userData;
+        
         console.log("local user", localUser);
         localId = res.userData._id;
         if (res.status) {
-          $(document).ready(function() {
-            $("#container1").load("/views/home.html", function() {
+          $(document).ready(function () {
+            $("#container1").load("/views/home.html", function () {
               console.log("load is performed");
               console.log("Hello" + res.username);
 
               yourDiscussion(res.userData);
               middleRenderPost(res.userData);
+              
             });
           });
         }
@@ -88,14 +90,14 @@ function login() {
 }
 
 function forgotPassword() {
-  superagent.post("/forgotPassword").end(function(err, result) {
+  superagent.post("/forgotPassword").end(function (err, result) {
     if (err) {
       console.log(err);
     }
 
     if (result.status) {
-      $(document).ready(function() {
-        $("#container1").load("/views/forgot-password.html", function() {
+      $(document).ready(function () {
+        $("#container1").load("/views/forgot-password.html", function () {
           console.log("load is performed");
         });
       });
@@ -135,7 +137,7 @@ function userExistence() {
     .send({
       username: document.getElementById("username").value
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       //console.log("this is result", result);
       var res = JSON.parse(result.text);
       //console.log(res);
@@ -154,7 +156,7 @@ function emailExistence() {
   superagent
     .post("/email")
     .send({ email: document.getElementById("email").value })
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
       //console.log(res);
       if (res.status) {
@@ -176,7 +178,7 @@ function verificationConfirm() {
   superagent
     .post("/code")
     .send({ code: document.getElementById("Confirmcode").value, id: id })
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
         document.getElementById("verificationcomment").innerHTML =
           "<p>Verification code is incorrect</p>";
@@ -184,8 +186,8 @@ function verificationConfirm() {
         //$("html").html(result.text);
         var res = JSON.parse(result.text);
         if (res.status) {
-          $(document).ready(function() {
-            $("#container1").load("/views/home.html", function() {
+          $(document).ready(function () {
+            $("#container1").load("/views/home.html", function () {
               console.log("load is performed");
               document.getElementById(
                 "welcomeuser"
@@ -198,12 +200,13 @@ function verificationConfirm() {
 }
 
 function newDiscussion() {
-  superagent.post("/newdiscussion").end(function(err, result) {
+
+  superagent.post("/newdiscussion").end(function (err, result) {
     var res = JSON.parse(result.text);
 
     if (res.status) {
-      $(document).ready(function() {
-        $("#container1").load("/views/new-discussion.html", function() {
+      $(document).ready(function () {
+        $("#container1").load("/views/new-discussion.html", function () {
           console.log("load is performed");
           console.log("Hello" + res.username);
           document.getElementById(
@@ -222,6 +225,7 @@ function createDiscussion() {
   console.log("topic", topic.length);
   console.log("description", description.length);
   var id = localId;
+  var username = localUser.username
   if (topic.length > 0 && description.length > 0) {
     superagent
       .post("/creatediscussion")
@@ -229,27 +233,28 @@ function createDiscussion() {
         topic: topic,
         description: description,
         id: id,
-        postTime: postTime
+        postTime: postTime,
+        userid: id,
+        username: username
       })
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
           console.log("it is error", err);
         } else {
+
           var res = JSON.parse(result.text);
+          console.log("trend data", res.trendData);
           localUser = res.postData;
-          //console.log("rendering",res)
-          //renderpost(res.postData)
-          // postData = res.postData;
-          // console.log("global postData",postData)
+          localUser = res.trendData
           if (res.status) {
             try {
-              $(document).ready(function() {
-                $("#discussion-container").load("/views/home.html", function() {
+              $(document).ready(function () {
+                $("#discussion-container").load("/views/home.html", function () {
                   console.log("load is performed");
                   middleRenderPost(res.postData);
                   yourDiscussion(res.postData);
                   //renderResults(res.postData.post)
-                 
+                  renderTrendingPosts(res.trendData);
                 });
               });
             } catch (e) {
@@ -263,23 +268,29 @@ function createDiscussion() {
     document.getElementById("discussion").innerHTML =
       "<p>***Both the fields are mandatory</p>";
 }
+function renderTrendingPosts(posts) {
+  //console.log("renderPosts", posts);
+  for (var i = 0; i < posts.length; i++) {
 
-// function renderpost(postdata) {
-//   console.log("helllo");
-//   console.log("render", postdata.post[0].topic);
-//   const markup = `<h1>${postdata.post[0].topic}</h1>
-//   <article class="post">
-//     <h3>${postdata.username}</h3>
-//     <font size="2">Posted 3 hrs ago</font></br>
-//     <font size="4" class="content">
-//       ${postdata.post[0].description}
-//     </font>`;
-//   document
-//     .getElementById("post_content")
-//     .insertAdjacentHTML("afterbegin", markup);
-//   //document.getElementById("post_content").innerHTML="<p>It is working</p>"
-//   //console.log(jsonRes);
-// }
+    var time = calculateTime(posts[i].postTime);
+
+    var description = posts[i].description;
+    if (description.length > 40) {
+      description = description.slice(0, 20) + "...";
+    }
+    const markup = `
+  <a class="results__link" href= "#${posts[i]._id}"
+  <article class="topic">
+    <h2>${posts[i].topic}</h2><h5>posted by${posts[i].username}</h5>
+    <h4>posted ${time}</h4>
+    </article>
+    </a>
+`;
+    document
+      .getElementById("TrendDiscussion")
+      .insertAdjacentHTML("beforeend", markup);
+  }
+}
 
 function middleRenderPost(postData) {
   var time = calculateTime(postData.post[0].postTime);
@@ -294,15 +305,13 @@ function middleRenderPost(postData) {
   document
     .getElementById("post_content")
     .insertAdjacentHTML("afterbegin", markup);
-  //document.getElementById("post_content").innerHTML="<p>It is working</p>"
-  //console.log(jsonRes);
-
 
 }
 
 
+
 function yourDiscussion(postData) {
-  renderResults(postData.post, 1, 5); 
+  renderResults(postData.post, 1, 5);
 }
 
 function renderResults(posts, page, postsPerPage) {
@@ -318,7 +327,7 @@ function renderResults(posts, page, postsPerPage) {
       console.log("button", gotoPage);
     }
   });
-  
+
   const starting = (page - 1) * postsPerPage;
   const ending = page * postsPerPage;
   console.log("start", posts.slice(starting, ending));
@@ -395,7 +404,7 @@ function createButton(page, type) {
 
 function local() {
   mail = localStorage.getItem("Mail");
-  user = localStorage.getItem("User");  
+  user = localStorage.getItem("User");
   password = localStorage.getItem("Password");
   confirmPass = localStorage.getItem("confirmpassword");
   if (mail && user && password && confirmPass) {
