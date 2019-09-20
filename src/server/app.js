@@ -34,6 +34,23 @@ var nameSchema = new mongoose.Schema({
     }
   ]
 });
+
+var postSchema = new mongoose.Schema({
+  username: String,
+  topic: String,
+  description: String,
+  postTime: Number,
+  userid: String,
+  comments: [
+    {
+      userId: String,
+      comment: String
+    }
+  ],
+});
+
+
+var postProfile = mongoose.model("Post", postSchema);
 var userProfile = mongoose.model("User", nameSchema);
 
 app.use(bodyParser.json());
@@ -103,7 +120,7 @@ app.post("/code", (req, res, next) => {
 
 app.post("/home", (req, res, next) => {
   userProfile.findOne({ username: req.body.username }, function(err, result) {
-    console.log("findone", result);
+    //console.log("findone", result);
     if (result) {
       console.log("username exists");
       console.log(req.body.password);
@@ -177,11 +194,34 @@ app.post("/creatediscussion", (req, res, next) => {
     result.save();
     //res.send({status: true , postdata:result})
     // res.json({ status:true,html: html.toString(), postdata: result });
-    res.send({ status: true, postData: result });
-    //res.send(result);
+    var post = new postProfile(req.body);
+    post.save();
+
+    postProfile.findOne({ userid: req.body.userid }, function (err, user) {
+      if (err) {
+        console.log(err);
+      }
+if(user){
+      user.topic = req.body.topic,
+        user.description = req.body.description,
+        user.postTime = req.body.postTime,
+        user.username = req.body.username
+
+      user.save();
+      
+}
+
+      postProfile.find({},function(err,posts){
+         if(err){
+           console.log(err);
+         }
+         //console.log("res2",posts)
+
+         res.json({ status: true, postData: result, trendData: posts });
+      }).sort({postTime:-1}).limit(5)
+    });
   });
 });
-
 ///////////////////////////////////////////////////////////////////
 
 app.post("/sendcode", (req, res) => {
@@ -273,29 +313,43 @@ app.post("/comment", (req, res) => {
 
 app.post("/middleRender", (req, res) => {
   
-  userProfile.findOne({_id: req.body.userId}, function(err,user) {
+    userProfile.findOne({_id: req.body.userId}, function(err,user) {
     
-    if(user){
-      for (var i = 0; i < user.post.length; i++) {
-        console.log(typeof(JSON.stringify(user.post[i]._id)));
-        console.log(typeof(JSON.stringify(req.body.postId)));
-        if (JSON.stringify(user.post[i]._id) === JSON.stringify(req.body.postId))
-        {
-          console.log("middlerendering working");
-          console.log("userprofile",user.post[i]);
-          res.send({userData:user.post[i], username: user.username});
-          break;
+      if(user){
+        for (var i = 0; i < user.post.length; i++) {
+          console.log(typeof(JSON.stringify(user.post[i]._id)));
+          console.log(typeof(JSON.stringify(req.body.postId)));
+          if (JSON.stringify(user.post[i]._id) === JSON.stringify(req.body.postId))
+          {
+            console.log("middlerendering working");
+            console.log("userprofile",user.post[i]);
+            res.send({userData:user.post[i], username: user.username});
+            break;
+          }
+  
         }
-
       }
+    })
+
+});
+
+app.post("/middleRender1", (req, res) => {
+    console.log("middle",req.body)
+    postProfile.findOne({_id: req.body.id}, function(err,user) {
+      console.log("user",user)
+      if(user){
+        res.send(user)
+      //res.send({username:user.username,post:user.post,description: user.description ,posttime: user.postTime})
     }
-  })
+    })
+
 });
 
 app.use((error, req, res, next) => {
   console.log(error);
   res.sendStatus(error.status || 500);
 });
+
 app.listen(port, () => {
   console.log("Server listenening to port " + port);
 });

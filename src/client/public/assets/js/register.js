@@ -224,14 +224,17 @@ function createDiscussion() {
   console.log("topic", topic.length);
   console.log("description", description.length);
   var id = localId;
+  var username = localUser.username;
   if (topic.length > 0 && description.length > 0) {
     superagent
       .post("/creatediscussion")
       .send({
         topic: topic,
         description: description,
-        id: id,
-        postTime: postTime
+        userid: id,
+        id :id,
+        postTime: postTime,
+        username :username
       })
       .end(function(err, result) {
         if (err) {
@@ -256,6 +259,7 @@ function createDiscussion() {
                     res.postData.post[0].postTime
                   );
                   yourDiscussion(res.postData);
+                  renderTrendingPosts(res.trendData)
                   //renderResults(res.postData.post)
                 });
               });
@@ -270,6 +274,33 @@ function createDiscussion() {
     document.getElementById("discussion").innerHTML =
       "<p>***Both the fields are mandatory</p>";
 }
+
+
+function renderTrendingPosts(posts) {
+  console.log("renderPosts", posts);
+  for (var i = 0; i < posts.length; i++) {
+
+    var time = calculateTime(posts[i].postTime);
+
+    var description = posts[i].description;
+    if (description.length > 40) {
+      description = description.slice(0, 50) + "...";
+    }
+    const markup = `
+  <a onclick="getAttributes1(this)" class="results__link" href= "#${posts[i]._id}"
+  <article class="topic">
+    
+    <h2>${posts[i].topic}</h2><h5>posted by${posts[i].username}</h5>
+    <h4>${time}</h4>
+    </article>
+    </a>
+`;
+    document
+      .getElementById("TrendDiscussion")
+      .insertAdjacentHTML("beforeend", markup);
+  }
+}
+
 
 // function renderpost(postdata) {
 //   console.log("helllo");
@@ -292,7 +323,7 @@ function middleRenderPost(username, topic, description, postTime) {
   document.getElementById("post_content").innerHTML="";
   var time = calculateTime(postTime);
   //console.log("render", postData.post[0].topic);
-  const markup = `<h1>${topic}</h1>
+  const markup = `<h1 style = "white-space:pre"> ${topic}</h1>
   <article class="post">
   <h3>${username}</h3>
   <font size="2">${time}</font></br>
@@ -376,7 +407,7 @@ function getAttributes(item) {
   console.log("Local id", localId);
   superagent
     .post("/middleRender")
-    .send({ postId: postid, userId: localId })
+    .send({ postId: postid, userId: localId})
     .end(function(err, result) {
       if (err) {
         console.log(error);
@@ -387,6 +418,33 @@ function getAttributes(item) {
           res.userData.topic,
           res.userData.description,
           res.userData.postTime
+        );
+      }
+    });
+}
+
+function getAttributes1(item){
+  console.log("item", item);
+  console.log(item.href);
+
+  var urlArray = item.href.toString().split("#");
+  console.log("href", urlArray[1]);
+  console.log("type", typeof urlArray[1]);
+  var id = urlArray[1];
+  console.log("Local id", localId);
+  superagent
+    .post("/middleRender1")
+    .send({ id : id})
+    .end(function(err, result) {
+      if (err) {
+        console.log(error);
+      } else {
+        var res = JSON.parse(result.text);
+        middleRenderPost(
+          res.username,
+          res.topic,
+          res.description,
+          res.postTime
         );
       }
     });

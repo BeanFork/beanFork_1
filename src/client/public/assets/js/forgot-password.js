@@ -1,5 +1,6 @@
 
 var localdata;
+var localmail;
 function sendCode() {
 
     superagent
@@ -28,7 +29,7 @@ function sendCode() {
 
 function confirmCode() {
     //localStorage.setItem('localemail', document.getElementById("input-email").value);
-
+    localmail = document.getElementById("input-email").value;
     superagent
         .post("/submitcode")
         .send({
@@ -61,14 +62,12 @@ function confirmCode() {
 
 function changePassword() {
 
-    localemail = localStorage.getItem('localemail');
-
-    console.log(localemail);
+    console.log(localmail);
     superagent
         .post("/changepassword")
         .send({
             password: document.getElementById("password").value,
-            email: localemail
+            email: localmail
         })
         .end(function (err, result) {
             var res = JSON.parse(result.text)
