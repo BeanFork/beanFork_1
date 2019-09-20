@@ -127,8 +127,14 @@ app.post("/home", (req, res, next) => {
 
       if (bcrypt.compareSync(req.body.password, result.password)) {
         console.log("password exists");
-
-        res.send({ status: true, userData: result });
+        postProfile.find({},function(err,posts){
+          if(err){
+            console.log(err);
+          }
+          //console.log("res2",posts)
+ 
+          res.json({ status: true, userData: result, trendData: posts });
+       }).sort({postTime:-1})
       } else {
         next({ status: 401, message: "Incorrect Password" });
       }
@@ -197,31 +203,52 @@ app.post("/creatediscussion", (req, res, next) => {
     var post = new postProfile(req.body);
     post.save();
 
-    postProfile.findOne({ userid: req.body.userid }, function (err, user) {
-      if (err) {
-        console.log(err);
-      }
-if(user){
-      user.topic = req.body.topic,
-        user.description = req.body.description,
-        user.postTime = req.body.postTime,
-        user.username = req.body.username
+//     postProfile.findOne({ userid: req.body.userid }, function (err, user) {
+//       if (err) {
+//         console.log(err);
+//       }
+// if(user){
+//       user.topic = req.body.topic,
+//         user.description = req.body.description,
+//         user.postTime = req.body.postTime,
+//         user.username = req.body.username
 
-      user.save();
+//       user.save();
       
-}
+// }
+ res.json({status: true,postData : result})
+      // postProfile.find({},function(err,posts){
+      //    if(err){
+      //      console.log(err);
+      //    }
+      //    //console.log("res2",posts)
 
-      postProfile.find({},function(err,posts){
+      //    res.json({ status: true, postData: result, trendData: posts });
+      // }).sort({postTime:-1}).limit(5)
+    // });
+  });
+});
+
+app.post("/newcreate",(req,res)=>{
+   postProfile.find({},function(err,posts){
          if(err){
            console.log(err);
          }
          //console.log("res2",posts)
 
-         res.json({ status: true, postData: result, trendData: posts });
-      }).sort({postTime:-1}).limit(5)
-    });
-  });
-});
+         res.json({trendData: posts });
+      }).sort({postTime:-1})
+})
+
+app.post("/cancelDiscussion" ,(req,res)=>{
+  userProfile.findOne({_id : req.body.id} , function(err,user){
+    if(user){
+      postProfile.find({},function(err,result){
+        res.send({postData:user , trendData : result})
+      })
+    }
+  })
+})
 ///////////////////////////////////////////////////////////////////
 
 app.post("/sendcode", (req, res) => {
@@ -286,8 +313,8 @@ app.post("/changepassword", (req, res) => {
       user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8));
 
       user.save();
-      res.send({ status: true });
-    } else res.send({ status: false });
+      res.send({ status: true , userData : user });
+    } 
   });
 });
 

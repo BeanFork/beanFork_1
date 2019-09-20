@@ -1,4 +1,4 @@
-
+var regiterFunc = require("./register")
 var localdata;
 var localmail;
 function sendCode() {
@@ -71,7 +71,7 @@ function changePassword() {
         })
         .end(function (err, result) {
             var res = JSON.parse(result.text)
-
+            console.log("resulttt",res)
             if (res.status) {
                 console.log("password updated in db")
                 $(document).ready(function () {
@@ -79,8 +79,8 @@ function changePassword() {
                     $("#container2").load("../../views/home.html", function () {
 
                         console.log("load is performed")
-                   
-                        yourDiscussion(res.userData);
+                        regiterFunc.yourDiscussion(res.userData);
+                        //yourDiscussion(res.userData);
                         middleRenderPost(res.userData);
                     });
                 });
@@ -92,4 +92,10 @@ function changePassword() {
 }
 
 
-
+function cancelForgotPassword(){
+    $(document).ready(function(){
+        $("#divcontainer").load("../../views/register.html", function () {
+            console.log("load is performed")
+        })
+    })
+}

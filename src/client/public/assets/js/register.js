@@ -83,6 +83,8 @@ function login() {
                 res.userData.post[0].description,
                 res.userData.post[0].postTime
               );
+              console.log("trendData", res.trendData)
+              trendingTopics(res.trendData);
             });
           });
         }
@@ -217,6 +219,39 @@ function newDiscussion() {
   });
 }
 
+function cancelDiscussion(){
+  superagent
+  .post("/cancelDiscussion")
+  .send({id : localId})
+  .end(function(err,result){
+    if (err) {
+      console.log("it is error", err);
+    } else {
+      var res = JSON.parse(result.text);
+      try {
+        $(document).ready(function() {
+          $("#discussion-container").load("/views/home.html", function() {
+            console.log("load is performed");
+            //middleRenderPost(res.postData);
+            middleRenderPost(
+              res.postData.username,
+              res.postData.post[0].topic,
+              res.postData.post[0].description,
+              res.postData.post[0].postTime
+            );
+            yourDiscussion(res.postData);
+            renderTrendingPosts(res.trendData)
+            //renderResults(res.postData.post)
+          });
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    
+  })
+}
+
 function createDiscussion() {
   var topic = document.getElementById("discussionTopic").value;
   var description = document.getElementById("discussionDescription").value;
@@ -259,7 +294,13 @@ function createDiscussion() {
                     res.postData.post[0].postTime
                   );
                   yourDiscussion(res.postData);
-                  renderTrendingPosts(res.trendData)
+                  superagent
+                  .post("/newcreate")
+                  .end(function(err,result){
+                    var res =JSON.parse(result.text)
+                    trendingTopics(res.trendData)
+                  });
+                  
                   //renderResults(res.postData.post)
                 });
               });
@@ -276,21 +317,52 @@ function createDiscussion() {
 }
 
 
+function trendingTopics(posts){
+  renderPages(posts,1,5)
+}
+
+function renderPages(posts,page,postsPerPage){
+  document.getElementById("Trending__pages").addEventListener("click", e => {
+    const btn = e.target.closest(".btn-trend");
+    if (btn) {
+      const gotoPage = parseInt(btn.dataset.goto, 10);
+      document.getElementById("TrendDiscussion").innerHTML = "";
+      document.getElementById("Trending__pages").innerHTML = "";
+      renderPages(posts, gotoPage, 5);
+      console.log("button", gotoPage);
+    }
+  });
+  if (posts.length > postsPerPage) {
+    const starting = (page - 1) * postsPerPage;
+    const ending = page * postsPerPage;
+    console.log("start", posts.slice(starting, ending));
+
+    posts.slice(starting, ending).forEach(renderTrendingPosts);
+    renderButtons1(page, posts.length, postsPerPage);
+  } else {
+    const starting = (page - 1) * postsPerPage;
+    const ending = page * postsPerPage;
+    console.log("start", posts.slice(starting, ending));
+
+    posts.slice(starting, ending).forEach(renderTrendingPosts);
+  }
+}
+
 function renderTrendingPosts(posts) {
   console.log("renderPosts", posts);
-  for (var i = 0; i < posts.length; i++) {
+  
 
-    var time = calculateTime(posts[i].postTime);
+    var time = calculateTime(posts.postTime);
 
-    var description = posts[i].description;
+    var description = posts.description;
     if (description.length > 40) {
       description = description.slice(0, 50) + "...";
     }
     const markup = `
-  <a onclick="getAttributes1(this)" class="results__link" href= "#${posts[i]._id}"
+  <a onclick="getAttributes1(this)" class="results__link" href= "#${posts._id}"
   <article class="topic">
     
-    <h2>${posts[i].topic}</h2><h5>posted by${posts[i].username}</h5>
+    <h2>${posts.topic}</h2><h5>posted by${posts.username}</h5>
     <h4>${time}</h4>
     </article>
     </a>
@@ -299,8 +371,47 @@ function renderTrendingPosts(posts) {
       .getElementById("TrendDiscussion")
       .insertAdjacentHTML("beforeend", markup);
   }
+
+
+function renderButtons1(page, numResults, resPerPage) {
+  const pages = Math.ceil(numResults / resPerPage);
+  console.log(
+    "resultsss",
+    numResults + " " + resPerPage + " " + pages + " " + page
+  );
+  let button;
+  if (page === 1 && pages > 1) {
+    // enable next button only
+    console.log("next button");
+    button = createButton1(page, "next");
+    //button=`<button>next</button>`
+  } else if (page < pages) {
+    //Both buttons
+    console.log("both button");
+    button = `${createButton1(page, "prev")}         
+  ${createButton1(page, "next")}`;
+    //button=`<button>next</button>`
+  } else if (page === pages && pages > 1) {
+    //only previous button
+    console.log("previous button");
+    button = createButton1(page, "prev");
+    //button=`<button>next</button>`
+  }
+  document
+    .getElementById("Trending__pages")
+    .insertAdjacentHTML("afterbegin", button);
 }
 
+function createButton1(page, type) {
+  const markup = `
+    <button class="btn-trend results__btn--${type}" data-goto=${
+    type === "prev" ? page - 1 : page + 1
+  }>
+    <span>${type === "prev" ? "Prev" : "Next"}</span>
+    </button>
+    `;
+  return markup;
+}
 
 // function renderpost(postdata) {
 //   console.log("helllo");
@@ -546,3 +657,10 @@ function addComment() {
     .send({ comment: comment, userId: userId, postId: postId })
     .end(function(err, result) {});
 }
+
+
+
+// module.exports = {
+//   middleRenderPost : middleRenderPost,
+//   yourDiscussion : yourDiscussion
+// }
