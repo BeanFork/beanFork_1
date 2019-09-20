@@ -41,7 +41,7 @@ function restorePage(){
                 console.log(err);
                  $(document).ready(function (){
                     $("#divcontainer").load("../../views/register.html");
-                });
+                });g
             }
 
         }
