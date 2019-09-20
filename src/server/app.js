@@ -308,3 +308,23 @@ app.post("/settings",(req,res)=>{
   console.log("Setting in server side");
 
 });
+
+///////////////Logout
+
+app.post("/logout",(req,res) => {
+
+    res.send({ status:true });
+   
+    console.log("logout successfully");
+
+});
+
+//////////move to home
+
+app.post("/restore" , (req,res) =>{
+
+  res.send({ status:true });
+});
+
+
+
