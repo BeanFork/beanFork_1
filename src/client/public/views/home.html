@@ -9,31 +9,43 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
     />
     <link href="assets/css/home.css" rel="stylesheet" type="text/css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
-    />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="assets/js/settings.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
     <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
-    <script src="assets/js/register.js"></script>
+
   </head>
 
   <body>
-    <!-- <ul class="nav navbar-nav navbar-right"></ul> -->
 
+    <div id="divcontainer">
+    
     <div class="banner text-left">
+      
+      <div class="dropdown" >
+            <button class=" dropdown-toggle btn-drop" type="button" data-toggle="dropdown">Welcome user
+            <span class="caret"></span></button> 
+            <ul class="dropdown-menu">
+              <li><a href="#" onclick='settingsPage()'>Settings</a></li>
+              <li><a>Logout</a></li>
+              
+
+     
+            </ul>
+         
+          </div>
       <img class="logo" src="assets/img/bean.gif" />
       <h1><b> BeanFork </b></h1>
+      
       <br />
+  
 
-      <div class="banner text-center">
+      <div class=" text-center">
         <form class="navbar-form" role="search">
           <div class="input-group add-on">
             <input
@@ -45,13 +57,15 @@
               type="text"
             />
             <div class="input-group-btn">
-              <button class="btn btn-default" type="submit">
+              <button class="btn btn-default btn2" type="submit">
                 <i class="glyphicon glyphicon-search"></i>
               </button>
             </div>
           </div>
         </form>
+     
       </div>
+     
     </div>
 
     <!-------------------------- Banner Portion-------------------------------------------->
@@ -69,11 +83,11 @@
             >
               Start New Discussion
             </button>
-
+            <!-- <button class="btn" type="submit" onclick="newDiscussion()">Login</button> -->
             <h1>Trending Topics</h1>
             <div>
               <article class="topic">
-                <h2>Topic-1</h2>
+                <h2> Topic-1</h2>
                 <h4>Published Time</h4>
                 <p>
                   An apple is a sweet, edible fruit produced by an apple tree...
@@ -82,7 +96,7 @@
             </div>
 
             <article class="topic">
-              <h2>Topic-2</h2>
+              <h2> Topic-2</h2>
               <h4>Published Time</h4>
               <p>
                 An apple is a sweet, edible fruit produced by an apple tree...
@@ -90,7 +104,7 @@
             </article>
 
             <article class="topic">
-              <h2>Topic-3</h2>
+              <h2> Topic-3</h2>
               <h4>Published Time</h4>
               <p>
                 An apple is a sweet, edible fruit produced by an apple tree...
@@ -101,30 +115,27 @@
 
         <div class="col-lg-5">
           <div class="middlepane">
-            <div id="post_content">
+              <div id="post_content">
 
-            </div>
-            <div id="comment_content">
-
-            </div>
-            <textarea
-              id="commentBox"
-              class="comment"
-              rows="5"
-              cols="70"
-              value="Comment Below"
-              placeholder="Enter Your Comments Here..."
-            >
-            </textarea>
-            <!-- <input id="button-add" type="submit" onclick="addComment()" value="Add" /> -->
-            <button id="button-add" onclick="addComment()">add</button>
+        </div>
+            <form>
+                    <textarea
+                      class="comment"
+                      rows="5"
+                      cols="70"
+                      value="Comment Below"
+                      placeholder="Enter Your Comments Here..."
+                    >
+                    </textarea>
+                    <input id="button-add" type="submit" value="Add" />
+                  </form>
           </div>
         </div>
 
         <div class="col-lg-3">
           <div class="rightpane">
             <h1>Your Discussions</h1>
-            <div id="yourdiscussion"></div>
+            <div id= "yourdiscussion"></div>
             <div id="results__pages"></div>
           </div>
         </div>

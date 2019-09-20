@@ -1,10 +1,10 @@
-/* Banner - constant for all the pages 
-*/
 .logo {
   float: left;
-  width: 70px;
-  padding: 10px;
-  margin: 35px 10px 10px 0px;
+  width: 90px;
+  padding: 2px;
+  margin: 55px 10px 10px 0px;
+  border-radius: 40px;
+  border: 2px solid green
 }
 h3 {
   font-style: inherit;
@@ -17,6 +17,7 @@ h3 {
   text-align: left;
   font-size: 20px;
   margin-top: -40px;
+  height:auto;
 }
 .banner h1 {
   color: #61696d;
@@ -38,14 +39,27 @@ h3 {
   margin-left: -8.5%;
   margin-top: -10.5%;
 }
+
 .add-on .form-control:focus {
   text-align: left;
 }
 
+.btn-drop{
+
+  background-color: rgb(158, 212, 158);
+  margin: 50px 0px 0px 0px;
+  border: none;
+  border-radius: 8px;
+  color: #101c22;
+  
+}
+.text-center{
+    margin-left: 200px;
+}
 .input-group-btn {
   align-content: left;
 }
-.btn {
+.btn2 {
   border: #31d9df;
   border: 1px solid rgb(101, 187, 187);
   bottom: 58px;
@@ -56,6 +70,7 @@ h3 {
 /*
 Your Account dropdown
 */
+
 
 
 /* 
@@ -71,16 +86,6 @@ Containers
   margin: 0px 10px 1000px 20px;
 }
 
-button {
-  width: 150px;
-  height: 40px;
-  color: black;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 12px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
 
 .comment {
   background-color: #f8ffff;
@@ -144,6 +149,11 @@ button {
 
 
 }
+.dropdown{
+  
+  margin: 50px 50px 50px 50px;
+  float: right;
+}
 
 .results__link:link, .results__link:visited,.results__link:hover,
 .results__link--active {
@@ -151,3 +161,7 @@ button {
 
 
 
+
+
+
+    
