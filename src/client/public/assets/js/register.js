@@ -181,7 +181,6 @@ function login() {
                 res.userData.post[0].description,
                 res.userData.post[0].postTime
               );
-              console.log("trendData", res.trendData);
               trendingTopics(res.trendData);
             });
           });
@@ -320,6 +319,7 @@ function newDiscussion() {
   });
 }
 
+
 function cancelDiscussion() {
   superagent
     .post("/cancelDiscussion")
@@ -347,14 +347,15 @@ function cancelDiscussion() {
         });
       }
     });
+
 }
 
 function createDiscussion() {
   var topic = document.getElementById("discussionTopic").value;
   var description = document.getElementById("discussionDescription").value;
   var postTime = Date.parse(new Date());
-  console.log("topic", topic.length);
-  console.log("description", description.length);
+  // console.log("topic", topic.length);
+  // console.log("description", description.length);
   var id = localId;
   var username = localUser;
 
@@ -426,27 +427,26 @@ function renderPages(posts, page, postsPerPage) {
       document.getElementById("TrendDiscussion").innerHTML = "";
       document.getElementById("Trending__pages").innerHTML = "";
       renderPages(posts, gotoPage, 5);
-      console.log("button", gotoPage);
+     // console.log("button", gotoPage);
     }
   });
   if (posts.length > postsPerPage) {
     const starting = (page - 1) * postsPerPage;
     const ending = page * postsPerPage;
-    console.log("start", posts.slice(starting, ending));
+   // console.log("start", posts.slice(starting, ending));
 
     posts.slice(starting, ending).forEach(renderTrendingPosts);
     renderButtons1(page, posts.length, postsPerPage);
   } else {
     const starting = (page - 1) * postsPerPage;
     const ending = page * postsPerPage;
-    console.log("start", posts.slice(starting, ending));
+   // console.log("start", posts.slice(starting, ending));
 
     posts.slice(starting, ending).forEach(renderTrendingPosts);
   }
 }
 
 function renderTrendingPosts(posts) {
-  console.log("renderPosts", posts);
 
   var time = calculateTime(posts.postTime);
 
@@ -601,11 +601,11 @@ function renderPosts(posts) {
 
 function getAttributes(item) {
   console.log("item", item);
-  console.log(item.href);
+ // console.log(item.href);
 
   var urlArray = item.href.toString().split("#");
-  console.log("href", urlArray[1]);
-  console.log("type", typeof urlArray[1]);
+  // console.log("href", urlArray[1]);
+  // console.log("type", typeof urlArray[1]);
   var postid = urlArray[1];
   console.log("Local id", localId);
   superagent
@@ -626,9 +626,9 @@ function getAttributes(item) {
     });
 }
 
-function getAttributes1(item) {
-  console.log("item", item);
-  console.log(item.href);
+
+function getAttributes1(item){
+
 
   var urlArray = item.href.toString().split("#");
   console.log("href", urlArray[1]);
