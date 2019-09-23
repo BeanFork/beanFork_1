@@ -83,7 +83,7 @@ function login() {
                 res.userData.post[0].description,
                 res.userData.post[0].postTime
               );
-              console.log("trendData", res.trendData)
+              //console.log("trendData", res.trendData)
               trendingTopics(res.trendData);
             });
           });
@@ -220,34 +220,40 @@ function newDiscussion() {
 }
 
 function cancelDiscussion(){
+   console.log(localUser.username)
   superagent
   .post("/cancelDiscussion")
-  .send({id : localId})
+  .send({username:localUser.username})
   .end(function(err,result){
     if (err) {
-      console.log("it is error", err);
-    } else {
-      var res = JSON.parse(result.text);
-      try {
-        $(document).ready(function() {
-          $("#discussion-container").load("/views/home.html", function() {
-            console.log("load is performed");
-            //middleRenderPost(res.postData);
-            middleRenderPost(
-              res.postData.username,
-              res.postData.post[0].topic,
-              res.postData.post[0].description,
-              res.postData.post[0].postTime
-            );
-            yourDiscussion(res.postData);
-            renderTrendingPosts(res.trendData)
-            //renderResults(res.postData.post)
+      console.log("it is error", err);}
+      else {
+        var res = JSON.parse(result.text);
+    
+        localUser = res.userData;
+        console.log("local user", localUser);
+        localId = res.userData._id;
+        if (res.status) {
+          $(document).ready(function() {
+            $("#container1").load("/views/home.html", function() {
+              console.log("load is performed");
+              console.log("Hello" + res.username);
+
+              yourDiscussion(res.userData);
+              postId = res.userData.post[0]._id;
+              middleRenderPost(
+                res.userData.username,
+                res.userData.post[0].topic,
+                res.userData.post[0].description,
+                res.userData.post[0].postTime
+              );
+              
+              trendingTopics(res.trendData);
+            });
           });
-        });
-      } catch (e) {
-        console.log(e);
+        }
       }
-    }
+   
     
   })
 }
@@ -256,8 +262,8 @@ function createDiscussion() {
   var topic = document.getElementById("discussionTopic").value;
   var description = document.getElementById("discussionDescription").value;
   var postTime = Date.parse(new Date());
-  console.log("topic", topic.length);
-  console.log("description", description.length);
+  // console.log("topic", topic.length);
+  // console.log("description", description.length);
   var id = localId;
   var username = localUser.username;
   if (topic.length > 0 && description.length > 0) {
@@ -329,27 +335,27 @@ function renderPages(posts,page,postsPerPage){
       document.getElementById("TrendDiscussion").innerHTML = "";
       document.getElementById("Trending__pages").innerHTML = "";
       renderPages(posts, gotoPage, 5);
-      console.log("button", gotoPage);
+     // console.log("button", gotoPage);
     }
   });
   if (posts.length > postsPerPage) {
     const starting = (page - 1) * postsPerPage;
     const ending = page * postsPerPage;
-    console.log("start", posts.slice(starting, ending));
+   // console.log("start", posts.slice(starting, ending));
 
     posts.slice(starting, ending).forEach(renderTrendingPosts);
     renderButtons1(page, posts.length, postsPerPage);
   } else {
     const starting = (page - 1) * postsPerPage;
     const ending = page * postsPerPage;
-    console.log("start", posts.slice(starting, ending));
+   // console.log("start", posts.slice(starting, ending));
 
     posts.slice(starting, ending).forEach(renderTrendingPosts);
   }
 }
 
 function renderTrendingPosts(posts) {
-  console.log("renderPosts", posts);
+ // console.log("renderPosts", posts);
   
 
     var time = calculateTime(posts.postTime);
@@ -509,11 +515,11 @@ function renderPosts(posts) {
 
 function getAttributes(item) {
   console.log("item", item);
-  console.log(item.href);
+ // console.log(item.href);
 
   var urlArray = item.href.toString().split("#");
-  console.log("href", urlArray[1]);
-  console.log("type", typeof urlArray[1]);
+  // console.log("href", urlArray[1]);
+  // console.log("type", typeof urlArray[1]);
   var postid = urlArray[1];
   console.log("Local id", localId);
   superagent
@@ -535,8 +541,8 @@ function getAttributes(item) {
 }
 
 function getAttributes1(item){
-  console.log("item", item);
-  console.log(item.href);
+  // console.log("item", item);
+  // console.log(item.href);
 
   var urlArray = item.href.toString().split("#");
   console.log("href", urlArray[1]);
