@@ -120,8 +120,10 @@ function signup() {
       if (err) {
         console.log(err);
       } else {
-        localUser =res.userData;
+        
         var res = JSON.parse(result.text);
+        localUser = res.userData;
+        console.log("local user of signup ", localUser);
         if (res.status) {
           signupVerification(res.email);
         }
