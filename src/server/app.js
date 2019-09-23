@@ -79,7 +79,7 @@ app.post("/signup", (req, res) => {
   user.code = verificationCode;
   user.save();
   console.log("email", req.body.email);
-  res.send({ status: true, email: req.body.email });
+  res.send({ status: true, email: req.body.email ,userData : user});
 });
 
 //Fetching the id to the local host
@@ -104,14 +104,14 @@ app.post("/code", (req, res, next) => {
       if (result.code === req.body.code) {
         //res.sendFile(path.join(__dirname, "../client/public/views/home.html"));
         // res.send({ status: true, username: result.username });
-        postProfile.find({},function(err,posts){
-          if(err){
+        postProfile.find({}, function (err, posts) {
+          if (err) {
             console.log(err);
           }
           //console.log("res2",posts)
- 
+
           res.json({ status: true, userData: result, trendData: posts });
-       }).sort({postTime:-1})
+        }).sort({ postTime: -1 })
       } else {
         next({ status: 401, message: "Verification code is incorrect" });
       }
@@ -249,7 +249,7 @@ app.post("/newcreate", (req, res) => {
 
 
 app.post("/cancelDiscussion", (req, res) => {
-  
+
   userProfile.findOne({ username: req.body.username }, function (err, result) {
     if (result) {
       console.log("username exists");
@@ -258,7 +258,7 @@ app.post("/cancelDiscussion", (req, res) => {
         if (err) {
           console.log(err);
         }
-      
+
         res.json({ status: true, userData: result, trendData: posts });
       }).sort({ postTime: -1 })
 
@@ -332,17 +332,17 @@ app.post("/changepassword", (req, res) => {
 
       user.save();
 
-      postProfile.find({},function(err,posts){
-        if(err){
+      postProfile.find({}, function (err, posts) {
+        if (err) {
           console.log(err);
         }
         //console.log("res2",posts)
 
         res.json({ status: true, userData: user, trendData: posts });
-     }).sort({postTime:-1})
+      }).sort({ postTime: -1 })
 
       //res.send({ status: true , userData : user });
-    } 
+    }
 
   });
 });
@@ -399,6 +399,16 @@ app.post("/middleRender1", (req, res) => {
   })
 
 });
+
+app.post("/search", (req, res) => {
+  
+  postProfile.findOne({ topic: req.body.search }, function (err, search) {
+    if (search)
+      res.json({search:search,status:true})
+      else
+      res.send(staus=false)
+  })
+})
 
 app.use((error, req, res, next) => {
   console.log(error);
