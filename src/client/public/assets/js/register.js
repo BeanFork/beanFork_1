@@ -2,8 +2,6 @@ var localUser;
 var localId;
 var postId;
 
-///
-
 var localdata;
 var localmail;
 function sendCode() {
