@@ -1,6 +1,104 @@
 var localUser;
 var localId;
 var postId;
+
+///
+
+var localdata;
+var localmail;
+function sendCode() {
+  superagent
+    .post("/sendcode")
+    .send({
+      email: document.getElementById("input-email").value
+      // code: verificationCode
+    })
+    .end(function(err, result) {
+      var res = JSON.parse(result.text);
+
+      if (err) {
+        console.log(err);
+      }
+      if (res.status) {
+        document.getElementById("Emailspan").innerHTML =
+          "<p>verification code is sent to email </p>";
+      } else document.getElementById("Emailspan").innerHTML = "<p>email doesnt exist</p>";
+    });
+}
+
+function confirmCode() {
+  //localStorage.setItem('localemail', document.getElementById("input-email").value);
+  localmail = document.getElementById("input-email").value;
+  superagent
+    .post("/submitcode")
+    .send({
+      code: document.getElementById("input-code").value,
+      email: document.getElementById("input-email").value
+    })
+    .end(function(err, result) {
+      var res = JSON.parse(result.text);
+      localUser = res.userdata;
+      if (res.status) {
+        console.log(res.status);
+        // $("html").html(res.html);
+        $(document).ready(function() {
+          $("#divcontainer").load(
+            "../../views/change-password.html #container2",
+            function() {
+              console.log("load is performed");
+              document.getElementById(
+                "welcomeuser"
+              ).innerHTML = `<p> Welcome ${localUser.username}</p>`;
+            }
+          );
+        });
+      } else
+        document.getElementById("Emailspan").innerHTML =
+          "<p>Verification code is incorrect</p>";
+    });
+}
+
+function changePassword() {
+  console.log(localmail);
+  superagent
+    .post("/changepassword")
+    .send({
+      password: document.getElementById("password").value,
+      email: localmail
+    })
+    .end(function(err, result) {
+      var res = JSON.parse(result.text);
+      console.log("resulttt", res);
+      localId = res.userData._id;
+      localUser = res.userData.username;
+      if (res.status) {
+        console.log("password updated in db");
+        $(document).ready(function() {
+          $("#container2").load("../../views/home.html", function() {
+            console.log("load is performed");
+            yourDiscussion(res.userData);
+            //yourDiscussion(res.userData);
+            middleRenderPost(
+              res.userData.username,
+              res.userData.post[0].topic,
+              res.userData.post[0].description,
+              res.userData.post[0].postTime
+            );
+            trendingTopics(res.trendData);
+          });
+        });
+      } else console.log("not updated");
+    });
+}
+
+function cancelForgotPassword() {
+  $(document).ready(function() {
+    $("#divcontainer").load("../../views/register.html", function() {
+      console.log("load is performed");
+    });
+  });
+}
+
 function signup() {
   var username = document.getElementById("username").value;
   var email = document.getElementById("email").value;
@@ -11,7 +109,7 @@ function signup() {
 
   document.getElementById("new1").classList.add("show");
   document.getElementById("new1").classList.remove("hide");
-
+  localUser = username;
   superagent
     .post("/signup")
     .send({
@@ -66,7 +164,7 @@ function login() {
         var res = JSON.parse(result.text);
         // localStorage.setItem('localId',res.id);
         //   $("html").html(res.html);
-        localUser = res.userData;
+        localUser = res.userData.username;
         console.log("local user", localUser);
         localId = res.userData._id;
         if (res.status) {
@@ -83,7 +181,7 @@ function login() {
                 res.userData.post[0].description,
                 res.userData.post[0].postTime
               );
-              console.log("trendData", res.trendData)
+              console.log("trendData", res.trendData);
               trendingTopics(res.trendData);
             });
           });
@@ -187,13 +285,16 @@ function verificationConfirm() {
       } else {
         //$("html").html(result.text);
         var res = JSON.parse(result.text);
+        console.log("signup trending", res.userData);
         if (res.status) {
           $(document).ready(function() {
             $("#container1").load("/views/home.html", function() {
               console.log("load is performed");
-              document.getElementById(
-                "welcomeuser"
-              ).innerHTML = `<p>Welcome ${res.username}</p>`;
+              // document.getElementById(
+              //   "welcomeuser"
+              // ).innerHTML = `<p>Welcome ${res.userData.username}</p>`;
+
+              trendingTopics(res.trendData);
             });
           });
         }
@@ -212,23 +313,23 @@ function newDiscussion() {
           console.log("Hello" + res.username);
           document.getElementById(
             "welcomeuser"
-          ).innerHTML = `<p>Welcome ${localUser.username}</p>`;
+          ).innerHTML = `<p>Welcome ${localUser}</p>`;
         });
       });
     }
   });
 }
 
-function cancelDiscussion(){
+function cancelDiscussion() {
   superagent
-  .post("/cancelDiscussion")
-  .send({id : localId})
-  .end(function(err,result){
-    if (err) {
-      console.log("it is error", err);
-    } else {
-      var res = JSON.parse(result.text);
-      try {
+    .post("/cancelDiscussion")
+    .send({ id: localId })
+    .end(function(err, result) {
+      if (err) {
+        console.log("it is error", err);
+      } else {
+        var res = JSON.parse(result.text);
+
         $(document).ready(function() {
           $("#discussion-container").load("/views/home.html", function() {
             console.log("load is performed");
@@ -240,16 +341,12 @@ function cancelDiscussion(){
               res.postData.post[0].postTime
             );
             yourDiscussion(res.postData);
-            renderTrendingPosts(res.trendData)
+            trendingTopics(res.trendData);
             //renderResults(res.postData.post)
           });
         });
-      } catch (e) {
-        console.log(e);
       }
-    }
-    
-  })
+    });
 }
 
 function createDiscussion() {
@@ -259,7 +356,9 @@ function createDiscussion() {
   console.log("topic", topic.length);
   console.log("description", description.length);
   var id = localId;
-  var username = localUser.username;
+  var username = localUser;
+
+  console.log("useer", username);
   if (topic.length > 0 && description.length > 0) {
     superagent
       .post("/creatediscussion")
@@ -267,16 +366,16 @@ function createDiscussion() {
         topic: topic,
         description: description,
         userid: id,
-        id :id,
+        id: id,
         postTime: postTime,
-        username :username
+        username: username
       })
       .end(function(err, result) {
         if (err) {
           console.log("it is error", err);
         } else {
           var res = JSON.parse(result.text);
-          localUser = res.postData;
+          // localUser = res.postData;
           //console.log("rendering",res)
           //renderpost(res.postData)
           // postData = res.postData;
@@ -294,13 +393,12 @@ function createDiscussion() {
                     res.postData.post[0].postTime
                   );
                   yourDiscussion(res.postData);
-                  superagent
-                  .post("/newcreate")
-                  .end(function(err,result){
-                    var res =JSON.parse(result.text)
-                    trendingTopics(res.trendData)
+                  superagent.post("/newcreate").end(function(err, result) {
+                    var res = JSON.parse(result.text);
+                    console.log("resultttt", res.trendData);
+                    trendingTopics(res.trendData);
                   });
-                  
+
                   //renderResults(res.postData.post)
                 });
               });
@@ -316,12 +414,11 @@ function createDiscussion() {
       "<p>***Both the fields are mandatory</p>";
 }
 
-
-function trendingTopics(posts){
-  renderPages(posts,1,5)
+function trendingTopics(posts) {
+  renderPages(posts, 1, 5);
 }
 
-function renderPages(posts,page,postsPerPage){
+function renderPages(posts, page, postsPerPage) {
   document.getElementById("Trending__pages").addEventListener("click", e => {
     const btn = e.target.closest(".btn-trend");
     if (btn) {
@@ -350,28 +447,25 @@ function renderPages(posts,page,postsPerPage){
 
 function renderTrendingPosts(posts) {
   console.log("renderPosts", posts);
-  
 
-    var time = calculateTime(posts.postTime);
+  var time = calculateTime(posts.postTime);
 
-    var description = posts.description;
-    if (description.length > 40) {
-      description = description.slice(0, 50) + "...";
-    }
-    const markup = `
+  // var description = posts.description;
+  // if (description.length > 40) {
+  //   description = description.slice(0, 50) + "...";
+  // }
+  const markup = `
   <a onclick="getAttributes1(this)" class="results__link" href= "#${posts._id}"
   <article class="topic">
     
     <h2>${posts.topic}</h2><h5>posted by${posts.username}</h5>
-    <h4>${time}</h4>
     </article>
     </a>
 `;
-    document
-      .getElementById("TrendDiscussion")
-      .insertAdjacentHTML("beforeend", markup);
-  }
-
+  document
+    .getElementById("TrendDiscussion")
+    .insertAdjacentHTML("beforeend", markup);
+}
 
 function renderButtons1(page, numResults, resPerPage) {
   const pages = Math.ceil(numResults / resPerPage);
@@ -431,7 +525,7 @@ function createButton1(page, type) {
 // }
 
 function middleRenderPost(username, topic, description, postTime) {
-  document.getElementById("post_content").innerHTML="";
+  document.getElementById("post_content").innerHTML = "";
   var time = calculateTime(postTime);
   //console.log("render", postData.post[0].topic);
   const markup = `<h1 style = "white-space:pre"> ${topic}</h1>
@@ -494,7 +588,6 @@ function renderPosts(posts) {
   <a  onclick="getAttributes(this)" class="results__link" href= "#${posts._id}"
   <article class="topic">
     <h2>${posts.topic}</h2>
-    <h4>${time}</h4>
     <p>
     ${description}
     </p>
@@ -505,7 +598,6 @@ function renderPosts(posts) {
     .getElementById("yourdiscussion")
     .insertAdjacentHTML("beforeend", markup);
 }
-
 
 function getAttributes(item) {
   console.log("item", item);
@@ -518,7 +610,7 @@ function getAttributes(item) {
   console.log("Local id", localId);
   superagent
     .post("/middleRender")
-    .send({ postId: postid, userId: localId})
+    .send({ postId: postid, userId: localId })
     .end(function(err, result) {
       if (err) {
         console.log(error);
@@ -534,7 +626,7 @@ function getAttributes(item) {
     });
 }
 
-function getAttributes1(item){
+function getAttributes1(item) {
   console.log("item", item);
   console.log(item.href);
 
@@ -545,7 +637,7 @@ function getAttributes1(item){
   console.log("Local id", localId);
   superagent
     .post("/middleRender1")
-    .send({ id : id})
+    .send({ id: id })
     .end(function(err, result) {
       if (err) {
         console.log(error);
@@ -657,8 +749,6 @@ function addComment() {
     .send({ comment: comment, userId: userId, postId: postId })
     .end(function(err, result) {});
 }
-
-
 
 // module.exports = {
 //   middleRenderPost : middleRenderPost,

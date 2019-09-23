@@ -103,7 +103,15 @@ app.post("/code", (req, res, next) => {
     if (result) {
       if (result.code === req.body.code) {
         //res.sendFile(path.join(__dirname, "../client/public/views/home.html"));
-        res.send({ status: true, username: result.username });
+        // res.send({ status: true, username: result.username });
+        postProfile.find({},function(err,posts){
+          if(err){
+            console.log(err);
+          }
+          //console.log("res2",posts)
+ 
+          res.json({ status: true, userData: result, trendData: posts });
+       }).sort({postTime:-1})
       } else {
         next({ status: 401, message: "Verification code is incorrect" });
       }
@@ -234,7 +242,7 @@ app.post("/newcreate",(req,res)=>{
          if(err){
            console.log(err);
          }
-         //console.log("res2",posts)
+         console.log("res2",posts)
 
          res.json({trendData: posts });
       }).sort({postTime:-1})
@@ -244,6 +252,7 @@ app.post("/cancelDiscussion" ,(req,res)=>{
   userProfile.findOne({_id : req.body.id} , function(err,user){
     if(user){
       postProfile.find({},function(err,result){
+        console.log("postdata",result)
         res.send({postData:user , trendData : result})
       })
     }
@@ -313,7 +322,16 @@ app.post("/changepassword", (req, res) => {
       user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8));
 
       user.save();
-      res.send({ status: true , userData : user });
+      postProfile.find({},function(err,posts){
+        if(err){
+          console.log(err);
+        }
+        //console.log("res2",posts)
+
+        res.json({ status: true, userData: user, trendData: posts });
+     }).sort({postTime:-1})
+
+      //res.send({ status: true , userData : user });
     } 
   });
 });
