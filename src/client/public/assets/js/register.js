@@ -68,7 +68,7 @@ function changePassword() {
       var res = JSON.parse(result.text);
       console.log("resulttt", res);
       localId = res.userData._id;
-      localUser = res.userData.username;
+      localUser = res.userData;
       if (res.status) {
         console.log("password updated in db");
         $(document).ready(function() {
@@ -80,7 +80,8 @@ function changePassword() {
               res.userData.username,
               res.userData.post[0].topic,
               res.userData.post[0].description,
-              res.userData.post[0].postTime
+              res.userData.post[0].postTime,
+              res.userData.post[0].comments
             );
             trendingTopics(res.trendData);
           });
@@ -107,7 +108,7 @@ function signup() {
 
   document.getElementById("new1").classList.add("show");
   document.getElementById("new1").classList.remove("hide");
-  localUser = username;
+  //localUser = username;
   superagent
     .post("/signup")
     .send({
@@ -120,6 +121,7 @@ function signup() {
         console.log(err);
       } else {
         var res = JSON.parse(result.text);
+        localUser = res.userData
         if (res.status) {
           signupVerification(res.email);
         }
@@ -162,22 +164,24 @@ function login() {
         var res = JSON.parse(result.text);
         // localStorage.setItem('localId',res.id);
         //   $("html").html(res.html);
-        localUser = res.userData.username;
+        console.log("Hello" + res.userData.post);
+        localUser = res.userData;
         console.log("local user", localUser);
         localId = res.userData._id;
         if (res.status) {
           $(document).ready(function() {
             $("#container1").load("/views/home.html", function() {
               console.log("load is performed");
-              console.log("Hello" + res.username);
+              
 
               yourDiscussion(res.userData);
-              postId = res.userData.post[0]._id;
+              //postId = res.userData.post[0]._id;
               middleRenderPost(
                 res.userData.username,
                 res.userData.post[0].topic,
                 res.userData.post[0].description,
-                res.userData.post[0].postTime
+                res.userData.post[0].postTime,
+                res.userData.post[0].comments
               );
               trendingTopics(res.trendData);
             });
@@ -219,7 +223,7 @@ function mailidFormat() {
 function usernameLength() {
   var usernamelength = document.getElementById("username").value.length;
   var usernameRegex = /^[a-zA-Z0-9]{5,}$/;
-
+  
   if (usernamelength < 5) {
     document.getElementById("usernamecheck").innerHTML =
       "<p>Username must contain minimum of 5 character</p>";
@@ -310,7 +314,7 @@ function newDiscussion() {
           console.log("Hello" + res.username);
           document.getElementById(
             "welcomeuser"
-          ).innerHTML = `<p>Welcome ${localUser}</p>`;
+          ).innerHTML = `<p>Welcome ${localUser.username}</p>`;
         });
       });
     }
@@ -322,7 +326,7 @@ function cancelDiscussion() {
   console.log("function called",localUser)
   superagent
     .post("/cancelDiscussion")
-    .send({ username: localUser })
+    .send({ username: localUser.username })
     .end(function(err, result) {
       if (err) {
         console.log("it is error", err);
@@ -337,7 +341,8 @@ console.log(res,"res")
               res.userData.username,
               res.userData.post[0].topic,
               res.userData.post[0].description,
-              res.userData.post[0].postTime
+              res.userData.post[0].postTime,
+              res.userData.post[0].comments
             );
             yourDiscussion(res.userData);
             trendingTopics(res.trendData);
@@ -356,7 +361,7 @@ function createDiscussion() {
   // console.log("topic", topic.length);
   // console.log("description", description.length);
   var id = localId;
-  var username = localUser;
+  var username = localUser.username;
 
   console.log("useer", username);
   if (topic.length > 0 && description.length > 0) {
@@ -390,7 +395,8 @@ function createDiscussion() {
                     res.postData.username,
                     res.postData.post[0].topic,
                     res.postData.post[0].description,
-                    res.postData.post[0].postTime
+                    res.postData.post[0].postTime,
+                    res.postData.post[0].comments
                   );
                   yourDiscussion(res.postData);
                   superagent.post("/newcreate").end(function(err, result) {
@@ -523,8 +529,9 @@ function createButton1(page, type) {
 //   //console.log(jsonRes);
 // }
 
-function middleRenderPost(username, topic, description, postTime) {
+function middleRenderPost(username, topic, description, postTime,comments) {
   document.getElementById("post_content").innerHTML = "";
+  document.getElementById("comment_content").innerHTML = "";
   var time = calculateTime(postTime);
   //console.log("render", postData.post[0].topic);
   const markup = `<h1 style = "white-space:pre"> ${topic}</h1>
@@ -533,10 +540,19 @@ function middleRenderPost(username, topic, description, postTime) {
   <font size="2">${time}</font></br>
   <font size="4" class="content">
   ${description}
-  </font>`;
+  </font><h4>COMMENTS</h4>`;
   document
     .getElementById("post_content")
     .insertAdjacentHTML("afterbegin", markup);
+
+  for(var i=0;i< comments.length; i++)
+  {
+    const markup1 =`<h4>${comments[i].username}</h4>
+    <h5>${comments[i].comment}</h5>`
+    document
+    .getElementById("comment_content")
+    .insertAdjacentHTML("afterbegin", markup1);
+  }
   //document.getElementById("post_content").innerHTML="<p>It is working</p>"
   //console.log(jsonRes);
 }
@@ -546,6 +562,7 @@ function yourDiscussion(postData) {
 }
 
 function renderResults(posts, page, postsPerPage) {
+  console.log("posts",posts)
   document.getElementById("results__pages").addEventListener("click", e => {
     const btn = e.target.closest(".btn-inline");
     if (btn) {
@@ -593,6 +610,10 @@ function renderPosts(posts) {
     </article>
     </a>
 `;
+console.log("comment length", posts.comments.length)
+for(var i=0;i< posts.comments.length;i++){
+
+}
   document
     .getElementById("yourdiscussion")
     .insertAdjacentHTML("beforeend", markup);
@@ -619,7 +640,8 @@ function getAttributes(item) {
           res.username,
           res.userData.topic,
           res.userData.description,
-          res.userData.postTime
+          res.userData.postTime,
+          res.userData.comments
         );
       }
     });
@@ -642,12 +664,22 @@ function getAttributes1(item){
         console.log(error);
       } else {
         var res = JSON.parse(result.text);
-        middleRenderPost(
-          res.username,
-          res.topic,
-          res.description,
-          res.postTime
-        );
+        console.log("get attributes data",res)
+        postId = res.trendData.postid;
+        //var username = res.userData.username;
+        for(var i=0;i<res.userData.post.length; i++){
+          if(res.userData.post[i]._id === postId){
+            middleRenderPost(
+              res.userData.username,
+              res.userData.post[i].topic,
+              res.userData.post[i].description,
+              res.userData.post[i].postTime,
+              res.userData.post[i].comments
+            );
+          }
+        }
+        //console.log("postid",postId)
+        
       }
     });
 }
@@ -735,17 +767,17 @@ function calculateTime(postTime) {
 
 function addComment() {
   var comment = document.getElementById("commentBox").value;
-  const markup = `
-  <h2>${comment}</h2>
-  `;
-  document
-    .getElementById("comment_content")
-    .insertAdjacentHTML("afterbegin", markup);
-  var userId = localId;
-  console.log("add comment" + comment + "   " + userId + "   " + postId);
+  // const markup = `
+  // <h2>${comment}</h2>
+  // `;
+  // document
+  //   .getElementById("comment_content")
+  //   .insertAdjacentHTML("afterbegin", markup);
+  var username = localUser.username;
+  console.log("add comment" + comment + "   "  + username +"   "+postId);
   superagent
     .post("/comment")
-    .send({ comment: comment, userId: userId, postId: postId })
+    .send({ comment: comment, username: username,postId: postId })
     .end(function(err, result) {});
 }
 
