@@ -31,6 +31,41 @@ h3 {
 /* Search Bar
 */
 
+
+#custom-search-input {
+  margin-left: 250px;
+  margin-bottom: 6px;
+  }
+  #custom-search-input .search-query {
+  padding-right: 4px;
+  padding-left: 4px;
+  margin-bottom: 6px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 45px;
+  }
+  #custom-search-input button {
+  background-color: #3d6361;
+  padding: 2px 5px;
+  border: none;
+  position: relative;
+  margin-bottom: 8px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  color:rgb(198, 246, 248);
+  width: 50px;
+  height: 45px;
+  }
+  input[type="text"]::placeholder {
+  color:rgb(136, 165, 167);
+  font-weight: 400;
+  font-size:19px;
+  }
+  .search-query:focus + button {
+  z-index: 3; 
+  }
+
+
+  /* // */
+
 .banner input[type="text"] {
   font-family: Arial, Helvetica, sans-serif;
   padding: 0px 200px;
