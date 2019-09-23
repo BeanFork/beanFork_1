@@ -319,26 +319,27 @@ function newDiscussion() {
 
 
 function cancelDiscussion() {
+  console.log("function called",localUser)
   superagent
     .post("/cancelDiscussion")
-    .send({ id: localId })
+    .send({ username: localUser })
     .end(function(err, result) {
       if (err) {
         console.log("it is error", err);
       } else {
         var res = JSON.parse(result.text);
-
+console.log(res,"res")
         $(document).ready(function() {
           $("#discussion-container").load("/views/home.html", function() {
             console.log("load is performed");
             //middleRenderPost(res.postData);
             middleRenderPost(
-              res.postData.username,
-              res.postData.post[0].topic,
-              res.postData.post[0].description,
-              res.postData.post[0].postTime
+              res.userData.username,
+              res.userData.post[0].topic,
+              res.userData.post[0].description,
+              res.userData.post[0].postTime
             );
-            yourDiscussion(res.postData);
+            yourDiscussion(res.userData);
             trendingTopics(res.trendData);
             //renderResults(res.postData.post)
           });
@@ -573,7 +574,7 @@ function renderResults(posts, page, postsPerPage) {
 }
 
 function renderPosts(posts) {
-  //console.log("renderPosts", posts);
+  console.log("renderPosts", posts);
   // for(var i=0;i<posts.length;i++){
 
   var time = calculateTime(posts.postTime);
