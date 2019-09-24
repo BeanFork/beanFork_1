@@ -488,3 +488,5 @@ function addComment() {
     .send({ comment: comment, userId: userId, postId: postId })
     .end(function(err, result) {});
 }
+
+

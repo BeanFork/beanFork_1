@@ -4,53 +4,60 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
-    />
+    <link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
     <link href="assets/css/home.css" rel="stylesheet" type="text/css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
     <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
     <script src="assets/js/register.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
+    <script src="assets/js/settings.js"></script>
   </head>
-
+<div id="divcontainer" class = "divcontainer">
   <body>
     <!-- <ul class="nav navbar-nav navbar-right"></ul> -->
-
+  
     <div class="banner text-left">
+
+        <div class="dropdown" >
+            <button class= "dropdown-toggle btn-drop" type="button" data-toggle="dropdown">Welcome user
+            <span class="caret"></span></button> 
+            <ul class="dropdown-menu">
+              <li><a href="#" onclick='settingsPage()'>Settings</a></li>
+              <li><a href="#" onclick='logOut()'>Logout</a></li>
+            </ul>
+         
+          </div>
+
+
       <img class="logo" src="assets/img/bean.gif" />
       <h1><b> BeanFork </b></h1>
       <br />
 
       <div class="banner text-center">
-        <form class="navbar-form" role="search">
-          <div class="input-group add-on">
-            <input
-              class="form-control"
-              placeholder="Search"
-              autofocus="autofocus"
-              name="srch-term"
-              id="srch-term"
-              type="text"
-            />
-            <div class="input-group-btn">
-              <button class="btn btn-default" type="submit">
-                <i class="glyphicon glyphicon-search"></i>
-              </button>
-            </div>
+        <div class="container">
+          <div class="row">
+
+                   <div id="custom-search-input">
+                                    <div class="input-group col-md-8">
+                                        <input type="text" class="  search-query form-control" placeholder="Search" autofocus ="autofocus" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-danger" type="button">
+                                                <span class=" glyphicon glyphicon-search"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                             
           </div>
-        </form>
+        </div>
       </div>
     </div>
 
@@ -61,7 +68,7 @@
         <div class="col-lg-3">
           <div class="leftpane">
             <button
-              class="btn1"
+              class="btn-start"
               id="newdiscussion"
               type="button"
               size="50"
@@ -107,20 +114,10 @@
             <div id="comment_content">
 
             </div>
-            <textarea
-              id="commentBox"
-              class="comment"
-              rows="5"
-              cols="70"
-              value="Comment Below"
-              placeholder="Enter Your Comments Here..."
-            >
-            </textarea>
-            <!-- <input id="button-add" type="submit" onclick="addComment()" value="Add" /> -->
-            <button id="button-add" onclick="addComment()">add</button>
+           
           </div>
         </div>
-
+        
         <div class="col-lg-3">
           <div class="rightpane">
             <h1>Your Discussions</h1>
@@ -128,7 +125,19 @@
             <div id="results__pages"></div>
           </div>
         </div>
+
+        <textarea
+        id="commentBox"
+        class="comment"
+        rows="5"
+        cols="80"
+        placeholder="Add Your Comments"></textarea>
+      <!-- <input id="button-add" type="submit" onclick="addComment()" value="Add" /> -->
+      <button id="button-add" style = "font-size: 20px" onclick="addComment()">Add</button>
+
       </div>
     </div>
+    </div>
   </body>
+</div> 
 </html>

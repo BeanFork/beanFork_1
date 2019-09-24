@@ -9,6 +9,9 @@ var mongoose = require("mongoose");
 const fs = require("fs");
 var bcrypt = require("bcrypt");
 
+
+// const jwt = require('jsonwebtoken');
+
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/userprofile");
 /*mongoose.connect("mongodb+srv://beanforkaccess:Admin@123@beanfork-ddksd.mongodb.net/test?retryWrites=true&w=majority",{
@@ -34,7 +37,22 @@ var nameSchema = new mongoose.Schema({
     }
   ]
 });
+
+
+
+
+// nameSchema.methods.newAuthToken =  function() {
+//   const user = this;
+//   const token = jwt.sign({_id: user._id.toString()}, 'this is new blog11111', {expiresIn: "7 days" });
+//   user.tokens = user.tokens.concat( { token } );
+//    user.save();
+//   return token;
+// }
+
+
 var userProfile = mongoose.model("User", nameSchema);
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -54,16 +72,67 @@ app.post("/signup", (req, res) => {
   //     .slice(-8);
   // }
   var verificationCode = util.sendMail(req.body.email);
+  
 
   console.log(verificationCode);
 
   var user = new userProfile(req.body);
-  user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8));
+  // try {
+  //   const token =  user.newAuthToken();
+  //   console.log("This is the password " + token, user);
+  //   res.status(201).send({user, token});
+  // }
+  // catch(e) {
+  //   res.status(400).send(e);
+  // }
+  //user.password =  bcrypt.hashSync(user.password, bcrypt.genSaltSync(8));
   user.code = verificationCode;
-  user.save();
+
+  // nameSchema.pre('save', async function(next){
+  //   const user = this;
+  //   console.log("user"+user);
+
+  //   if(user.isModified('password')) {
+  //     console.log(user.isModified('password'));
+     
+  //     console.log(user.password); 
+  //   }
+
+  // next();
+  // });
+
+ 
   console.log("email", req.body.email);
   res.send({ status: true, email: req.body.email });
 });
+
+
+
+
+
+// const auth = async (req,res,next) => {
+//   try {
+//       const token = req.header('Authorization').replace('Bearer', '').trim()
+      
+//       const decoded  = jwt.verify(token, 'thisismynewblog')
+     
+//       const user  = await userProfile.findOne({ _id:decoded._id, 'tokens.token': token})
+
+//       if(!user){
+//           throw new Error()
+//       }
+//       req.token = token
+//       req.user = user
+//       next()
+//   } catch (error) {
+//       console.log(error)
+//       res.status(401).send({error:'Please authenticate!'})
+//   }
+// }
+
+
+
+
 
 //Fetching the id to the local host
 
@@ -108,7 +177,9 @@ app.post("/home", (req, res, next) => {
       console.log("username exists");
       console.log(req.body.password);
 
-      if (bcrypt.compareSync(req.body.password, result.password)) {
+      if (result.password === req.body.password)
+      //rsbcrypt.compareSync(req.body.password, result.password
+      {
         console.log("password exists");
 
         res.send({ status: true, userData: result });
@@ -292,10 +363,45 @@ app.post("/middleRender", (req, res) => {
   })
 });
 
+
+
+
+
+
+
+///////////////settingsPage
+    
+app.post("/settings",(req,res)=>{
+
+  res.send({ status: true });
+  console.log("Setting in server side");
+
+});
+
+///////////////Logout
+
+app.post("/logout",(req,res) => {
+
+    res.send({ status:true });
+   
+    console.log("logout successfully");
+
+});
+
+//////////move to home
+
+app.post("/restore" , (req,res) =>{
+
+  res.send({ status:true });
+  
+});
+
+
+
 app.use((error, req, res, next) => {
   console.log(error);
   res.sendStatus(error.status || 500);
 });
 app.listen(port, () => {
-  console.log("Server listenening to port " + port);
+  console.log("Server listening to port " + port);
 });

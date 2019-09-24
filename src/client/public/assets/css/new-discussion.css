@@ -7,11 +7,12 @@ header {
 }
 .logo {
   float: left;
-  width: 70px;
-  padding: 10px;
-  margin: 20px 10px 10px 0px; 
+  width: 100px;
+  padding: 4px;
+  margin: 0px 10px 10px 0px;
+  border-radius: 50px;
+  border: 2px solid rgb(128, 212, 198);
 }
-
 
 .glyphicon-envelope,
 .glyphicon {
@@ -49,26 +50,13 @@ resize: none
 .clearfix {
   display: table;
 }
-button{
-  width: 150px;
-  height: 40px;
 
-  color: black;
-  
-  text-decoration: none;
-  display: inline-block;
-  font-size: 12px;
-  margin: 4px 2px;
-  cursor: pointer;
-  }
   .banner{
     background-color: #31d9df;
     color: #fff;
     padding: 5px 20px;
     text-align: left;
     font-size: 20px;
-   
-    
     }
     .banner h1{
       color: #61696d;
@@ -83,8 +71,59 @@ button{
     margin: 0px 10px 10px 10px ;
   }
 
+
+
+  /* Variable containers
+  */
+
+  body{
+    background-image: url("../img/forumhome1.jpg");
+    background-size: cover;
+  }
+  .discussioncontainer{
+    margin-top: 80px;
+    color: #f9fcffc5;
+    font-family: Arial, Helvetica, sans-serif;
+
+  }
   #discussion{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
     font-weight: normal;
+
   }
+
+  #discussionTopic {
+      border: 1px solid #334746fe;
+      border-radius:20px;
+      background-color: #cce2e2;
+  }
+  #discussionDescription{
+    border: 1px solid #334746fe;
+    border-radius: 20px;
+    background-color: #cce2e2;
+
+  }
+  
+.createbtn{
+  width: 230px;
+  height: 40px;
+  margin-top: 25px;
+  background-color: #16ecec;
+  color:#61696d;
+  font-size: 20px;
+  border-radius:10px;
+  border : 1px solid #0bddec;
+
+}
+
+.cancelbtn {
+  width: 230px;
+  height: 40px;
+  margin-top:25px;
+  background-color: #16ecec;
+  color:#61696d;
+  font-size: 20px;
+  border-radius:10px;
+  border : 1px solid #0bddec;
+}

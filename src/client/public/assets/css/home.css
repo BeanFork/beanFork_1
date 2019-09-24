@@ -2,9 +2,11 @@
 */
 .logo {
   float: left;
-  width: 70px;
-  padding: 10px;
-  margin: 35px 10px 10px 0px;
+  width: 100px;
+  padding: 4px;
+  margin: 45px 10px 10px 4px;
+  border-radius: 50px;
+  border: 2px solid rgb(128, 212, 198);
 }
 h3 {
   font-style: inherit;
@@ -22,7 +24,7 @@ h3 {
   color: #61696d;
   font-size: 60px;
   font-family: "Courier New", Courier, monospace;
-  margin-top: 58px;
+  margin-top: 62px;
 }
 
 
@@ -31,30 +33,76 @@ h3 {
 /* Search Bar
 */
 
-.banner input[type="text"] {
-  font-family: Arial, Helvetica, sans-serif;
-  padding: 0px 200px;
-  border: 1px solid rgb(101, 187, 187);
-  margin-left: -8.5%;
-  margin-top: -10.5%;
-}
-.add-on .form-control:focus {
-  text-align: left;
-}
 
-.input-group-btn {
-  align-content: left;
-}
-.btn {
-  border: #31d9df;
-  border: 1px solid rgb(101, 187, 187);
-  bottom: 58px;
-  left: -54px;
-  height: 34px;
-  width: 50px;
-}
+
+
+#custom-search-input {
+        margin-left: 250px;
+      
+        margin-bottom: 6px;
+       
+    }
+ 
+    #custom-search-input .search-query {
+      
+        padding-right: 4px;
+        padding-left: 4px;
+        margin-bottom: 6px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        height: 45px;
+        font-size: 20px;
+    }
+ 
+    #custom-search-input button {
+       
+        background-color: #3d6361;
+        padding: 2px 5px;
+        border: none;
+        position: relative;
+        margin-bottom: 8px;
+     
+      
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        color:rgb(198, 246, 248);
+        width: 50px;
+        height: 45px;
+    }
+    input[type="text"]::placeholder {
+      color:rgb(136, 165, 167);
+      font-weight: 400;
+      font-size:19px;
+    }
+ 
+    .search-query:focus + button {
+        z-index: 3;   
+    }
 /*
 Your Account dropdown
+*/
+
+/* Dropdown button
+*/
+
+
+.btn-drop{
+
+  background-color: rgb(158, 212, 158);
+  margin: 15px 0px 0px 0px;
+  padding: 3px 3px 3px 3px;
+  border: none;
+  border-radius: 8px;
+  color: #101c22;
+  
+}
+.dropdown{
+  
+
+  left: 2px;
+  margin: 50px 50px 50px 50px;
+  float: right;
+}
+
+/*
 */
 
 
@@ -65,10 +113,41 @@ Variable Elements
 /*
 Containers
 */
+body{
+  color: rgb(189, 16, 16);
+}
+
+.btn-start{
+  
+  font-size: 20px; 
+  width: 18em;
+  height: 3em;
+  background-color:#b4dfe228;
+  color: #18dfdf;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-block;
+  border: 1px solid #fefefefe;
+  border-style: outset;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 30px;
+  border-color:#141313;
+  margin-left: 8px;
+
+
+}
+.btn-start :hover {
+  color: #ffefef;
+  background-color: #bdd8bd !important;
+
+}
 
 .container-fluid {
-  padding: 10px 10px;
-  margin: 0px 10px 1000px 20px;
+  padding: 10px 10px 10px 0px;
+  background-image: url("../img/home.jpg");
+  background-size: cover;
+
 }
 
 button {
@@ -81,73 +160,93 @@ button {
   margin: 4px 2px;
   cursor: pointer;
 }
-
+/* Comment Box and Add button
+*/
 .comment {
-  background-color: #f8ffff;
+  background-color: #c8e7e7;
   color: #61696d;
   font-size: 15px;
-  margin-left: 2%;
+  left:407px;
+  top: 755px;
   position: absolute;
-  margin-top: 60%;
   resize: none;
+  border : 1px solid #8cbbd1;
+  border-radius : 5px;
+
 }
 
 #button-add {
-  background-color: #31d9df;
-  color: #61696d;
-  font-size: 15px;
-  cursor: pointer;
-  padding: 16px 22px;
-  font-weight: bold;
-  position: absolute;
-  margin-top: 60%;
-  margin-left: 88%;
-}
-.leftpane {
-  margin-top: 0%;
-  background-color: azure;
-  height: 700px;
-  border: 1px solid rgb(235, 229, 229);
-  width: 400  px;
-}
-
-.middlepane {
-  margin-top: 0%;
-  background-color: #c2ebf0;
-  height: 700px;
-  border: 1px solid rgb(235, 229, 229);
-  width: 800px;
-  margin-left: -29.5px;
-}
-
-.rightpane {
-  margin-top: 0px;
-  background-color: rgb(202, 224, 219);
-  border: 1px solid rgb(235, 229, 229);
-  height: 700px;
-  width: 550px;
-}
-.btn1{
-  
+ 
   font-size: 20px; 
-  width: 25.9em;  height: 3em;
-  background-color: rgb(157, 206, 206);
-  color: #61696d;
+  width: 100px;
+  height: 3em;
+  background-color: #d8d8e22d;
+  color: cyan;
   font-weight: bold;
   font-size: 15px;
   cursor: pointer;
   display: inline-block;
-  border: 1px;
+  border: 1px solid #fefefefe;
   border-style: outset;
   text-align: center;
   font-family: 'Courier New', Courier, monospace;
+  border-radius: 30px;
+  border-color:#141313;
+  top: 775px;
+  right: 510px;
+  position: absolute;
+ 
+}
 
+#btn-add :hover {
+  background-color: #21d321 !important;
+}
+.leftpane {
+  margin-top: 0%;
+  color: rgb(245, 206, 206);
+  height: 700px;
+  background-color: rgba(145, 200, 231, 0.231);
+  width: 380px;
+}
+
+.middlepane {
+  margin-top: 0%;
+  color: rgb(200, 241, 252);
+  height: 595px;
+  background-color:rgba(23, 221, 129, 0.164);
+  width: 800px;
+  margin-left: -29.5px;
+  overflow: scroll;
 
 }
 
+.rightpane {
+  margin-top: -20px;
+  margin-left: 85px;
+  color: rgb(199, 247, 255);
+  height: 700px;
+  width: 450px;
+  margin-bottom: 0px;
+  background-color: #89e9f041;
+}
+
+
 .results__link:link, .results__link:visited,.results__link:hover,
 .results__link--active {
-    background-color: #F9F5F3; }
+    background-color: rgb(224, 92, 26);
+  
+  }
 
+.btn-inline{
+
+  background-color: #d8d8e22d;
+  color: cyan;
+  font-size: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 550;
+  border: 1px solid #e1e5f034;
+  border-radius: 30px;
+  width: 70px;
+}
 
 
