@@ -84,6 +84,7 @@ function changePassword() {
       var res = JSON.parse(result.text);
       localId = res.userData._id;
       localUser = res.userData;
+      postId = res.userData.post[0]._id
       if (res.status) {
         $(document).ready(function() {
           $("#container2").load("../../views/home.html", function() {
@@ -266,7 +267,7 @@ function login() {
           $(document).ready(function() {
             $("#container1").load("/views/home.html", function() {
               yourDiscussion(res.userData);
-
+              postId = res.userData.post[0]._id;
               middleRenderPost(
                 res.userData.username,
                 res.userData.post[0].topic,
@@ -312,7 +313,7 @@ function cancelDiscussion() {
         console.log(err);
       } else {
         var res = JSON.parse(result.text);
-
+        postId = res.userData.post[0]._id;
         $(document).ready(function() {
           $("#discussion-container").load("/views/home.html", function() {
             middleRenderPost(
@@ -356,7 +357,7 @@ function createDiscussion() {
           console.log(err);
         } else {
           var res = JSON.parse(result.text);
-
+          postId = res.postData.post[0]._id;
           if (res.status) {
             $(document).ready(function() {
               $("#discussion-container").load("/views/home.html", function() {
@@ -655,7 +656,7 @@ function addComment() {
   var comment = document.getElementById("commentBox").value;
   document.getElementById("commentBox").value = "";
   var username = localUser.username;
-
+ console.log(localUser.username)
   superagent
     .post("/comment")
     .send({ comment: comment, username: username, postId: postId })
@@ -686,6 +687,7 @@ function searchBar() {
     .send({ search: search })
     .end(function(err, result) {
       var res = JSON.parse(result.text);
+      postId = res.postData._id;
       middleRenderPost(
         res.username,
         res.postData.topic,

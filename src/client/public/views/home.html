@@ -72,8 +72,9 @@
 
           </div>
           <textarea id="commentBox" class="comment" rows="5" cols="70" value="Comment Below"
-            placeholder="Enter Your Comments Here...">
-            </textarea>
+            placeholder="Enter Your Comments Here..." onkeydown = "if (event.keyCode == 13)
+            document.getElementById('button-add').click()"></textarea>
+           
           <!-- <input id="button-add" type="submit" onclick="addComment()" value="Add" /> -->
           <button id="button-add" onclick="addComment()">add</button>
         </div>

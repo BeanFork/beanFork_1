@@ -313,6 +313,7 @@ app.post("/changepassword", (req, res) => {
 
 app.post("/comment", (req, res) => {
   postProfile.findOne({ postid: req.body.postId }, function(err, user) {
+    console.log("user",user)
     userProfile.findOne({ username: user.username }, function(err, result) {
       var commentObject = {
         comment: req.body.comment,
