@@ -6,6 +6,7 @@ var localdata;
 var localmail;
 var TrendData;
 function sendCode() {
+
   superagent
     .post("/sendcode")
     .send({
@@ -19,8 +20,14 @@ function sendCode() {
         console.log(err);
       }
       if (res.status) {
-        document.getElementById("Emailspan").innerHTML =
-          "<p>verification code is sent to email </p>";
+     
+          document.getElementById("sendcode1").classList.add("hide");
+
+          document.getElementById("sendcode1").classList.remove("show");
+        
+          document.getElementById("sendcode2").classList.add("show");
+          document.getElementById("sendcode2").classList.remove("hide");
+
       } else document.getElementById("Emailspan").innerHTML = "<p>email doesnt exist</p>";
     });
 }
@@ -538,6 +545,7 @@ function createButton1(page, type) {
 // }
 
 function middleRenderPost(username, topic, description, postTime,comments) {
+  
   document.getElementById("post_content").innerHTML = "";
   document.getElementById("comment_content").innerHTML = "";
   var time = calculateTime(postTime);

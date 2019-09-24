@@ -19,7 +19,7 @@
 </head>
 
 <body>
-  <!-- <ul class="nav navbar-nav navbar-right"></ul> -->
+
 
 <div class="banner text-left">
   <img class="logo" src="assets/img/bean.gif" />
@@ -32,9 +32,10 @@
   
   <div id="custom-search-input">
   <div class="input-group col-md-8">
-  <input type="text" class=" search-query form-control" placeholder="Search" autofocus ="autofocus" id="search"/>
+  <input type="text" class=" search-query form-control" placeholder="Search" autofocus ="autofocus" id="search" onkeydown = "if (event.keyCode == 13)
+  document.getElementById('btnSearch').click()" />
   <span class="input-group-btn">
-  <button class="btn btn-danger" type="button" onclick="searchBar()">
+  <input class="btn btn-danger" type="button" onclick="searchBar()" id="btnSearch"/>
   <span class=" glyphicon glyphicon-search"></span>
   </button>
   </span>
