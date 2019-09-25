@@ -17,7 +17,7 @@ function sendMail(email){
         {
           from: "beanforkaccess@gmail.com",
           to: email,
-          subject: "Forgot Password",
+          subject: "Verification Code for Reset Password",
           text: "Verification code is " + verificationCode
         },
         function (err) {

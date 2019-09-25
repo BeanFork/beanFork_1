@@ -26,6 +26,7 @@
   margin-left: 5%;
   height: 670px;
   margin-top: 2%;
+  border-radius: 10px;
 }
 .new1 {
   background-color: rgb(172, 201, 201);
@@ -39,6 +40,7 @@
   background-color: rgb(176, 212, 212);
   margin-left: 5%;
   height: 670px;
+  border-radius: 10px;
 }
 .login {
   margin-top: 10px;
@@ -80,3 +82,5 @@ display: none !important;
 .otpimage{
   margin-left: 80%
 }
+
+

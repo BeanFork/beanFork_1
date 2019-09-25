@@ -20,7 +20,6 @@ function forgotPassword() {
 }
 
 function sendCode() {
-
   superagent
     .post("/sendcode")
     .send({
@@ -33,14 +32,12 @@ function sendCode() {
         console.log(err);
       }
       if (res.status) {
-     
-          document.getElementById("sendcode1").classList.add("hide");
+        document.getElementById("sendcode1").classList.add("hide");
 
-          document.getElementById("sendcode1").classList.remove("show");
-        
-          document.getElementById("sendcode2").classList.add("show");
-          document.getElementById("sendcode2").classList.remove("hide");
+        document.getElementById("sendcode1").classList.remove("show");
 
+        document.getElementById("sendcode2").classList.add("show");
+        document.getElementById("sendcode2").classList.remove("hide");
       } else document.getElementById("Emailspan").innerHTML = "<p>email doesnt exist</p>";
     });
 }
@@ -84,7 +81,7 @@ function changePassword() {
       var res = JSON.parse(result.text);
       localId = res.userData._id;
       localUser = res.userData;
-      postId = res.userData.post[0]._id
+      postId = res.userData.post[0]._id;
       if (res.status) {
         $(document).ready(function() {
           $("#container2").load("../../views/home.html", function() {
@@ -386,46 +383,54 @@ function createDiscussion() {
 
 // TRENDING TOPICS RENDERING
 
+// function trendingTopics(posts) {
+//   renderPages(posts, 1, 5);
+// }
+
+// function renderPages(posts, page, postsPerPage) {
+//   document.getElementById("Trending__pages").addEventListener("click", e => {
+//     const btn = e.target.closest(".btn-trend");
+//     if (btn) {
+//       const gotoPage = parseInt(btn.dataset.goto, 10);
+//       document.getElementById("TrendDiscussion").innerHTML = "";
+//       document.getElementById("Trending__pages").innerHTML = "";
+//       renderPages(posts, gotoPage, 5);
+//     }
+//   });
+//   if (posts.length > postsPerPage) {
+//     const starting = (page - 1) * postsPerPage;
+//     const ending = page * postsPerPage;
+
+//     posts.slice(starting, ending).forEach(renderTrendingPosts);
+//     renderButtons1(page, posts.length, postsPerPage);
+//   } else {
+//     const starting = (page - 1) * postsPerPage;
+//     const ending = page * postsPerPage;
+
+//     posts.slice(starting, ending).forEach(renderTrendingPosts);
+//   }
+// }
+
 function trendingTopics(posts) {
-  renderPages(posts, 1, 5);
-}
+  console.log("post",posts)
 
-function renderPages(posts, page, postsPerPage) {
-  document.getElementById("Trending__pages").addEventListener("click", e => {
-    const btn = e.target.closest(".btn-trend");
-    if (btn) {
-      const gotoPage = parseInt(btn.dataset.goto, 10);
-      document.getElementById("TrendDiscussion").innerHTML = "";
-      document.getElementById("Trending__pages").innerHTML = "";
-      renderPages(posts, gotoPage, 5);
-    }
-  });
-  if (posts.length > postsPerPage) {
-    const starting = (page - 1) * postsPerPage;
-    const ending = page * postsPerPage;
-
-    posts.slice(starting, ending).forEach(renderTrendingPosts);
-    renderButtons1(page, posts.length, postsPerPage);
-  } else {
-    const starting = (page - 1) * postsPerPage;
-    const ending = page * postsPerPage;
-
-    posts.slice(starting, ending).forEach(renderTrendingPosts);
-  }
-}
-
-function renderTrendingPosts(posts) {
-  const markup = `
-  <a onclick="getAttributes1(this)" class="results__link" href= "#${posts._id}"
-  <article class="topic">
+  for(var i=0;i<posts.length;i++){
+    const markup = `
+ 
+    <a onclick="getAttributes1(this)" class="results__link" href= "#${posts[i]._id}"
+    <article class="topic">
+      
+      <h2>${posts[i].topic}</h2><h5>posted by${posts[i].username}</h5>
+      </article>
+      </a>
+  
     
-    <h2>${posts.topic}</h2><h5>posted by${posts.username}</h5>
-    </article>
-    </a>
-`;
-  document
-    .getElementById("TrendDiscussion")
-    .insertAdjacentHTML("beforeend", markup);
+  `;
+    document
+      .getElementById("TrendDiscussion")
+      .insertAdjacentHTML("beforeend", markup);
+  }
+
 }
 
 function getAttributes1(item) {
@@ -487,11 +492,9 @@ function createButton1(page, type) {
   return markup;
 }
 
-
 // MIDDLE RENDERING
 
 function middleRenderPost(username, topic, description, postTime, comments) {
-
   document.getElementById("post_content").innerHTML = "";
   document.getElementById("comment_content").innerHTML = "";
   var time = calculateTime(postTime);
@@ -518,56 +521,58 @@ function middleRenderPost(username, topic, description, postTime, comments) {
 
 // YOUR DISCUSSION TOPIC RENDERING
 
+// function yourDiscussion(postData) {
+//   renderResults(postData.post, 1, 5);
+// }
+
+// function renderResults(posts, page, postsPerPage) {
+//   document.getElementById("results__pages").addEventListener("click", e => {
+//     const btn = e.target.closest(".btn-inline");
+//     if (btn) {
+//       const gotoPage = parseInt(btn.dataset.goto, 10);
+//       document.getElementById("yourdiscussion").innerHTML = "";
+//       document.getElementById("results__pages").innerHTML = "";
+//       renderResults(localUser.post, gotoPage, 5);
+//       discussionPage = gotoPage;
+//     }
+//   });
+
+//   if (posts.length > postsPerPage) {
+//     const starting = (page - 1) * postsPerPage;
+//     const ending = page * postsPerPage;
+
+//     posts.slice(starting, ending).forEach(renderPosts);
+//     renderButtons(page, posts.length, postsPerPage);
+//   } else {
+//     const starting = (page - 1) * postsPerPage;
+//     const ending = page * postsPerPage;
+
+//     posts.slice(starting, ending).forEach(renderPosts);
+//   }
+// }
+
 function yourDiscussion(postData) {
-  renderResults(postData.post, 1, 5);
-}
+  var posts =postData.post;
+  for(var i=0; i<posts.length ;i++){
 
-function renderResults(posts, page, postsPerPage) {
-  document.getElementById("results__pages").addEventListener("click", e => {
-    const btn = e.target.closest(".btn-inline");
-    if (btn) {
-      const gotoPage = parseInt(btn.dataset.goto, 10);
-      document.getElementById("yourdiscussion").innerHTML = "";
-      document.getElementById("results__pages").innerHTML = "";
-      renderResults(localUser.post, gotoPage, 5);
-      discussionPage = gotoPage;
-    }
-  });
-
-  if (posts.length > postsPerPage) {
-    const starting = (page - 1) * postsPerPage;
-    const ending = page * postsPerPage;
-
-    posts.slice(starting, ending).forEach(renderPosts);
-    renderButtons(page, posts.length, postsPerPage);
-  } else {
-    const starting = (page - 1) * postsPerPage;
-    const ending = page * postsPerPage;
-
-    posts.slice(starting, ending).forEach(renderPosts);
-  }
-}
-
-function renderPosts(posts) {
-  var description = posts.description;
+  var description = posts[i].description;
   if (description.length > 40) {
     description = description.slice(0, 80) + "...";
   }
   const markup = `
-  <a  onclick="getAttributes(this)" class="results__link" href= "#${posts._id}"
+  <a  onclick="getAttributes(this)" class="results__link" href= "#${posts[i]._id}"
   <article class="topic">
-    <h2>${posts.topic}</h2>
+    <h2>${posts[i].topic}</h2>
     <p>
     ${description}
     </p>
     </article>
     </a>
 `;
-
-  for (var i = 0; i < posts.comments.length; i++) {}
   document
     .getElementById("yourdiscussion")
     .insertAdjacentHTML("beforeend", markup);
+}
 }
 
 function getAttributes(item) {
@@ -656,7 +661,7 @@ function addComment() {
   var comment = document.getElementById("commentBox").value;
   document.getElementById("commentBox").value = "";
   var username = localUser.username;
- console.log(localUser.username)
+  console.log(localUser.username);
   superagent
     .post("/comment")
     .send({ comment: comment, username: username, postId: postId })
