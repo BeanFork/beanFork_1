@@ -312,7 +312,14 @@ app.post("/changepassword", (req, res) => {
 
 
 app.post('/editpage',(req,res)=>{
-  res.send({ status: true });
+  postProfile.findOne({postid:req.body.postId},function(err,result){
+
+    if(result){
+
+      res.json({ status: true,topic:result.topic,description:result.description });
+    }
+  })
+  
 }
 )
 

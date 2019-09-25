@@ -573,12 +573,16 @@ function editButton() {
 
 function editAction() {
 
-  superagent.post("/editpage").end(function (err, result) {
+  superagent.post("/editpage").send({ postId: postId, 
+    userId: localId,}).end(function (err, result) {
     var res = JSON.parse(result.text);
 
     if (res.status) {
       $(document).ready(function () {
         $("#container1").load("/views/edit-discussion.html", function () {
+          console.log(res)
+          document.getElementById("edit-discussionTopic").value=res.topic;
+           document.getElementById("edit-discussionDescription").value=res.description;
          console.log("edit page")
         });
       });
@@ -648,6 +652,28 @@ function editAction() {
             var res = JSON.parse(result.text);
             
             if (res.status) {
+
+
+ //       console.log("your discussion", res.userData)
+  //       console.log("trend topics", res.trendData)
+
+  //       yourDiscussion(res.userData);
+  //       postId = res.userData.post[0]._id;
+        
+  //       middleRenderPost(
+  //         res.userData.username,
+  //         res.userData.post[0].topic,
+  //         res.userData.post[0].description,
+  //         res.userData.post[0].postTime,
+  //         res.userData.post[0].comments,
+  //         true
+  //       );
+
+  //       trendingTopics(res.trendData);
+
+  //     }
+  //     else
+  //       console.log("status:false ")
 
 
               console.log("your dis",res.userData)
