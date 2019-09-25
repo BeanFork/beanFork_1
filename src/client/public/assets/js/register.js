@@ -533,14 +533,151 @@ function middleRenderPost(username, topic, description, postTime, comments, stat
     document
       .getElementById("delete1")
       .insertAdjacentHTML("beforeend", buttons123);
+
+
+      const buttonsEdit = editButton();
+      document
+        .getElementById("edit1")
+        .insertAdjacentHTML("beforeend", buttonsEdit);
+
   }
   else {
-
     document
       .getElementById("delete1").innerHTML = "";
 
+    document
+      .getElementById("edit1").innerHTML = "";
+
   }
 }
+
+
+//EDIT POST 
+
+function editButton() {
+
+  document
+    .getElementById("edit1").innerHTML = "";
+
+  const markup = `<button class="btn" onclick="editAction()">  
+ <span><i class="glyphicon glyphicon-pencil"></i></span></button>`;
+  return markup
+    ;
+
+}
+
+
+
+
+//EDIT ACTION 
+
+function editAction() {
+
+  superagent.post("/editpage").end(function (err, result) {
+    var res = JSON.parse(result.text);
+
+    if (res.status) {
+      $(document).ready(function () {
+        $("#container1").load("/views/edit-discussion.html", function () {
+         console.log("edit page")
+        });
+      });
+    }
+  });
+
+
+}
+
+
+  // console.log("post id", postId);
+  // console.log("userid", localId)
+
+
+
+  //   superagent.post('/edit').send({ postId: postId, userId: localId }).end(function (err, result) {
+  //     var res = JSON.parse(result.text)
+  //     if (err) console.log("err")
+  //     if (res.status) {
+  //       console.log("your discussion", res.userData)
+  //       console.log("trend topics", res.trendData)
+
+  //       yourDiscussion(res.userData);
+  //       postId = res.userData.post[0]._id;
+        
+  //       middleRenderPost(
+  //         res.userData.username,
+  //         res.userData.post[0].topic,
+  //         res.userData.post[0].description,
+  //         res.userData.post[0].postTime,
+  //         res.userData.post[0].comments,
+  //         true
+  //       );
+
+  //       trendingTopics(res.trendData);
+
+  //     }
+  //     else
+  //       console.log("status:false ")
+
+  //   })
+
+
+  function editDiscussion() {
+
+    var topic = document.getElementById("edit-discussionTopic").value;
+    var description = document.getElementById("edit-discussionDescription").value;
+    var postTime = Date.parse(new Date());
+  
+    var username = localUser.username;
+  
+    if (topic.length > 0 && description.length > 0) {
+      superagent
+        .post("/editdiscussion")
+        .send({
+          topic: topic,
+          description: description,
+          postId: postId, 
+          userId: localId,
+          postTime: postTime,
+          username: username
+        })
+        .end(function (err, result) {
+          if (err) {
+            console.log(err);
+          } else {
+            var res = JSON.parse(result.text);
+            
+            if (res.status) {
+
+
+              console.log("your dis",res.userData)
+              console.log("tred disc",res.trendData)
+              $(document).ready(function () {
+                $("#discussion-container").load("/views/home.html", function () {
+                  middleRenderPost(
+                    res.userData.username,
+                    res.userData.post[0].topic,
+                    res.userData.post[0].description,
+                    res.userData.post[0].postTime,
+                    res.userData.post[0].comments
+                  );
+                  yourDiscussion(res.userData);
+                  trendingTopics(res.trendData);
+                });
+              });
+            }
+          }
+        });
+    } else
+      document.getElementById("discussion").innerHTML =
+        "<p>***Both the fields are mandatory</p>";
+  }
+  
+
+
+
+
+
 
 //DELETE
 
@@ -588,7 +725,7 @@ function deleteAction() {
 
         yourDiscussion(res.userData);
         postId = res.userData.post[0]._id;
-        document.getElementById("delete123").innerHTML="succesfully deleted"
+        
         middleRenderPost(
           res.userData.username,
           res.userData.post[0].topic,

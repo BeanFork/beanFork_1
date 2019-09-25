@@ -310,6 +310,49 @@ app.post("/changepassword", (req, res) => {
   });
 });
 
+
+app.post('/editpage',(req,res)=>{
+  res.send({ status: true });
+}
+)
+
+app.post('/editdiscussion',(req,res)=>{
+
+
+  postProfile.findOne({ postid: req.body.postId }, function (err, post1) {
+    if (post1) {
+      console.log(post1);
+      post1.topic=req.body.topic;
+      post1.descrition=req.body.description;
+      post1.postTime=req.body.postTime;
+      post1.save();
+      
+      userProfile.findOne({ _id: req.body.userId }, function (err, user) {
+        if (user) {
+
+          for (var i = 0; i < user.post.length; i++) {
+            if (req.body.postId == user.post[i]._id) {
+              user.post[i].postTime=req.body.postTime;
+              user.post[i].topic=req.body.topic;
+              user.post[i].description=req.body.description;
+              user.save();
+            }
+          }
+postProfile.find({},function(err,result){
+  res.json({ status: true, userData: user,trendData:result})
+}).sort({ postTime: -1 });
+         
+        }
+        else
+          console.log("no user")
+      }).sort({ postTime: -1 });
+
+    }
+  })
+
+
+})
+
 app.post("/delete", (req, res) => {
   postProfile.findOne({ postid: req.body.postId }, function (err, post1) {
     if (post1) {
