@@ -75,7 +75,7 @@ app.post("/signup", (req, res) => {
   user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8));
   user.code = verificationCode;
   user.save();
-  
+
 
   res.send({ status: true, email: req.body.email, userData: user });
 });
@@ -83,7 +83,7 @@ app.post("/signup", (req, res) => {
 //Fetching the id to the local host
 
 app.post("/signupverification", (req, res) => {
-  userProfile.findOne({ email: req.body.email }, function(err, result) {
+  userProfile.findOne({ email: req.body.email }, function (err, result) {
     if (err) {
       console.log(err);
     } else {
@@ -95,17 +95,17 @@ app.post("/signupverification", (req, res) => {
 //verification of code for signup
 
 app.post("/code", (req, res, next) => {
-  userProfile.findOne({ _id: req.body.id }, function(err, result) {
+  userProfile.findOne({ _id: req.body.id }, function (err, result) {
     if (result) {
       if (result.code === req.body.code) {
 
 
         postProfile
-          .find({}, function(err, posts) {
+          .find({}, function (err, posts) {
             if (err) {
               console.log(err);
             }
-          
+
 
             res.json({ status: true, userData: result, trendData: posts });
           })
@@ -125,18 +125,18 @@ app.post("/code", (req, res, next) => {
 
 
 app.post("/home", (req, res, next) => {
-  userProfile.findOne({ username: req.body.username }, function(err, result) {
-    
+  userProfile.findOne({ username: req.body.username }, function (err, result) {
+
     if (result) {
-      
+
       if (bcrypt.compareSync(req.body.password, result.password)) {
-        
+
         postProfile
-          .find({}, function(err, posts) {
+          .find({}, function (err, posts) {
             if (err) {
               console.log(err);
             }
-           
+
 
             res.json({ status: true, userData: result, trendData: posts });
           })
@@ -153,7 +153,7 @@ app.post("/home", (req, res, next) => {
 //User Existence
 
 app.post("/user", (req, res) => {
-  userProfile.findOne({ username: req.body.username }, function(err, result) {
+  userProfile.findOne({ username: req.body.username }, function (err, result) {
     if (result) {
       res.send({ status: true });
     } else {
@@ -165,8 +165,8 @@ app.post("/user", (req, res) => {
 //Email Existence
 
 app.post("/email", (req, res) => {
- 
-  userProfile.findOne({ email: req.body.email }, function(err, result) {
+
+  userProfile.findOne({ email: req.body.email }, function (err, result) {
     if (result) {
       res.send({ status: true });
     } else {
@@ -192,7 +192,7 @@ app.post("/newdiscussion", (req, res, next) => {
 //Creating the new discussion
 
 app.post("/creatediscussion", (req, res, next) => {
-  userProfile.findOne({ _id: req.body.id }, function(err, result) {
+  userProfile.findOne({ _id: req.body.id }, function (err, result) {
     if (err) {
       console.log(err);
     }
@@ -200,27 +200,27 @@ app.post("/creatediscussion", (req, res, next) => {
       topic: req.body.topic,
       description: req.body.description,
       postTime: req.body.postTime
-      
+
     };
 
     result.post.unshift(postObject);
-    
+
     result.save();
-    
+
     req.body.postid = result.post[0]._id;
-    
+
     var post = new postProfile(req.body);
     post.save();
 
-    
+
     res.json({ status: true, postData: result });
-   
+
   });
 });
 
 app.post("/newcreate", (req, res) => {
   postProfile
-    .find({}, function(err, posts) {
+    .find({}, function (err, posts) {
       if (err) {
         console.log(err);
       }
@@ -231,12 +231,12 @@ app.post("/newcreate", (req, res) => {
 });
 
 app.post("/cancelDiscussion", (req, res) => {
-  userProfile.findOne({ username: req.body.username }, function(err, result) {
+  userProfile.findOne({ username: req.body.username }, function (err, result) {
     if (result) {
-     
+
 
       postProfile
-        .find({}, function(err, posts) {
+        .find({}, function (err, posts) {
           if (err) {
             console.log(err);
           }
@@ -251,7 +251,7 @@ app.post("/cancelDiscussion", (req, res) => {
 ///////////////////////////////////////////////////////////////////
 
 app.post("/sendcode", (req, res) => {
-  userProfile.findOne({ email: req.body.email }, function(err, user) {
+  userProfile.findOne({ email: req.body.email }, function (err, user) {
     if (user) {
       var verificationCode = Math.random()
         .toString(36)
@@ -271,15 +271,15 @@ app.post("/sendcode", (req, res) => {
 });
 
 app.post("/submitcode", (req, res) => {
- 
-  userProfile.findOne({ email: req.body.email }, function(err, result) {
+
+  userProfile.findOne({ email: req.body.email }, function (err, result) {
     if (result) {
       if (result.code === req.body.code) {
-        
+
         res.send({ status: true, userdata: result });
       } else {
         res.send({ status: false });
-      
+
       }
     } else {
       console.log("email doesn't exist in database");
@@ -288,33 +288,63 @@ app.post("/submitcode", (req, res) => {
 });
 
 app.post("/changepassword", (req, res) => {
-  userProfile.findOne({ email: req.body.email }, function(err, user) {
+  userProfile.findOne({ email: req.body.email }, function (err, user) {
     if (user) {
       user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8));
 
       user.save();
 
       postProfile
-        .find({}, function(err, posts) {
+        .find({}, function (err, posts) {
           if (err) {
             console.log(err);
           }
-         
+
 
           res.json({ status: true, userData: user, trendData: posts });
         })
         .sort({ postTime: -1 });
 
-      
+
     }
   });
 });
 
+app.post("/delete", (req, res) => {
+  postProfile.findOne({ postid: req.body.postId }, function (err, post1) {
+    if (post1) {
+      console.log(post1);
+      post1.remove();
+      
+      userProfile.findOne({ _id: req.body.userId }, function (err, user) {
+        if (user) {
+
+          for (var i = 0; i < user.post.length; i++) {
+            if (req.body.postId == user.post[i]._id) {
+              console.log("b", user.post[i])
+              user.post[i].remove();
+              user.save();
+            }
+          }
+postProfile.find({},function(err,result){
+  res.json({ status: true, userData: user,trendData:result})
+})
+         
+        }
+        else
+          console.log("no user")
+      })
+
+    }
+  })
+
+})
+
 
 app.post("/comment", (req, res) => {
-  postProfile.findOne({ postid: req.body.postId }, function(err, user) {
-    console.log("user",user)
-    userProfile.findOne({ username: user.username }, function(err, result) {
+  postProfile.findOne({ postid: req.body.postId }, function (err, user) {
+    console.log("user", user)
+    userProfile.findOne({ username: user.username }, function (err, result) {
       var commentObject = {
         comment: req.body.comment,
         username: req.body.username
@@ -327,7 +357,7 @@ app.post("/comment", (req, res) => {
           ) {
             result.post[i].comments.unshift(commentObject);
             result.save();
-            
+
             res.send({ username: user.username, postData: result.post[i] });
             break;
           }
@@ -340,14 +370,14 @@ app.post("/comment", (req, res) => {
 });
 
 app.post("/middleRender", (req, res) => {
-  userProfile.findOne({ _id: req.body.userId }, function(err, user) {
+  userProfile.findOne({ _id: req.body.userId }, function (err, user) {
     if (user) {
       for (var i = 0; i < user.post.length; i++) {
-       
+
         if (
           JSON.stringify(user.post[i]._id) === JSON.stringify(req.body.postId)
         ) {
-          
+
           res.send({ userData: user.post[i], username: user.username });
           break;
         }
@@ -357,11 +387,11 @@ app.post("/middleRender", (req, res) => {
 });
 
 app.post("/middleRender1", (req, res) => {
-  
-  postProfile.findOne({ _id: req.body.id }, function(err, user) {
-   
+
+  postProfile.findOne({ _id: req.body.id }, function (err, user) {
+
     if (user) {
-      userProfile.findOne({ username: user.username }, function(err, result) {
+      userProfile.findOne({ username: user.username }, function (err, result) {
         res.send({ trendData: user, userData: result });
       });
     }
@@ -370,8 +400,8 @@ app.post("/middleRender1", (req, res) => {
 
 
 app.post("/search", (req, res) => {
-  postProfile.findOne({ topic: req.body.search }, function(err, search) {
-    userProfile.findOne({ username: search.username }, function(err, user) {
+  postProfile.findOne({ topic: req.body.search }, function (err, search) {
+    userProfile.findOne({ username: search.username }, function (err, user) {
       for (var i = 0; i < user.post.length; i++) {
         if (
           JSON.stringify(user.post[i]._id) === JSON.stringify(search.postid)
