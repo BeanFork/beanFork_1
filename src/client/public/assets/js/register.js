@@ -1,3 +1,5 @@
+
+
 var localUser;
 var localId;
 var postId;
@@ -84,10 +86,15 @@ function changePassword() {
       var res = JSON.parse(result.text);
       localId = res.userData._id;
       localUser = res.userData;
-      postId = res.userData.post[0]._id
+
+      console.log("useData",res.userData)
+      
       if (res.status) {
-        $(document).ready(function () {
-          $("#container2").load("../../views/home.html", function () {
+        $(document).ready(function() {
+          $("#container2").load("../../views/home.html", function() {
+            if(res.userData.post.length>0){
+            postId = res.userData.post[0]._id;
+
             yourDiscussion(res.userData);
             middleRenderPost(
               res.userData.username,
@@ -96,6 +103,9 @@ function changePassword() {
               res.userData.post[0].postTime,
               res.userData.post[0].comments
             );
+
+            }
+
             trendingTopics(res.trendData);
           });
         });
@@ -135,10 +145,12 @@ function signup() {
       } else {
         var res = JSON.parse(result.text);
 
+        console.log("result",res);
+
         localUser = res.userData;
 
         if (res.status) {
-          signupVerification(res.email);
+          signupVerification(res.userData._id);
         }
       }
     });
@@ -264,18 +276,22 @@ function login() {
 
         localId = res.userData._id;
         if (res.status) {
-          $(document).ready(function () {
-            $("#container1").load("/views/home.html", function () {
+          $(document).ready(function() {
+            $("#container1").load("/views/home.html", function() {
+
+              document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
               yourDiscussion(res.userData);
-              postId = res.userData.post[0]._id;
-              middleRenderPost(
-                res.userData.username,
-                res.userData.post[0].topic,
-                res.userData.post[0].description,
-                res.userData.post[0].postTime,
-                res.userData.post[0].comments,
-                true
-              );
+              if(res.userData.post.length>0){
+                postId = res.userData.post[0]._id;
+                middleRenderPost(
+                  res.userData.username,
+                  res.userData.post[0].topic,
+                  res.userData.post[0].description,
+                  res.userData.post[0].postTime,
+                  res.userData.post[0].comments
+                );
+              }
+            
 
               trendingTopics(res.trendData);
 
@@ -296,11 +312,11 @@ function newDiscussion() {
     var res = JSON.parse(result.text);
 
     if (res.status) {
-      $(document).ready(function () {
-        $("#container1").load("/views/new-discussion.html", function () {
-          document.getElementById(
-            "welcomeuser"
-          ).innerHTML = `<p>Welcome ${localUser.username}</p>`;
+      $(document).ready(function() {
+        $("#container1").load("/views/new-discussion.html", function() {
+
+         
+
         });
       });
     }
@@ -320,8 +336,11 @@ function cancelDiscussion() {
       } else {
         var res = JSON.parse(result.text);
         postId = res.userData.post[0]._id;
-        $(document).ready(function () {
-          $("#discussion-container").load("/views/home.html", function () {
+        $(document).ready(function() {
+          $("#discussion-container").load("/views/home.html", function() {
+
+            document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+
             middleRenderPost(
               res.userData.username,
               res.userData.post[0].topic,
@@ -365,8 +384,11 @@ function createDiscussion() {
           var res = JSON.parse(result.text);
           postId = res.postData.post[0]._id;
           if (res.status) {
-            $(document).ready(function () {
-              $("#discussion-container").load("/views/home.html", function () {
+            $(document).ready(function() {
+              $("#discussion-container").load("/views/home.html", function() {
+
+                document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+
                 middleRenderPost(
                   res.postData.username,
                   res.postData.post[0].topic,
@@ -392,10 +414,10 @@ function createDiscussion() {
 
 // TRENDING TOPICS RENDERING
 
-function trendingTopics(posts) {
-  // renderPages(posts, 1, 5);
-  renderTrendingPosts(posts)
-}
+
+// function trendingTopics(posts) {
+//   renderPages(posts, 1, 5);
+// }
 
 // function renderPages(posts, page, postsPerPage) {
 //   document.getElementById("Trending__pages").addEventListener("click", e => {
@@ -421,17 +443,21 @@ function trendingTopics(posts) {
 //   }
 // }
 
-function renderTrendingPosts(posts) {
-  document.getElementById('TrendDiscussion').innerHTML = "";
-  for (var i = 0; i < posts.length; i++) {
+function trendingTopics(posts) {
+  console.log("post",posts)
+
+  for(var i=0;i<posts.length;i++){
     const markup = `
-  <a onclick="getAttributes1(this)" class="results__link" href= "#${posts[i]._id}"
-  <article class="topic">
-    
-    <h2>${posts[i].topic}</h2><h5>posted by${posts[i].username}</h5>
+    <div class = "trendingTemplate"> 
+    <a onclick="getAttributes1(this)" class="results__link" href= "#${posts[i]._id}" style = "color:rgb(199, 247, 255); text-decoration: none;">
+    <article class="topic">
+    <div style="font-size:25px; "> ${posts[i].topic}</div> posted by ${posts[i].username}
     </article>
     </a>
-`;
+    </div>
+  
+    
+  `;
     document
       .getElementById("TrendDiscussion")
       .insertAdjacentHTML("beforeend", markup);
@@ -470,33 +496,33 @@ function getAttributes1(item) {
     });
 }
 
-function renderButtons1(page, numResults, resPerPage) {
-  const pages = Math.ceil(numResults / resPerPage);
+// function renderButtons1(page, numResults, resPerPage) {
+//   const pages = Math.ceil(numResults / resPerPage);
 
-  let button;
-  if (page === 1 && pages > 1) {
-    button = createButton1(page, "next");
-  } else if (page < pages) {
-    button = `${createButton1(page, "prev")}         
-  ${createButton1(page, "next")}`;
-  } else if (page === pages && pages > 1) {
-    button = createButton1(page, "prev");
-  }
-  document
-    .getElementById("Trending__pages")
-    .insertAdjacentHTML("afterbegin", button);
-}
+//   let button;
+//   if (page === 1 && pages > 1) {
+//     button = createButton1(page, "next");
+//   } else if (page < pages) {
+//     button = `${createButton1(page, "prev")}         
+//   ${createButton1(page, "next")}`;
+//   } else if (page === pages && pages > 1) {
+//     button = createButton1(page, "prev");
+//   }
+//   document
+//     .getElementById("Trending__pages")
+//     .insertAdjacentHTML("afterbegin", button);
+// }
 
-function createButton1(page, type) {
-  const markup = `
-    <button class="btn-trend results__btn--${type}" data-goto=${
-    type === "prev" ? page - 1 : page + 1
-    }>
-    <span>${type === "prev" ? "Prev" : "Next"}</span>
-    </button>
-    `;
-  return markup;
-}
+// function createButton1(page, type) {
+//   const markup = `
+//     <button class="btn-trend results__btn--${type}" data-goto=${
+//     type === "prev" ? page - 1 : page + 1
+//   }>
+//     <span>${type === "prev" ? "Prev" : "Next"}</span>
+//     </button>
+//     `;
+//   return markup;
+// }
 
 
 // MIDDLE RENDERING
@@ -508,23 +534,31 @@ function middleRenderPost(username, topic, description, postTime, comments, stat
   var time = calculateTime(postTime);
 
   const markup = `<h1 style = "white-space:pre"> ${topic}</h1>
-  <article class="post">
-  <h3>${username}</h3>
+
+  <article class="post"> 
+  <h5>posted by ${username}</h5>
+
   <font size="2">${time}</font></br>
   <font size="4" class="content">
   ${description}
-  </font><h4>COMMENTS</h4>`;
+  </font>`;
   document
     .getElementById("post_content")
     .insertAdjacentHTML("afterbegin", markup);
 
+ if(comments.length >0){
+  document.getElementById("comment_content").classList.add("comment_content");
   for (var i = 0; i < comments.length; i++) {
-    const markup1 = `<h4>${comments[i].username}</h4>
-    <h5>${comments[i].comment}</h5>`;
+    const markup1 = ` <h4>${comments[i].username}</h4>
+    <h5>${comments[i].comment}</h5> <hr>`;
     document
       .getElementById("comment_content")
       .insertAdjacentHTML("afterbegin", markup1);
   }
+}
+else {
+  document.getElementById("comment_content").classList.remove("comment_content");
+}
 
 
   if (status || (localUser.username === username)) {
@@ -551,16 +585,13 @@ function middleRenderPost(username, topic, description, postTime, comments, stat
   }
 }
 
-
-//EDIT POST 
-
 function editButton() {
 
   document
     .getElementById("edit1").innerHTML = "";
 
-  const markup = `<button class="btn" onclick="editAction()">  
- <span><i class="glyphicon glyphicon-pencil"></i></span></button>`;
+  const markup = `<button class="btn" style="background-color:lightblue " onclick="editAction()">  
+ <span><i class="glyphicon glyphicon-pencil" style="font-size:20px;color:black;text-shadow:2px 2px 4px #000000;"></i></span></button>`;
   return markup
     ;
 
@@ -580,7 +611,7 @@ function editAction() {
     if (res.status) {
       $(document).ready(function () {
         $("#container1").load("/views/edit-discussion.html", function () {
-          console.log(res)
+          console.log("cli",res.description)
           document.getElementById("edit-discussionTopic").value=res.topic;
            document.getElementById("edit-discussionDescription").value=res.description;
          console.log("edit page")
@@ -593,127 +624,100 @@ function editAction() {
 }
 
 
-  // console.log("post id", postId);
-  // console.log("userid", localId)
+function editDiscussion() {
+
+  var topic = document.getElementById("edit-discussionTopic").value;
+  var description = document.getElementById("edit-discussionDescription").value;
+  var postTime = Date.parse(new Date());
+
+  var username = localUser.username;
+
+  if (topic.length > 0 && description.length > 0) {
+    superagent
+      .post("/editdiscussion")
+      .send({
+        topic: topic,
+        description: description,
+        postId: postId, 
+        userId: localId,
+        postTime: postTime,
+        username: username
+      })
+      .end(function (err, result) {
+        if (err) {
+          console.log(err);
+        } else {
+          var res = JSON.parse(result.text);
+          
+          if (res.status) {
 
 
+//       console.log("your discussion", res.userData)
+//       console.log("trend topics", res.trendData)
 
-  //   superagent.post('/edit').send({ postId: postId, userId: localId }).end(function (err, result) {
-  //     var res = JSON.parse(result.text)
-  //     if (err) console.log("err")
-  //     if (res.status) {
-  //       console.log("your discussion", res.userData)
-  //       console.log("trend topics", res.trendData)
+//       yourDiscussion(res.userData);
+//       postId = res.userData.post[0]._id;
+      
+//       middleRenderPost(
+//         res.userData.username,
+//         res.userData.post[0].topic,
+//         res.userData.post[0].description,
+//         res.userData.post[0].postTime,
+//         res.userData.post[0].comments,
+//         true
+//       );
 
-  //       yourDiscussion(res.userData);
-  //       postId = res.userData.post[0]._id;
-        
-  //       middleRenderPost(
-  //         res.userData.username,
-  //         res.userData.post[0].topic,
-  //         res.userData.post[0].description,
-  //         res.userData.post[0].postTime,
-  //         res.userData.post[0].comments,
-  //         true
-  //       );
+//       trendingTopics(res.trendData);
 
-  //       trendingTopics(res.trendData);
-
-  //     }
-  //     else
-  //       console.log("status:false ")
-
-  //   })
+//     }
+//     else
+//       console.log("status:false ")
 
 
-  function editDiscussion() {
+            console.log("your dis",res.userData)
+            console.log("tred disc",res.trendData)
+            $(document).ready(function () {
+              $("#discussion-container").load("/views/home.html", function () {
+                for(var j=0;j<res.userData.post.length;j++){
 
-    var topic = document.getElementById("edit-discussionTopic").value;
-    var description = document.getElementById("edit-discussionDescription").value;
-    var postTime = Date.parse(new Date());
-  
-    var username = localUser.username;
-  
-    if (topic.length > 0 && description.length > 0) {
-      superagent
-        .post("/editdiscussion")
-        .send({
-          topic: topic,
-          description: description,
-          postId: postId, 
-          userId: localId,
-          postTime: postTime,
-          username: username
-        })
-        .end(function (err, result) {
-          if (err) {
-            console.log(err);
-          } else {
-            var res = JSON.parse(result.text);
-            
-            if (res.status) {
+                  if(res.userData.post[j]._id==postId){
+                    middleRenderPost(
+                      res.userData.username,
+                      res.userData.post[j].topic,
+                      res.userData.post[j].description,
+                      res.userData.post[j].postTime,
+                      res.userData.post[j].comments
+                    );
 
-
- //       console.log("your discussion", res.userData)
-  //       console.log("trend topics", res.trendData)
-
-  //       yourDiscussion(res.userData);
-  //       postId = res.userData.post[0]._id;
-        
-  //       middleRenderPost(
-  //         res.userData.username,
-  //         res.userData.post[0].topic,
-  //         res.userData.post[0].description,
-  //         res.userData.post[0].postTime,
-  //         res.userData.post[0].comments,
-  //         true
-  //       );
-
-  //       trendingTopics(res.trendData);
-
-  //     }
-  //     else
-  //       console.log("status:false ")
-
-
-              console.log("your dis",res.userData)
-              console.log("tred disc",res.trendData)
-              $(document).ready(function () {
-                $("#discussion-container").load("/views/home.html", function () {
-                  middleRenderPost(
-                    res.userData.username,
-                    res.userData.post[0].topic,
-                    res.userData.post[0].description,
-                    res.userData.post[0].postTime,
-                    res.userData.post[0].comments
-                  );
-                  yourDiscussion(res.userData);
-                  trendingTopics(res.trendData);
-                });
+                  }
+                }
+               
+                yourDiscussion(res.userData);
+                trendingTopics(res.trendData);
               });
-            }
+            });
           }
-        });
-    } else
-      document.getElementById("discussion").innerHTML =
-        "<p>***Both the fields are mandatory</p>";
-  }
-  
+        }
+      });
+  } else
+    document.getElementById("discussion").innerHTML =
+      "<p>***Both the fields are mandatory</p>";
+}
 
 
 
 
 
 
-//DELETE
+
 
 function deleteButton() {
 
   document
     .getElementById("delete1").innerHTML = "";
 
-  const markup = `<button class="btn" onclick="deleteAction()">  
- <span><i class="glyphicon glyphicon-trash"></i></span></button>`;
+  const markup = `<button class="btn" style=" background-color:lightblue" onclick="deleteAction()">  
+ <span><i class="glyphicon glyphicon-trash" style="font-size:20px;color:black;text-shadow:2px 2px 4px #000000;"></i></span></button>`;
   return markup
     ;
 
@@ -741,6 +745,10 @@ function deleteAction() {
 
 
   if (answer == "ok") {
+    document
+    .getElementById("yourdiscussion").innerHTML = "";
+    document
+    .getElementById("TrendDiscussion").innerHTML = "";
     console.log(" deleted ")
     superagent.post('/delete').send({ postId: postId, userId: localId }).end(function (err, result) {
       var res = JSON.parse(result.text)
@@ -776,12 +784,11 @@ function deleteAction() {
 
 
 
-// YOUR DISCUSSION TOPIC RENDERING
 
-function yourDiscussion(postData) {
-  renderPosts(postData.post);
+// function yourDiscussion(postData) {
+//   renderResults(postData.post, 1, 5);
+// }
 
-}
 
 // function renderResults(posts, page, postsPerPage) {
 //   document.getElementById("results__pages").addEventListener("click", e => {
@@ -809,31 +816,39 @@ function yourDiscussion(postData) {
 //   }
 // }
 
-function renderPosts(posts) {
-  document
-    .getElementById("yourdiscussion").innerHTML = "";
-  for (var j = 0; j < posts.length; j++) {
-    var description = posts[j].description;
-    if (description.length > 40) {
-      description = description.slice(0, 80) + "...";
-    }
-    const markup = `
-  <a  onclick="getAttributes(this)" class="results__link" href= "#${posts[j]._id}"
+function yourDiscussion(postData) {
+  var posts =postData.post;
+
+  for(var i=0; i<posts.length ;i++){
+    var time = calculateTime(posts[i].postTime);
+  var description = posts[i].description;
+
+  if (description.length > 40) {
+    description = description.slice(0, 80) + "...";
+  }
+  const markup = `
+  <div class = "template"> 
+  <a  onclick="getAttributes(this)" class = "results__link" href= "#${posts[i]._id}" style = "color:rgb(199, 247, 255); text-decoration: none;">
   <article class="topic">
-    <h2>${posts[j].topic}</h2>
-    <p>
+
+  <div style="font-size:25px; "> ${posts[i].topic}</div>  <div style="text-align:right;">${time}</div>
+    <p style="font-size:18px;"> 
+
     ${description}
     </p>
     </article>
     </a>
+    </div>
 `;
 
-    for (var i = 0; i < posts[j].comments.length; i++) { }
-    document
-      .getElementById("yourdiscussion")
-      .insertAdjacentHTML("beforeend", markup);
-  }
+  
+  document
+    .getElementById("yourdiscussion")
+    .insertAdjacentHTML("beforeend", markup);
 }
+
+}
+
 
 function getAttributes(item) {
   var urlArray = item.href.toString().split("#");
@@ -860,33 +875,35 @@ function getAttributes(item) {
     });
 }
 
-function renderButtons(page, numResults, resPerPage) {
-  const pages = Math.ceil(numResults / resPerPage);
 
-  let button;
-  if (page === 1 && pages > 1) {
-    button = createButton(page, "next");
-  } else if (page < pages) {
-    button = `${createButton(page, "prev")}         
-  ${createButton(page, "next")}`;
-  } else if (page === pages && pages > 1) {
-    button = createButton(page, "prev");
-  }
-  document
-    .getElementById("results__pages")
-    .insertAdjacentHTML("afterbegin", button);
-}
+// function renderButtons(page, numResults, resPerPage) {
+//   const pages = Math.ceil(numResults / resPerPage);
 
-function createButton(page, type) {
-  const markup = `
-    <button class="btn-inline results__btn--${type}" data-goto=${
-    type === "prev" ? page - 1 : page + 1
-    }>
-    <span>${type === "prev" ? "Prev" : "Next"}</span>
-    </button>
-    `;
-  return markup;
-}
+//   let button;
+//   if (page === 1 && pages > 1) {
+//     button = createButton(page, "next");
+//   } else if (page < pages) {
+//     button = `${createButton(page, "prev")}         
+//   ${createButton(page, "next")}`;
+//   } else if (page === pages && pages > 1) {
+//     button = createButton(page, "prev");
+//   }
+//   document
+//     .getElementById("results__pages")
+//     .insertAdjacentHTML("afterbegin", button);
+// }
+
+
+// function createButton(page, type) {
+//   const markup = `
+//     <button class="btn-inline results__btn--${type}" data-goto=${
+//     type === "prev" ? page - 1 : page + 1
+//   }>
+//     <span>${type === "prev" ? "Prev" : "Next"}</span>
+//     </button>
+//     `;
+//   return markup;
+// }
 
 // CALCULATING POST TIME
 
@@ -922,7 +939,9 @@ function addComment() {
   var comment = document.getElementById("commentBox").value;
   document.getElementById("commentBox").value = "";
   var username = localUser.username;
-  console.log(localUser.username)
+
+  console.log(localUser.username);
+
   superagent
     .post("/comment")
     .send({ comment: comment, username: username, postId: postId })
@@ -948,6 +967,9 @@ function addComment() {
 function searchBar() {
   var search = document.getElementById("search").value;
 
+  document.getElementById("search").value="";
+  //console.log("search text",search);
+
   superagent
     .post("/search")
     .send({ search: search })
@@ -963,3 +985,231 @@ function searchBar() {
       );
     });
 }
+
+
+
+
+
+
+/*
+Go to Main Page 
+*/
+function homePage() {
+
+  console.log("homepage function called")
+  superagent
+  .post('/homePage')
+  .send({id: localId})
+  .end(function( err, result) {
+      var res = JSON.parse(result.text);
+      if(err){
+          console.log(err);
+      }
+      $(document).ready(function() {
+      
+       $("#divcontainer").load("../../views/home.html",function(){
+        document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+        yourDiscussion(res.userData);
+        //postId = res.userData.post[0]._id;
+        if(res.userData.post.length > 0){
+          middleRenderPost(
+            res.userData.username,
+            res.userData.post[0].topic,
+            res.userData.post[0].description,
+            res.userData.post[0].postTime,
+            res.userData.post[0].comments
+          );
+        }
+       
+        trendingTopics(res.trendData);
+       });
+      });
+      
+    });
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////
+
+/////////////////////////////////////////
+
+/////////////////////////////////////////
+// function yourDiscussion(postData) {
+//   renderPosts(postData.post);
+// }
+
+// function renderResults(posts, page, postsPerPage) {
+//   document.getElementById("results__pages").addEventListener("click", e => {
+//     const btn = e.target.closest(".btn-inline");
+//     if (btn) {
+// function renderPosts(posts) {
+//   //console.log("renderPosts", posts);
+//   for(var i=0;i<posts.length;i++){
+
+//   var time = calculateTime(posts[i].postTime);
+
+//   var description = posts[i].description;
+//   if (description.length > 40) {
+//     description = description.slice(0, 80) + "...";
+//   }
+//   const markup = `
+//   <div class = "template">
+//   <a  onclick="getAttributes(this)" class="results__link" href= "#${posts[i]._id}"  style = "color:rgb(199, 247, 255); text-decoration: none;">
+//   <article class="topic">
+//  <div style="font-size:25px; "> ${posts[i].topic}</div>  <div style="text-align:right;">${time}</div>
+//     <p style="font-size:18px;"> 
+//     ${description}
+//     </p>
+//     </article>
+//     </a>
+//     </div>
+// `;
+//   document
+//     .getElementById("yourdiscussion")
+//     .insertAdjacentHTML("beforeend", markup);
+// }
+// }
+
+
+// function getAttributes(item) {
+//   console.log("item", item);
+//   console.log(item.href);
+
+//   var urlArray = item.href.toString().split("#");
+//   console.log("href", urlArray[1]);
+//   console.log("type", typeof urlArray[1]);
+//   var postid = urlArray[1];
+//   console.log("Local id", localId);
+//   superagent
+//     .post("/middleRender")
+//     .send({ postId: postid, userId: localId })
+//     .end(function(err, result) {
+//       if (err) {
+//         console.log(error);
+//       } else {
+//         var res = JSON.parse(result.text);
+//         middleRenderPost(
+//           res.username,
+//           res.userData.topic,
+//           res.userData.description,
+//           res.userData.postTime
+//         );
+//       }
+//     });
+// }
+// // function location(item){
+// //   location.href = baseURL + item.href;
+// //   console.log("location" , location.href)
+// // }
+
+// function renderButtons(page, numResults, resPerPage) {
+//   const pages = Math.ceil(numResults / resPerPage);
+//   console.log(
+//     "resultsss",
+//     numResults + " " + resPerPage + " " + pages + " " + page
+//   );
+//   let button;
+//   if (page === 1 && pages > 1) {
+//     // enable next button only
+//     console.log("next button");
+//     button = createButton(page, "next");
+//     //button=`<button>next</button>`
+//   } else if (page < pages) {
+//     //Both buttons
+//     console.log("both button");
+//     button = `${createButton(page, "prev")}         
+//   ${createButton(page, "next")}`;
+//     //button=`<button>next</button>`
+//   } else if (page === pages && pages > 1) {
+//     //only previous button
+//     console.log("previous button");
+//     button = createButton(page, "prev");
+//     //button=`<button>next</button>`
+//   }
+//   document
+//     .getElementById("results__pages")
+//     .insertAdjacentHTML("afterbegin", button);
+// }
+
+// function createButton(page, type) {
+//   const markup = `
+//     <button class="btn-inline results__btn--${type}" data-goto=${
+//     type === "prev" ? page - 1 : page + 1
+//   }>
+//     <span>${type === "prev" ? "Prev" : "Next"}</span>
+//     </button>
+//     `;
+//   return markup;
+// }
+
+// function local() {
+//   mail = localStorage.getItem("Mail");
+//   user = localStorage.getItem("User");
+//   password = localStorage.getItem("Password");
+//   confirmPass = localStorage.getItem("confirmpassword");
+//   if (mail && user && password && confirmPass) {
+//     document.getElementById("submit").disabled = false;
+//   }
+// }
+
+// function calculateTime(postTime) {
+//   var currentTime = Date.parse(new Date());
+//   var diff = currentTime - postTime;
+//   var secs = Math.floor(diff / 1000);
+//   var hours = Math.floor(diff / 1000 / 60 / 60);
+//   //diff -= hours * 1000 * 60 * 60;
+//   var minutes = Math.floor(diff / 1000 / 60);
+
+//   if (hours == 0 && minutes == 0) {
+//     if (secs == 0) var time = "Just now";
+//     else if (secs == 1) var time = " 1 second ago";
+//     else var time = secs + " seconds ago";
+//   } else if (hours == 0 && minutes > 0) {
+//     if (minutes == 1) {
+//       var time = "1 minute ago";
+//     }
+//     var time = minutes + " minutes ago";
+//   } else if (hours > 0) {
+//     if (hours === 1) {
+//       var time = "1 hour ago";
+//     }
+//     var time = hours + " hours ago";
+//   }
+
+//   return time;
+// }
+
+// function addComment() {
+//   var comment = document.getElementById("commentBox").value;
+//   const markup = `
+//   <h2>${comment}</h2>
+//   `;
+//   document
+//     .getElementById("comment_content")
+//     .insertAdjacentHTML("afterbegin", markup);
+//   var userId = localId;
+//   console.log("add comment" + comment + "   " + userId + "   " + postId);
+//   superagent
+//     .post("/comment")
+//     .send({ comment: comment, userId: userId, postId: postId })
+//     .end(function(err, result) {});
+// }
+

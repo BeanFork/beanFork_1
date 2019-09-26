@@ -1,8 +1,10 @@
 .logo {
   float: left;
   width: 100px;
-  padding: 10px;
+  padding: 4px;
   margin: 0px 10px 10px 0px;
+  border-radius: 50px;
+  border: 2px solid rgb(128, 212, 198);
 }
 .clearfix {
   display: table;
@@ -12,8 +14,16 @@
   width: 230px;
   height: 40px;
   margin-right: 35px;
+  background-color: #65d4cf;
+  color:#61696d;
+  font-size: 20px;
 }
 
+.forgotPassword{
+  text-decoration: none;
+  float:right;
+  margin-right: 110px;
+}
 .navbar-header {
   height: 20px;
 }
@@ -21,14 +31,14 @@
   padding: 20px 0px 0px 0px !important;
 }
 
-.col-lg-4 {
-  background-color: rgb(172, 201, 201);
-  margin-left: 5%;
-  height: 670px;
-  margin-top: 2%;
+
+body{
+  background-image: url("../img/forumhome5.png");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .new1 {
-  background-color: rgb(172, 201, 201);
+  
   margin-left: 60%;
   margin-right: 5%;
   height: 670px;
@@ -36,14 +46,53 @@
 }
 .col-lg-6 {
   margin-top: 2%;
-  background-color: rgb(176, 212, 212);
+color: #fff;
   margin-left: 5%;
   height: 670px;
 }
-.login {
-  margin-top: 10px;
-  margin-right: 50px !important;
+
+.col-lg-4 {
+  text-align: left;
+  margin-left: 8%;
+  height: 670px;
+  margin-top: 2%;
+  color: #fff;
+  background-color: #415ba141;
+
 }
+#login {
+  margin-top: 0px;
+  margin-right: 15px;
+  background-color: #1c6a6b;
+  color:#f1fbff;
+  font-size: 15px;
+  border: 1px solid rgb(20, 38, 48);
+  margin-left: 20px;
+ border-radius: 4px;
+  
+}
+#loginUsername {
+  border-radius: 9px;
+  height: 40px;
+  margin-top: 30px;
+  border:none;
+  background-color:#ffffff;
+  margin-right: 10px;
+  padding-left:8px;
+  
+ 
+}
+
+#loginPassword{
+  border-radius: 9px;
+  height: 40px;
+  padding-left:8px; 
+  margin-top: 30px;
+  border:none;
+  
+
+}
+
 .icon {
   background-color: #31d9df;
   color: #fff;
@@ -67,8 +116,10 @@
   }
  .logincontainer{
    float: right!important;
-   margin-right: 10px;
+   margin-right: 35px;
    margin-top : 5px;
+   padding-bottom: 10px;
+   
  }
  
 .show{
@@ -79,4 +130,14 @@ display: none !important;
 }
 .otpimage{
   margin-left: 80%
+}
+
+.btn-primary{
+  width: 230px;
+  height: 40px;
+  margin-right: 35px;
+  background-color: #65d4cf;
+  color:#61696d;
+
+  font-size: 20px;
 }

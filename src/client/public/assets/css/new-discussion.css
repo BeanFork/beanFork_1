@@ -1,27 +1,76 @@
-header {
-  background-color: #0bddec;
-  padding: 40px;
-  text-align: left;
-  font-size: 25px;
-  color: #000000;
+
+.welcomeuser{
+  color:beige;
+font-size: 25px;
+  margin-left: 90%;
+
 }
+
+
+
+
+/* Banner - constant for all the pages 
+*/
 .logo {
   float: left;
-  width: 70px;
-  padding: 10px;
-  margin: 20px 10px 10px 0px; 
+  width: 100px;
+  padding: 4px;
+  margin: 45px 10px 10px 4px;
+  border-radius: 50px;
+  border: 2px solid rgb(128, 212, 198);
+}
+h3 {
+  font-style: inherit;
 }
 
-
-.glyphicon-envelope,
-.glyphicon {
-  font-size: 100%;
+.banner {
+  background-color: #31d9df;
+  color: #fff;
+  padding: 1px 10px;
+  text-align: left;
+  font-size: 20px;
+  margin-top: -40px;
 }
-span {
-  font-size: 30px;
-  font-weight: bold;
+.banner h1 {
+  color: #61696d;
+  font-size: 60px;
   font-family: "Courier New", Courier, monospace;
+  margin-top: 62px;
 }
+
+  
+  /*
+Your Account dropdown
+*/
+
+/* Dropdown button
+*/
+
+
+.btn-drop{
+
+  background-color: rgb(158, 212, 158);
+  margin: 15px 0px 0px 0px;
+  padding: 3px 3px 3px 3px;
+  border: none;
+  border-radius: 8px;
+  color: #101c22;
+  
+}
+.dropdown{
+  
+
+  left: 2px;
+  margin: 50px 50px 50px 50px;
+  float: right;
+}
+
+
+
+/* bodya and variable containers
+*/
+
+
 textarea{
   resize: none;
 }
@@ -49,42 +98,57 @@ resize: none
 .clearfix {
   display: table;
 }
-button{
-  width: 150px;
-  height: 40px;
+  /* Variable containers
+  */
 
-  color: black;
-  
-  text-decoration: none;
-  display: inline-block;
-  font-size: 12px;
-  margin: 4px 2px;
-  cursor: pointer;
+  body{
+    background-image: url("../img/forumhome1.jpg");
+    background-size: cover;
   }
-  .banner{
-    background-color: #31d9df;
-    color: #fff;
-    padding: 5px 20px;
-    text-align: left;
-    font-size: 20px;
-   
-    
-    }
-    .banner h1{
-      color: #61696d;
-      font-size: 60px;
-      font-family: 'Courier New', Courier, monospace;
-  
-    }
-  
-  .welcome{
-    color: #61696d;
-    font-size: 20px;
-    margin: 0px 10px 10px 10px ;
-  }
+  .discussioncontainer{
+    margin-top: 80px;
+    color: #f9fcffc5;
+    font-family: Arial, Helvetica, sans-serif;
 
+  }
   #discussion{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
     font-weight: normal;
+
   }
+
+  #discussionTopic {
+      border: 1px solid #334746fe;
+      border-radius:20px;
+      background-color: #cce2e2;
+  }
+  #discussionDescription{
+    border: 1px solid #334746fe;
+    border-radius: 20px;
+    background-color: #cce2e2;
+
+  }
+  
+.createbtn{
+  width: 230px;
+  height: 40px;
+  margin-top: 25px;
+  background-color: #16ecec;
+  color:#61696d;
+  font-size: 20px;
+  border-radius:10px;
+  border : 1px solid #0bddec;
+
+}
+
+.cancelbtn {
+  width: 230px;
+  height: 40px;
+  margin-top:25px;
+  background-color: #16ecec;
+  color:#61696d;
+  font-size: 20px;
+  border-radius:10px;
+  border : 1px solid #0bddec;
+}

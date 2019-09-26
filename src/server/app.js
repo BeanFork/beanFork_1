@@ -1,3 +1,5 @@
+
+
 // Starting point of the application
 var util = require("./util");
 var express = require("express");
@@ -83,10 +85,12 @@ app.post("/signup", (req, res) => {
 //Fetching the id to the local host
 
 app.post("/signupverification", (req, res) => {
-  userProfile.findOne({ email: req.body.email }, function (err, result) {
+  console.log("email",req.body.email)
+  userProfile.findOne({ _id: req.body.email }, function(err, result) {
     if (err) {
       console.log(err);
     } else {
+      console.log("id",result)
       res.send({ id: result._id });
     }
   });
@@ -315,6 +319,7 @@ app.post('/editpage',(req,res)=>{
   postProfile.findOne({postid:req.body.postId},function(err,result){
 
     if(result){
+      console.log("server",result)
 
       res.json({ status: true,topic:result.topic,description:result.description });
     }
@@ -328,9 +333,9 @@ app.post('/editdiscussion',(req,res)=>{
 
   postProfile.findOne({ postid: req.body.postId }, function (err, post1) {
     if (post1) {
-      console.log(post1);
+      
       post1.topic=req.body.topic;
-      post1.descrition=req.body.description;
+      post1.description=req.body.description;
       post1.postTime=req.body.postTime;
       post1.save();
       
@@ -450,8 +455,11 @@ app.post("/middleRender1", (req, res) => {
 
 
 app.post("/search", (req, res) => {
-  postProfile.findOne({ topic: req.body.search }, function (err, search) {
-    userProfile.findOne({ username: search.username }, function (err, user) {
+  postProfile.findOne({ topic: req.body.search }, function(err, search) {
+
+    console.log("search",search);
+
+    userProfile.findOne({ username: search.username }, function(err, user) {
       for (var i = 0; i < user.post.length; i++) {
         if (
           JSON.stringify(user.post[i]._id) === JSON.stringify(search.postid)
@@ -459,10 +467,80 @@ app.post("/search", (req, res) => {
           res.send({ username: search.username, postData: user.post[i] });
           break;
         }
+
       }
     });
   });
 });
+
+
+
+
+
+app.post("/settings",(req,res)=>{
+
+  res.send({ status: true });
+  console.log("Setting in server side");
+
+});
+
+///////////////Logout
+
+app.post("/logout",(req,res) => {
+
+    res.send({ status:true });
+   
+    console.log("logout successfully");
+
+});
+
+//////////move to home
+
+app.get("/restore" , (req,res) =>{
+
+  res.send({ status:true });
+});
+
+
+
+// Go to Main Page
+
+app.post('/homePage', (req, res) => {
+  console.log("Go to Main Page successfully done!");
+  userProfile.findOne({ _id: req.body.id }, function(err, result) {
+    
+    if (result) {
+      
+        
+        postProfile
+          .find({}, function(err, posts) {
+            if (err) {
+              console.log(err);
+            }
+           
+
+            res.json({ status: true, userData: result, trendData: posts });
+          })
+          .sort({ postTime: -1 });
+      }
+
+});
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.use((error, req, res, next) => {
   console.log(error);
@@ -470,5 +548,22 @@ app.use((error, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log("Server listenening to port " + port);
+  console.log("Server listening to port " + port);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
