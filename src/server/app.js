@@ -375,7 +375,9 @@ app.post("/middleRender1", (req, res) => {
 
 app.post("/search", (req, res) => {
   postProfile.findOne({ topic: req.body.search }, function(err, search) {
+
     console.log("search",search);
+
     userProfile.findOne({ username: search.username }, function(err, user) {
       for (var i = 0; i < user.post.length; i++) {
         if (
@@ -384,6 +386,7 @@ app.post("/search", (req, res) => {
           res.send({ username: search.username, postData: user.post[i] });
           break;
         }
+
       }
     });
   });
@@ -439,6 +442,7 @@ app.post('/homePage', (req, res) => {
           })
           .sort({ postTime: -1 });
       }
+
 });
 });
 

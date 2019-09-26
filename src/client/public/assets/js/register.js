@@ -22,6 +22,7 @@ function forgotPassword() {
 }
 
 function sendCode() {
+
   superagent
     .post("/sendcode")
     .send({
@@ -34,12 +35,14 @@ function sendCode() {
         console.log(err);
       }
       if (res.status) {
+
         document.getElementById("sendcode1").classList.add("hide");
 
         document.getElementById("sendcode1").classList.remove("show");
 
         document.getElementById("sendcode2").classList.add("show");
         document.getElementById("sendcode2").classList.remove("hide");
+
       } else document.getElementById("Emailspan").innerHTML = "<p>email doesnt exist</p>";
     });
 }
@@ -83,6 +86,7 @@ function changePassword() {
       var res = JSON.parse(result.text);
       localId = res.userData._id;
       localUser = res.userData;
+
       console.log("useData",res.userData)
       
       if (res.status) {
@@ -90,6 +94,7 @@ function changePassword() {
           $("#container2").load("../../views/home.html", function() {
             if(res.userData.post.length>0){
             postId = res.userData.post[0]._id;
+
             yourDiscussion(res.userData);
             middleRenderPost(
               res.userData.username,
@@ -98,7 +103,9 @@ function changePassword() {
               res.userData.post[0].postTime,
               res.userData.post[0].comments
             );
+
             }
+
             trendingTopics(res.trendData);
           });
         });
@@ -137,7 +144,9 @@ function signup() {
         console.log(err);
       } else {
         var res = JSON.parse(result.text);
+
         console.log("result",res);
+
         localUser = res.userData;
 
         if (res.status) {
@@ -269,6 +278,7 @@ function login() {
         if (res.status) {
           $(document).ready(function() {
             $("#container1").load("/views/home.html", function() {
+
               document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
               yourDiscussion(res.userData);
               if(res.userData.post.length>0){
@@ -282,6 +292,7 @@ function login() {
                 );
               }
             
+
               trendingTopics(res.trendData);
             });
           });
@@ -299,7 +310,9 @@ function newDiscussion() {
     if (res.status) {
       $(document).ready(function() {
         $("#container1").load("/views/new-discussion.html", function() {
+
          
+
         });
       });
     }
@@ -321,7 +334,9 @@ function cancelDiscussion() {
         postId = res.userData.post[0]._id;
         $(document).ready(function() {
           $("#discussion-container").load("/views/home.html", function() {
+
             document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+
             middleRenderPost(
               res.userData.username,
               res.userData.post[0].topic,
@@ -367,7 +382,9 @@ function createDiscussion() {
           if (res.status) {
             $(document).ready(function() {
               $("#discussion-container").load("/views/home.html", function() {
+
                 document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+
                 middleRenderPost(
                   res.postData.username,
                   res.postData.post[0].topic,
@@ -392,6 +409,7 @@ function createDiscussion() {
 }
 
 // TRENDING TOPICS RENDERING
+
 
 // function trendingTopics(posts) {
 //   renderPages(posts, 1, 5);
@@ -502,16 +520,20 @@ function getAttributes1(item) {
 //   return markup;
 // }
 
+
 // MIDDLE RENDERING
 
 function middleRenderPost(username, topic, description, postTime, comments) {
+
   document.getElementById("post_content").innerHTML = "";
   document.getElementById("comment_content").innerHTML = "";
   var time = calculateTime(postTime);
 
   const markup = `<h1 style = "white-space:pre"> ${topic}</h1>
+
   <article class="post"> 
   <h5>posted by ${username}</h5>
+
   <font size="2">${time}</font></br>
   <font size="4" class="content">
   ${description}
@@ -519,6 +541,7 @@ function middleRenderPost(username, topic, description, postTime, comments) {
   document
     .getElementById("post_content")
     .insertAdjacentHTML("afterbegin", markup);
+
 
   for (var i = 0; i < comments.length; i++) {
     const markup1 = `<h4>${comments[i].username}</h4>
@@ -531,9 +554,11 @@ function middleRenderPost(username, topic, description, postTime, comments) {
 
 // YOUR DISCUSSION TOPIC RENDERING
 
+
 // function yourDiscussion(postData) {
 //   renderResults(postData.post, 1, 5);
 // }
+
 
 // function renderResults(posts, page, postsPerPage) {
 //   document.getElementById("results__pages").addEventListener("click", e => {
@@ -567,6 +592,7 @@ function yourDiscussion(postData) {
   for(var i=0; i<posts.length ;i++){
     var time = calculateTime(posts[i].postTime);
   var description = posts[i].description;
+
   if (description.length > 40) {
     description = description.slice(0, 80) + "...";
   }
@@ -574,19 +600,25 @@ function yourDiscussion(postData) {
   <div class = "template"> 
   <a  onclick="getAttributes(this)" class = "results__link" href= "#${posts[i]._id}" style = "color:rgb(199, 247, 255); text-decoration: none;">
   <article class="topic">
+
   <div style="font-size:25px; "> ${posts[i].topic}</div>  <div style="text-align:right;">${time}</div>
     <p style="font-size:18px;"> 
+
     ${description}
     </p>
     </article>
     </a>
     </div>
 `;
+
+  for (var i = 0; i < posts.comments.length; i++) {}
   document
     .getElementById("yourdiscussion")
     .insertAdjacentHTML("beforeend", markup);
 }
+
 }
+
 
 function getAttributes(item) {
   var urlArray = item.href.toString().split("#");
@@ -612,6 +644,7 @@ function getAttributes(item) {
     });
 }
 
+
 // function renderButtons(page, numResults, resPerPage) {
 //   const pages = Math.ceil(numResults / resPerPage);
 
@@ -628,6 +661,7 @@ function getAttributes(item) {
 //     .getElementById("results__pages")
 //     .insertAdjacentHTML("afterbegin", button);
 // }
+
 
 // function createButton(page, type) {
 //   const markup = `
@@ -674,7 +708,9 @@ function addComment() {
   var comment = document.getElementById("commentBox").value;
   document.getElementById("commentBox").value = "";
   var username = localUser.username;
+
   console.log(localUser.username);
+
   superagent
     .post("/comment")
     .send({ comment: comment, username: username, postId: postId })
@@ -699,8 +735,10 @@ function addComment() {
 
 function searchBar() {
   var search = document.getElementById("search").value;
+
   document.getElementById("search").value="";
   //console.log("search text",search);
+
   superagent
     .post("/search")
     .send({ search: search })
