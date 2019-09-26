@@ -611,7 +611,7 @@ function yourDiscussion(postData) {
     </div>
 `;
 
-  for (var i = 0; i < posts.comments.length; i++) {}
+  
   document
     .getElementById("yourdiscussion")
     .insertAdjacentHTML("beforeend", markup);
