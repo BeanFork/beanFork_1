@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
-    <link href="assets/css/home.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
-    <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
-    <script src="assets/js/register.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
-    <script src="assets/js/settings.js"></script>
-  </head>
-<div id="divcontainer" class = "divcontainer">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+  <link href="assets/css/home.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script
+    src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
+  <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <!-- <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script> -->
+  <script src="assets/js/settings.js"></script>
+  <script src="assets/js/register.js"></script>
+</head>
+
+<div id="divcontainer" class="divcontainer">
+
   <body>
     <!-- <ul class="nav navbar-nav navbar-right"></ul> -->
-  
+    <span id="welcomeuser" class="welcomeuser"></span>
     <div class="banner text-left">
-
-        <div class="dropdown" >
-            <button class= "dropdown-toggle btn-drop" type="button" data-toggle="dropdown">Welcome user
-            <span class="caret"></span></button> 
-            <ul class="dropdown-menu">
-              <li><a href="#" onclick='settingsPage()'>Settings</a></li>
-              <li><a href="#" onclick='logOut()'>Logout</a></li>
-            </ul>
-         
-          </div>
-
-
+        
+      <div class="dropdown">
+        <button class="dropdown-toggle btn-drop" type="button" data-toggle="dropdown">
+          <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href = "#" onclick ="homePage()">Go To Main Page </a> </li>
+          <li><a href="#" onclick='settingsPage()'>Settings</a></li>
+          <li><a href="#" onclick='logOut()'>Logout</a></li>
+        </ul>
+      </div>
       <img class="logo" src="assets/img/bean.gif" />
       <h1><b> BeanFork </b></h1>
       <br />
@@ -45,17 +48,19 @@
         <div class="container">
           <div class="row">
 
-                   <div id="custom-search-input">
-                                    <div class="input-group col-md-8">
-                                        <input type="text" class="  search-query form-control" placeholder="Search" autofocus ="autofocus" />
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-danger" type="button">
-                                                <span class=" glyphicon glyphicon-search"></span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                             
+            <div id="custom-search-input">
+              <div class="input-group col-md-8">
+                <input type="text" id="search" class= "search-query form-control" placeholder="Search" autofocus="autofocus" 
+                onkeydown = "if (event.keyCode == 13)
+                document.getElementById('btnSearch').click()" />
+                <span class="input-group-btn">
+                  <button class="btn btn-danger" onclick = "searchBar()" type="button" id="btnSearch">
+                    <span class= "glyphicon glyphicon-search"></span>
+                  </button>
+                </span>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -67,77 +72,43 @@
       <div class="row">
         <div class="col-lg-3">
           <div class="leftpane">
-            <button
-              class="btn-start"
-              id="newdiscussion"
-              type="button"
-              size="50"
-              onclick="newDiscussion()"
-            >
-              Start New Discussion
-            </button>
-
-            <h1>Trending Topics</h1>
-            <div>
-              <article class="topic">
-                <h2>Topic-1</h2>
-                <h4>Published Time</h4>
-                <p>
-                  An apple is a sweet, edible fruit produced by an apple tree...
-                </p>
-              </article>
-            </div>
-
-            <article class="topic">
-              <h2>Topic-2</h2>
-              <h4>Published Time</h4>
-              <p>
-                An apple is a sweet, edible fruit produced by an apple tree...
-              </p>
-            </article>
-
-            <article class="topic">
-              <h2>Topic-3</h2>
-              <h4>Published Time</h4>
-              <p>
-                An apple is a sweet, edible fruit produced by an apple tree...
-              </p>
-            </article>
+            <h3 class="trending">Trending</h3>
+            <div id="TrendDiscussion"> </div>
+            <div id="Trending__pages"></div>
           </div>
         </div>
 
         <div class="col-lg-5">
           <div class="middlepane">
-            <div id="post_content">
 
-            </div>
-            <div id="comment_content">
-
-            </div>
+            <button id="btn-create" onclick="newDiscussion()"> Create New <i class="fa fa-plus-square"></i> </button>
            
+            <div id="post_content">
+            </div>
+            <div id="comment_content"></div> 
+
           </div>
         </div>
-        
+
+
+
+
         <div class="col-lg-3">
           <div class="rightpane">
-            <h1>Your Discussions</h1>
+            <h3 class="myDiscussion"> My Discussions</h3>
             <div id="yourdiscussion"></div>
             <div id="results__pages"></div>
           </div>
         </div>
 
-        <textarea
-        id="commentBox"
-        class="comment"
-        rows="5"
-        cols="80"
-        placeholder="Add Your Comments"></textarea>
-      <!-- <input id="button-add" type="submit" onclick="addComment()" value="Add" /> -->
-      <button id="button-add" style = "font-size: 20px" onclick="addComment()">Add</button>
+        <textarea id="commentBox" class="comment" rows="5" cols="80" placeholder="Add Your Comments"></textarea>
+        <!-- <input id="button-add" type="submit" onclick="addComment()" value="Add" /> -->
+        <button id="button-add" style="font-size: 20px" onclick="addComment()">Add</button>
 
       </div>
     </div>
-    </div>
-  </body>
-</div> 
+</div>
+</body>
+</div>
+
 </html>

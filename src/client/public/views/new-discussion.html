@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     <link href="assets/css/new-discussion.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="assets/js/register.js"></script>
+  
 
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -16,20 +16,27 @@
     <script
         src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
     <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
+
+    <script type="text/javascript" src="assets/js/register.js"></script>
+    <script type="text/javascript" src="assets/js/settings.js"></script>
     
 </head>
 <div id="discussion-container"> 
 
 
 <body>
-
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            <!-- <span class="glyphicon glyphicon-user"></span> -->
-            <a class = "welcome"  href = "#" id = "welcomeuser">Welcome User </a>
-        </li>
-    </ul>
-    <div class="banner text-left">
+          <span id="welcomeuser" class="welcomeuser"></span>
+        <div class="banner text-left">
+            
+          <div class="dropdown">
+            <button class="dropdown-toggle btn-drop" type="button" data-toggle="dropdown">
+              <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href = "#" onclick ="homePage()">Go To Main Page </a> </li>
+              <li><a href="#" onclick='settingsPage()'>Settings</a></li>
+              <li><a href="#" onclick='logOut()'>Logout</a></li>
+            </ul>
+          </div>
             <img class = "logo" src = "assets/img/bean.gif">
             <h1><b> BeanFork </b></h1> <br>  
                 </div>
@@ -50,7 +57,7 @@
               <br/>
               <span id="discussion"></span>
               <div class="button">
-                    <button type="reset" class="cancelbtn">Cancel</button>
+                    <button type="reset" class="cancelbtn" onclick="cancelDiscussion()">Cancel</button>
             <button type="button" class="createbtn" onclick="createDiscussion()">Create</button>
             <div id="post_content"> 
 

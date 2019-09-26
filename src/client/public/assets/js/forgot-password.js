@@ -1,96 +1,96 @@
 
-var localdata;
-function sendCode() {
+// var localdata;
+// function sendCode() {
 
-    superagent
-        .post("/sendcode")
-        .send({
-            email: document.getElementById("input-email").value,
-            // code: verificationCode
-        })
-        .end(function (err, result) {
+//     superagent
+//         .post("/sendcode")
+//         .send({
+//             email: document.getElementById("input-email").value,
+//             // code: verificationCode
+//         })
+//         .end(function (err, result) {
 
-            var res = JSON.parse(result.text)
+//             var res = JSON.parse(result.text)
 
-            if (err) {
-                console.log(err);
-            } if (res.status) {
+//             if (err) {
+//                 console.log(err);
+//             } if (res.status) {
 
-                document.getElementById("Emailspan").innerHTML = "<p>verification code is sent to email </p>";
+//                 document.getElementById("Emailspan").innerHTML = "<p>verification code is sent to email </p>";
 
-            }
-            else
-                document.getElementById("Emailspan").innerHTML = '<p>email doesnt exist</p>';
-        });
-}
-
-
-
-function confirmCode() {
-    //localStorage.setItem('localemail', document.getElementById("input-email").value);
-
-    superagent
-        .post("/submitcode")
-        .send({
-            code: document.getElementById("input-code").value,
-            email: document.getElementById("input-email").value,
-        })
-        .end(function (err, result) {
-
-            var res = JSON.parse(result.text)
-            localUser = res.userdata;
-            if (res.status) {
-                console.log(res.status)
-                // $("html").html(res.html);
-                $(document).ready(function () {
-
-                    $("#divcontainer").load("../../views/change-password.html #container2", function () {
-
-                        console.log("load is performed")
-                        document.getElementById("welcomeuser").innerHTML = `<p> Welcome ${localUser.username}</p>`
-                    });
-                });
-            }
-            else
-
-                document.getElementById("Emailspan").innerHTML = "<p>Verification code is incorrect</p>"
-        });
+//             }
+//             else
+//                 document.getElementById("Emailspan").innerHTML = '<p>email doesnt exist</p>';
+//         });
+// }
 
 
-}
 
-function changePassword() {
+// function confirmCode() {
+//     //localStorage.setItem('localemail', document.getElementById("input-email").value);
 
-    localemail = localStorage.getItem('localemail');
+//     superagent
+//         .post("/submitcode")
+//         .send({
+//             code: document.getElementById("input-code").value,
+//             email: document.getElementById("input-email").value,
+//         })
+//         .end(function (err, result) {
 
-    console.log(localemail);
-    superagent
-        .post("/changepassword")
-        .send({
-            password: document.getElementById("password").value,
-            email: localemail
-        })
-        .end(function (err, result) {
-            var res = JSON.parse(result.text)
+//             var res = JSON.parse(result.text)
+//             localUser = res.userdata;
+//             if (res.status) {
+//                 console.log(res.status)
+//                 // $("html").html(res.html);
+//                 $(document).ready(function () {
 
-            if (res.status) {
-                console.log("password updated in db")
-                $(document).ready(function () {
+//                     $("#divcontainer").load("../../views/change-password.html #container2", function () {
 
-                    $("#container2").load("../../views/home.html", function () {
+//                         console.log("load is performed")
+//                         document.getElementById("welcomeuser").innerHTML = `<p> Welcome ${localUser.username}</p>`
+//                     });
+//                 });
+//             }
+//             else
 
-                        console.log("load is performed")
+//                 document.getElementById("Emailspan").innerHTML = "<p>Verification code is incorrect</p>"
+//         });
+
+
+// }
+
+// function changePassword() {
+
+//     localemail = localStorage.getItem('localemail');
+
+//     console.log(localemail);
+//     superagent
+//         .post("/changepassword")
+//         .send({
+//             password: document.getElementById("password").value,
+//             email: localemail
+//         })
+//         .end(function (err, result) {
+//             var res = JSON.parse(result.text)
+
+//             if (res.status) {
+//                 console.log("password updated in db")
+//                 $(document).ready(function () {
+
+//                     $("#container2").load("../../views/home.html", function () {
+
+//                         console.log("load is performed")
                    
-                        yourDiscussion(res.userData);
-                        middleRenderPost(res.userData);
-                    });
-                });
+//                         yourDiscussion(res.userData);
+//                         middleRenderPost(res.userData);
+//                     });
+//                 });
 
-            }
-            else
-                console.log("not updated")
-        })
-}
+//             }
+//             else
+//                 console.log("not updated")
+//         })
+// }
 
 
 

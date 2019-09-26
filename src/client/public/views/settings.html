@@ -19,60 +19,41 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
     <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
     <script src="https://code.jquery.com/jquery-2.1.1.js"> </script>
-    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
-<script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
+    <!-- <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+<script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script> -->
 
 <script src="assets/js/settings.js"></script>
+<script src = "assets/js/register.js"> </script>
   </head>
 
   <body>
 
 
-    
-    <div class="banner text-left">
-      
-      <div class="dropdown" >
-            <button class = "dropdown-toggle btn-drop" type="button" data-toggle="dropdown">Welcome user
-            <span class="caret"></span></button> 
-            <ul class="dropdown-menu">
-                <li><a href="#" onclick='settingsPage()'>Settings</a></li>
-                <li><a href="#" onclick='logOut()'>Logout</a></li>
-            </ul>
-         
-          </div>
+      <span id="welcomeuser" class="welcomeuser"></span>
+      <div class="banner text-left">
+          
+        <div class="dropdown">
+          <button class="dropdown-toggle btn-drop" type="button" data-toggle="dropdown">
+            <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href = "#" onclick ="homePage()">Go To Main Page </a> </li>
+        
+            <li><a href="#" onclick='logOut()'>Logout</a></li>
+          </ul>
+        </div>
       <img class="logo" src="assets/img/bean.gif" />
       <h1><b> BeanFork </b></h1>
       
-      <br />
+    
   
 
-      <div class=" text-center">
-        <form class="navbar-form" role="search">
-          <div class="input-group add-on">
-            <input
-              class="form-control"
-              placeholder="Search"
-              autofocus="autofocus"
-              name="srch-term"
-              id="srch-term"
-              type="text"
-            />
-            <div class="input-group-btn">
-              <button class="btn btn-default btn2" type="submit">
-                <i class="glyphicon glyphicon-search"></i>
-              </button>
-            </div>
-          </div>
-        </form>
      
-      </div>
-     
-    </div>
+    
 
     <!-------------------------- Banner Portion----------------------------------------->
 
 
 
    </body>
-  </body>
+  
 </html>
