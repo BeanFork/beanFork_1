@@ -15,7 +15,7 @@ function forgotPassword() {
 
     if (result.status) {
       $(document).ready(function () {
-        $("#container1").load("/views/forgot-password.html", function () { });
+        $("#container1").load("../../views/forgot-password.html", function () { });
       });
     }
   });
@@ -43,7 +43,7 @@ function sendCode() {
         document.getElementById("sendcode2").classList.add("show");
         document.getElementById("sendcode2").classList.remove("hide");
 
-      } else document.getElementById("Emailspan").innerHTML = "<p>email doesnt exist</p>";
+      } else document.getElementById("Emailspan").innerHTML = "<p>Email address doesn't exist</p>";
     });
 }
 
@@ -57,20 +57,31 @@ function confirmCode() {
     })
     .end(function (err, result) {
       var res = JSON.parse(result.text);
-      localUser = res.userdata;
+      
       if (res.status) {
+        localUser = res.userdata;
         $(document).ready(function () {
           $("#divcontainer").load(
             "../../views/change-password.html #container2",
             function () {
-              console.log("change password")
+              console.log("change password");
             }
           );
         });
-      } else
-        document.getElementById("Emailspan").innerHTML =
+      } else{
+        console.log("Wrong code", res.status);
+        $(document).ready(function () {
+          $("#divcontainer").load(
+            "../../views/forgot-password.html",
+            function () {
+              document.getElementById("Emailspan").innerHTML =
           "<p>Verification code is incorrect</p>";
-    });
+            }
+          );
+        
+    })
+  }
+});
 }
 
 function changePassword() {
@@ -175,7 +186,7 @@ function mailidFormat() {
   var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
   if (reg.test(email) === false) {
     document.getElementById("idValidation").innerHTML =
-      "<p>Enter valid input</p>";
+      "<p>Enter valid Email address</p>";
   } else {
     document.getElementById("idValidation").innerHTML = " ";
     emailExistence();
@@ -188,7 +199,7 @@ function usernameLength() {
 
   if (usernamelength < 5) {
     document.getElementById("usernamecheck").innerHTML =
-      "<p>Username must contain minimum of 5 character</p>";
+      "<p>Username must contain a minimum of 5 characters</p>";
   } else {
     userExistence();
   }
@@ -651,29 +662,6 @@ function editDiscussion() {
           
           if (res.status) {
 
-
-//       console.log("your discussion", res.userData)
-//       console.log("trend topics", res.trendData)
-
-//       yourDiscussion(res.userData);
-//       postId = res.userData.post[0]._id;
-      
-//       middleRenderPost(
-//         res.userData.username,
-//         res.userData.post[0].topic,
-//         res.userData.post[0].description,
-//         res.userData.post[0].postTime,
-//         res.userData.post[0].comments,
-//         true
-//       );
-
-//       trendingTopics(res.trendData);
-
-//     }
-//     else
-//       console.log("status:false ")
-
-
             console.log("your dis",res.userData)
             console.log("tred disc",res.trendData)
             $(document).ready(function () {
@@ -703,12 +691,6 @@ function editDiscussion() {
     document.getElementById("discussion").innerHTML =
       "<p>***Both the fields are mandatory</p>";
 }
-
-
-
-
-
-
 
 
 function deleteButton() {

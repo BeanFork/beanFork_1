@@ -51,13 +51,14 @@
               <label><b>Discussion Description</b></label>
               <br/>
               <textarea cols="60"
-             rows="6" class="form-control rounded-0" id="edit-discussionDescription" name="textbox2" size=70 required></textarea></p>
+             rows="6" class="form-control rounded-0" id="edit-discussionDescription" name="textbox2" size=70  onkeydown = "if (event.keyCode == 13)
+             document.querySelector('.createbtn').click()"required></textarea></p>
               <br/>
               <span id="discussion"></span>
               <div class="button">
                     <button type="reset" class="cancelbtn" onclick="cancelDiscussion()">Cancel</button>
             <button type="button" class="createbtn" onclick="editDiscussion()">Confirm edit</button>
-            <div id="post_content"> 
+            <div id="post_content" class = "post_content"> 
 
             </div>
                   

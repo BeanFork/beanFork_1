@@ -9,7 +9,7 @@ function checkPassword() {
       //document.getElementById("submit").disabled = false;
     } else {
       document.getElementById("message").innerHTML =
-        "Must match the previous entry";
+        "Passwords do not match";
         localStorage.setItem("confirmpassword",false)
       //document.getElementById("submit").disabled = true;
     }
@@ -32,18 +32,18 @@ function passwordStrength() {
     localStorage.setItem("Password",true)
     
   } else if (medium.test(password)) {
-    document.getElementById("passwordmessage").innerHTML = "<p>MEDIUM!!Must contain atleast 8 character that are the combination of letters in both uppercase and lowercase,numbers and symbols</p>";
+    document.getElementById("passwordmessage").innerHTML = "<p>MEDIUM!!</p>";
     // document.getElementById("password").style.backgroundColor="rgb(211,207,125)";
     //document.getElementById("submit").disabled=true;
     localStorage.setItem("Password",false)
   } else if (enough.test(password)) {
-    document.getElementById("passwordmessage").innerHTML = "<p>WEAK!!Must contain atleast 8 character that are the combination of letters in both uppercase and lowercase,numbers and symbols</p>";
+    document.getElementById("passwordmessage").innerHTML = "<p>WEAK!!</p>";
     // document.getElementById("password").style.backgroundColor="rgb(231,148,148)";
     //document.getElementById("submit").disabled=true;
     localStorage.setItem("Password",false)
   } else {
     document.getElementById("passwordmessage").innerHTML =
-      "<p>Enter valid input</p>";
+      "<p>Enter valid Password</p>";
     //document.getElementById("submit").disabled=true;
     localStorage.setItem("Password",false)
   }
