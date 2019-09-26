@@ -63,9 +63,7 @@ function confirmCode() {
           $("#divcontainer").load(
             "../../views/change-password.html #container2",
             function () {
-              document.getElementById(
-                "welcomeuser"
-              ).innerHTML = `<p> Welcome ${localUser.username}</p>`;
+              console.log("change password")
             }
           );
         });
@@ -92,6 +90,8 @@ function changePassword() {
       if (res.status) {
         $(document).ready(function() {
           $("#container2").load("../../views/home.html", function() {
+            document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+            
             if(res.userData.post.length>0){
             postId = res.userData.post[0]._id;
 

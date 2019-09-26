@@ -1,9 +1,13 @@
 
 
-.welcomeuser{
+#welcomeuser{
   color:beige;
-font-size: 25px;
-  margin-left: 90%;
+font-size: 20px;
+  
+  position: absolute;
+  top:35px;
+  left:82%;
+
 
 }
 
@@ -101,15 +105,19 @@ Your Account dropdown
   padding: 3px 3px 3px 3px;
   border: none;
   border-radius: 8px;
-  color: #101c22;
+  color: #0d5c66;
+  background-color: #8cbbd1;
+  font-size: 30px;
+  
   
 }
 .dropdown{
   
+ 
 
-  left: 2px;
-  margin: 50px 50px 50px 50px;
+  margin: 50px 150px 50px 50px;
   float: right;
+
 }
 
 /*
@@ -225,7 +233,7 @@ button {
 
 .comment_content{
 
-  background-color: #ced4b9;
+  background-color: #abd4bb;
   color: #3d6361;
   padding: 15px 15px 15px 15px;
   border-radius:13px;

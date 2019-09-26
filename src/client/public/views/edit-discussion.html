@@ -23,13 +23,18 @@
 
 <body>
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            <!-- <span class="glyphicon glyphicon-user"></span> -->
-            <a class = "welcome"  href = "#" id = "welcomeuser">Welcome User </a>
-        </li>
-    </ul>
-    <div class="banner text-left">
+  <span id="welcomeuser" class="welcomeuser"></span>
+  <div class="banner text-left">
+      
+    <div class="dropdown">
+      <button class="dropdown-toggle btn-drop" type="button" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-cog"><t><t></t></t><span class="caret"></span></span></button>
+      <ul class="dropdown-menu">
+        <li><a href = "#" onclick ="homePage()">Go To Main Page </a> </li>
+        <li><a href="#" onclick='settingsPage()'>Settings</a></li>
+        <li><a href="#" onclick='logOut()'>Logout</a></li>
+      </ul>
+    </div>
             <img class = "logo" src = "assets/img/bean.gif">
             <h1><b> BeanFork </b></h1> <br>  
                 </div>
