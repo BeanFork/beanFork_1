@@ -23,7 +23,8 @@
   <script src="assets/js/settings.js"></script>
   <script src="assets/js/register.js"></script>
 </head>
-
+<script> 
+</script>
 <div id="divcontainer" class="divcontainer">
 
   <body>
@@ -50,22 +51,23 @@
 
             <div id="custom-search-input">
               <div class="input-group col-md-8">
-                <input type="text" id="search" class= "search-query form-control" placeholder="Search" autofocus="autofocus" 
+                <input type="text" id="search" class= "search-query form-control" placeholder="Search" autofocus="autofocus" onkeyup="searchKeyup()" 
                 onkeydown = "if (event.keyCode == 13)
                 document.getElementById('btnSearch').click()" />
                 <span class="input-group-btn">
-                  <button class="btn btn-danger" onclick = "searchBar()" type="button" id="btnSearch">
+                  <button class="btn btn-danger" onclick = "searchBar()"  type="button" id="btnSearch" disabled="true">
                     <span class= "glyphicon glyphicon-search"></span>
                   </button>
                 </span>
               </div>
-            </div>
-
+            </div><span id="span-search"></span>
+            
           </div>
         </div>
       </div>
     </div>
-
+  
+  
     <!-------------------------- Banner Portion-------------------------------------------->
 
     <div class="container-fluid">
@@ -79,13 +81,16 @@
         </div>
 
         <div class="col-lg-5">
-          <div class="middlepane">
-
+          
+          <div class="middlepane" id="middle">
+            
             <button id="btn-create" onclick="newDiscussion()"> Create New <i class="fa fa-plus-square"></i> </button>
             <div id="delete1"></div>
            <div id="edit1"></div> 
             <div id="post_content">
-            </div></body>
+            </div>
+            <ul id="myUL"></ul>
+          
             <div id="comment_content" class="comment_content"></div> 
 
           </div>
@@ -106,11 +111,14 @@
         document.getElementById('button-add').click()" ></textarea>
         <!-- <input id="button-add" type="submit" onclick="addComment()" value="Add" /> -->
         <button id="button-add" style="font-size: 20px" onclick="addComment()">Add</button>
-
+      
       </div>
     </div>
+
+  </body>
 </div>
-</body>
-</div>
+
+
+
 
 </html>

@@ -85,24 +85,24 @@ function changePassword() {
       localId = res.userData._id;
       localUser = res.userData;
 
-      console.log("useData",res.userData)
-      
-      if (res.status) {
-        $(document).ready(function() {
-          $("#container2").load("../../views/home.html", function() {
-            document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
-            
-            if(res.userData.post.length>0){
-            postId = res.userData.post[0]._id;
+      console.log("useData", res.userData)
 
-            yourDiscussion(res.userData);
-            middleRenderPost(
-              res.userData.username,
-              res.userData.post[0].topic,
-              res.userData.post[0].description,
-              res.userData.post[0].postTime,
-              res.userData.post[0].comments
-            );
+      if (res.status) {
+        $(document).ready(function () {
+          $("#container2").load("../../views/home.html", function () {
+            document.getElementById("welcomeuser").innerHTML = `${localUser.username}`
+
+            if (res.userData.post.length > 0) {
+              postId = res.userData.post[0]._id;
+
+              yourDiscussion(res.userData);
+              middleRenderPost(
+                res.userData.username,
+                res.userData.post[0].topic,
+                res.userData.post[0].description,
+                res.userData.post[0].postTime,
+                res.userData.post[0].comments
+              );
 
             }
 
@@ -145,7 +145,7 @@ function signup() {
       } else {
         var res = JSON.parse(result.text);
 
-        console.log("result",res);
+        console.log("result", res);
 
         localUser = res.userData;
 
@@ -276,12 +276,12 @@ function login() {
 
         localId = res.userData._id;
         if (res.status) {
-          $(document).ready(function() {
-            $("#container1").load("/views/home.html", function() {
+          $(document).ready(function () {
+            $("#container1").load("/views/home.html", function () {
 
-              document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+              document.getElementById("welcomeuser").innerHTML = `${localUser.username}`
               yourDiscussion(res.userData);
-              if(res.userData.post.length>0){
+              if (res.userData.post.length > 0) {
                 postId = res.userData.post[0]._id;
                 middleRenderPost(
                   res.userData.username,
@@ -291,7 +291,7 @@ function login() {
                   res.userData.post[0].comments
                 );
               }
-            
+
 
               trendingTopics(res.trendData);
 
@@ -312,10 +312,10 @@ function newDiscussion() {
     var res = JSON.parse(result.text);
 
     if (res.status) {
-      $(document).ready(function() {
-        $("#container1").load("/views/new-discussion.html", function() {
+      $(document).ready(function () {
+        $("#container1").load("/views/new-discussion.html", function () {
 
-         
+
 
         });
       });
@@ -336,10 +336,10 @@ function cancelDiscussion() {
       } else {
         var res = JSON.parse(result.text);
         postId = res.userData.post[0]._id;
-        $(document).ready(function() {
-          $("#discussion-container").load("/views/home.html", function() {
+        $(document).ready(function () {
+          $("#discussion-container").load("/views/home.html", function () {
 
-            document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+            document.getElementById("welcomeuser").innerHTML = `${localUser.username}`
 
             middleRenderPost(
               res.userData.username,
@@ -384,10 +384,10 @@ function createDiscussion() {
           var res = JSON.parse(result.text);
           postId = res.postData.post[0]._id;
           if (res.status) {
-            $(document).ready(function() {
-              $("#discussion-container").load("/views/home.html", function() {
+            $(document).ready(function () {
+              $("#discussion-container").load("/views/home.html", function () {
 
-                document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+                document.getElementById("welcomeuser").innerHTML = `${localUser.username}`
 
                 middleRenderPost(
                   res.postData.username,
@@ -444,9 +444,9 @@ function createDiscussion() {
 // }
 
 function trendingTopics(posts) {
-  console.log("post",posts)
+  console.log("post", posts)
 
-  for(var i=0;i<posts.length;i++){
+  for (var i = 0; i < posts.length; i++) {
     const markup = `
     <div class = "trendingTemplate"> 
     <a onclick="getAttributes1(this)" class="results__link" href= "#${posts[i]._id}" style = "color:rgb(199, 247, 255); text-decoration: none;">
@@ -546,19 +546,19 @@ function middleRenderPost(username, topic, description, postTime, comments, stat
     .getElementById("post_content")
     .insertAdjacentHTML("afterbegin", markup);
 
- if(comments.length >0){
-  document.getElementById("comment_content").classList.add("comment_content");
-  for (var i = 0; i < comments.length; i++) {
-    const markup1 = ` <h4>${comments[i].username}</h4>
+  if (comments.length > 0) {
+    document.getElementById("comment_content").classList.add("comment_content");
+    for (var i = 0; i < comments.length; i++) {
+      const markup1 = ` <h4>${comments[i].username}</h4>
     <h5>${comments[i].comment}</h5> <hr>`;
-    document
-      .getElementById("comment_content")
-      .insertAdjacentHTML("afterbegin", markup1);
+      document
+        .getElementById("comment_content")
+        .insertAdjacentHTML("afterbegin", markup1);
+    }
   }
-}
-else {
-  document.getElementById("comment_content").classList.remove("comment_content");
-}
+  else {
+    document.getElementById("comment_content").classList.remove("comment_content");
+  }
 
 
   if (status || (localUser.username === username)) {
@@ -569,10 +569,10 @@ else {
       .insertAdjacentHTML("beforeend", buttons123);
 
 
-      const buttonsEdit = editButton();
-      document
-        .getElementById("edit1")
-        .insertAdjacentHTML("beforeend", buttonsEdit);
+    const buttonsEdit = editButton();
+    document
+      .getElementById("edit1")
+      .insertAdjacentHTML("beforeend", buttonsEdit);
 
   }
   else {
@@ -604,17 +604,19 @@ function editButton() {
 
 function editAction() {
 
-  superagent.post("/editpage").send({ postId: postId, 
-    userId: localId,}).end(function (err, result) {
+  superagent.post("/editpage").send({
+    postId: postId,
+    userId: localId,
+  }).end(function (err, result) {
     var res = JSON.parse(result.text);
 
     if (res.status) {
       $(document).ready(function () {
         $("#container1").load("/views/edit-discussion.html", function () {
-          console.log("cli",res.description)
-          document.getElementById("edit-discussionTopic").value=res.topic;
-           document.getElementById("edit-discussionDescription").value=res.description;
-         console.log("edit page")
+          console.log("cli", res.description)
+          document.getElementById("edit-discussionTopic").value = res.topic;
+          document.getElementById("edit-discussionDescription").value = res.description;
+          console.log("edit page")
         });
       });
     }
@@ -638,7 +640,7 @@ function editDiscussion() {
       .send({
         topic: topic,
         description: description,
-        postId: postId, 
+        postId: postId,
         userId: localId,
         postTime: postTime,
         username: username
@@ -648,39 +650,39 @@ function editDiscussion() {
           console.log(err);
         } else {
           var res = JSON.parse(result.text);
-          
+
           if (res.status) {
 
 
-//       console.log("your discussion", res.userData)
-//       console.log("trend topics", res.trendData)
+            //       console.log("your discussion", res.userData)
+            //       console.log("trend topics", res.trendData)
 
-//       yourDiscussion(res.userData);
-//       postId = res.userData.post[0]._id;
-      
-//       middleRenderPost(
-//         res.userData.username,
-//         res.userData.post[0].topic,
-//         res.userData.post[0].description,
-//         res.userData.post[0].postTime,
-//         res.userData.post[0].comments,
-//         true
-//       );
+            //       yourDiscussion(res.userData);
+            //       postId = res.userData.post[0]._id;
 
-//       trendingTopics(res.trendData);
+            //       middleRenderPost(
+            //         res.userData.username,
+            //         res.userData.post[0].topic,
+            //         res.userData.post[0].description,
+            //         res.userData.post[0].postTime,
+            //         res.userData.post[0].comments,
+            //         true
+            //       );
 
-//     }
-//     else
-//       console.log("status:false ")
+            //       trendingTopics(res.trendData);
+
+            //     }
+            //     else
+            //       console.log("status:false ")
 
 
-            console.log("your dis",res.userData)
-            console.log("tred disc",res.trendData)
+            console.log("your dis", res.userData)
+            console.log("tred disc", res.trendData)
             $(document).ready(function () {
               $("#discussion-container").load("/views/home.html", function () {
-                for(var j=0;j<res.userData.post.length;j++){
+                for (var j = 0; j < res.userData.post.length; j++) {
 
-                  if(res.userData.post[j]._id==postId){
+                  if (res.userData.post[j]._id == postId) {
                     middleRenderPost(
                       res.userData.username,
                       res.userData.post[j].topic,
@@ -691,7 +693,7 @@ function editDiscussion() {
 
                   }
                 }
-               
+
                 yourDiscussion(res.userData);
                 trendingTopics(res.trendData);
               });
@@ -728,9 +730,9 @@ function deleteButton() {
 function deletePopUP() {
 
   if (confirm("Are you sure you want to delete!")) {
-    return txt ="ok";
+    return txt = "ok";
   } else {
-    return txt ="cancel";
+    return txt = "cancel";
   }
 
 }
@@ -746,9 +748,9 @@ function deleteAction() {
 
   if (answer == "ok") {
     document
-    .getElementById("yourdiscussion").innerHTML = "";
+      .getElementById("yourdiscussion").innerHTML = "";
     document
-    .getElementById("TrendDiscussion").innerHTML = "";
+      .getElementById("TrendDiscussion").innerHTML = "";
     console.log(" deleted ")
     superagent.post('/delete').send({ postId: postId, userId: localId }).end(function (err, result) {
       var res = JSON.parse(result.text)
@@ -759,7 +761,7 @@ function deleteAction() {
 
         yourDiscussion(res.userData);
         postId = res.userData.post[0]._id;
-        
+
         middleRenderPost(
           res.userData.username,
           res.userData.post[0].topic,
@@ -817,16 +819,16 @@ function deleteAction() {
 // }
 
 function yourDiscussion(postData) {
-  var posts =postData.post;
+  var posts = postData.post;
 
-  for(var i=0; i<posts.length ;i++){
+  for (var i = 0; i < posts.length; i++) {
     var time = calculateTime(posts[i].postTime);
-  var description = posts[i].description;
+    var description = posts[i].description;
 
-  if (description.length > 40) {
-    description = description.slice(0, 80) + "...";
-  }
-  const markup = `
+    if (description.length > 40) {
+      description = description.slice(0, 80) + "...";
+    }
+    const markup = `
   <div class = "template"> 
   <a  onclick="getAttributes(this)" class = "results__link" href= "#${posts[i]._id}" style = "color:rgb(199, 247, 255); text-decoration: none;">
   <article class="topic">
@@ -841,11 +843,11 @@ function yourDiscussion(postData) {
     </div>
 `;
 
-  
-  document
-    .getElementById("yourdiscussion")
-    .insertAdjacentHTML("beforeend", markup);
-}
+
+    document
+      .getElementById("yourdiscussion")
+      .insertAdjacentHTML("beforeend", markup);
+  }
 
 }
 
@@ -854,7 +856,7 @@ function getAttributes(item) {
   var urlArray = item.href.toString().split("#");
 
   postId = urlArray[1];
-
+ console.log("p",postId)
   superagent
     .post("/middleRender")
     .send({ postId: postId, userId: localId })
@@ -963,27 +965,71 @@ function addComment() {
 }
 
 // SEARCH BAR
+function searchKeyup(){
+  var search = document.getElementById("search").value;
+  console.log("search length",search.length)
+  if(search.length >=3){
+    document.getElementById("btnSearch").disabled =false;
+  }
+  else{
+    document.getElementById("btnSearch").disabled =true;
+  }
+}
 
 function searchBar() {
   var search = document.getElementById("search").value;
-
-  document.getElementById("search").value="";
+  document.getElementById("post_content").innerHTML = "";
+  document.getElementById("comment_content").innerHTML = "";
+  //document.getElementById("comment_content").classList.add("comment_content");
+  document.getElementById("comment_content").classList.remove("comment_content");
+  document.getElementById("delete1").innerHTML="";
+  document.getElementById("edit1").innerHTML="";
+  document.getElementById("search").value = "";
   //console.log("search text",search);
 
-  superagent
-    .post("/search")
-    .send({ search: search })
-    .end(function (err, result) {
-      var res = JSON.parse(result.text);
-      postId = res.postData._id;
-      middleRenderPost(
-        res.username,
-        res.postData.topic,
-        res.postData.description,
-        res.postData.postTime,
-        res.postData.comments
-      );
-    });
+    superagent
+      .post("/search")
+      .send({ search: search })
+      .end(function (err, result) {
+        var res = JSON.parse(result.text);
+        if (res.status) {
+          document.getElementById('span-search').innerHTML = " ";
+
+          console.log(res.postData)
+
+          document
+            .getElementById("myUL").innerHTML = "";
+          for (var i = 0; i < res.postData.length; i++) {
+
+            const searchList = generateSearchList();
+            // document
+            //   .getElementById("myUL")
+            //   .insertAdjacentHTML("beforeend", searchList);
+            document
+            .getElementById("post_content")
+            .insertAdjacentHTML("afterbegin", searchList);
+
+            function generateSearchList() {
+              console.log("res.postData[i]._id", res.postData[i]._id);
+              const markup = ` <ul>
+<li><a onclick="getAttributes1(this)" class = "results__link" href= "#${res.postData[i]._id}" ><div style="font-size:25px; "> ${res.postData[i].topic}</div> </a></li><hr></ul>
+      `
+              return markup;
+            }
+
+
+          }
+
+
+
+        }
+
+
+        if (res.status == false)
+          document.getElementById('span-search').innerHTML = "Topic doesn't exist";
+
+      });
+  
 }
 
 
@@ -998,33 +1044,33 @@ function homePage() {
 
   console.log("homepage function called")
   superagent
-  .post('/homePage')
-  .send({id: localId})
-  .end(function( err, result) {
+    .post('/homePage')
+    .send({ id: localId })
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
-      if(err){
-          console.log(err);
+      if (err) {
+        console.log(err);
       }
-      $(document).ready(function() {
-      
-       $("#divcontainer").load("../../views/home.html",function(){
-        document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
-        yourDiscussion(res.userData);
-        //postId = res.userData.post[0]._id;
-        if(res.userData.post.length > 0){
-          middleRenderPost(
-            res.userData.username,
-            res.userData.post[0].topic,
-            res.userData.post[0].description,
-            res.userData.post[0].postTime,
-            res.userData.post[0].comments
-          );
-        }
-       
-        trendingTopics(res.trendData);
-       });
+      $(document).ready(function () {
+
+        $("#divcontainer").load("../../views/home.html", function () {
+          document.getElementById("welcomeuser").innerHTML = `${localUser.username}`
+          yourDiscussion(res.userData);
+          //postId = res.userData.post[0]._id;
+          if (res.userData.post.length > 0) {
+            middleRenderPost(
+              res.userData.username,
+              res.userData.post[0].topic,
+              res.userData.post[0].description,
+              res.userData.post[0].postTime,
+              res.userData.post[0].comments
+            );
+          }
+
+          trendingTopics(res.trendData);
+        });
       });
-      
+
     });
 
 }

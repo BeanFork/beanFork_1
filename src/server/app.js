@@ -85,12 +85,12 @@ app.post("/signup", (req, res) => {
 //Fetching the id to the local host
 
 app.post("/signupverification", (req, res) => {
-  console.log("email",req.body.email)
-  userProfile.findOne({ _id: req.body.email }, function(err, result) {
+  console.log("email", req.body.email)
+  userProfile.findOne({ _id: req.body.email }, function (err, result) {
     if (err) {
       console.log(err);
     } else {
-      console.log("id",result)
+      console.log("id", result)
       res.send({ id: result._id });
     }
   });
@@ -315,45 +315,45 @@ app.post("/changepassword", (req, res) => {
 });
 
 
-app.post('/editpage',(req,res)=>{
-  postProfile.findOne({postid:req.body.postId},function(err,result){
+app.post('/editpage', (req, res) => {
+  postProfile.findOne({ postid: req.body.postId }, function (err, result) {
 
-    if(result){
-      console.log("server",result)
+    if (result) {
+      console.log("server", result)
 
-      res.json({ status: true,topic:result.topic,description:result.description });
+      res.json({ status: true, topic: result.topic, description: result.description });
     }
   })
-  
+
 }
 )
 
-app.post('/editdiscussion',(req,res)=>{
+app.post('/editdiscussion', (req, res) => {
 
 
   postProfile.findOne({ postid: req.body.postId }, function (err, post1) {
     if (post1) {
-      
-      post1.topic=req.body.topic;
-      post1.description=req.body.description;
-      post1.postTime=req.body.postTime;
+
+      post1.topic = req.body.topic;
+      post1.description = req.body.description;
+      post1.postTime = req.body.postTime;
       post1.save();
-      
+
       userProfile.findOne({ _id: req.body.userId }, function (err, user) {
         if (user) {
 
           for (var i = 0; i < user.post.length; i++) {
             if (req.body.postId == user.post[i]._id) {
-              user.post[i].postTime=req.body.postTime;
-              user.post[i].topic=req.body.topic;
-              user.post[i].description=req.body.description;
+              user.post[i].postTime = req.body.postTime;
+              user.post[i].topic = req.body.topic;
+              user.post[i].description = req.body.description;
               user.save();
             }
           }
-postProfile.find({},function(err,result){
-  res.json({ status: true, userData: user,trendData:result})
-}).sort({ postTime: -1 });
-         
+          postProfile.find({}, function (err, result) {
+            res.json({ status: true, userData: user, trendData: result })
+          }).sort({ postTime: -1 });
+
         }
         else
           console.log("no user")
@@ -370,7 +370,7 @@ app.post("/delete", (req, res) => {
     if (post1) {
       console.log(post1);
       post1.remove();
-      
+
       userProfile.findOne({ _id: req.body.userId }, function (err, user) {
         if (user) {
 
@@ -381,10 +381,10 @@ app.post("/delete", (req, res) => {
               user.save();
             }
           }
-postProfile.find({},function(err,result){
-  res.json({ status: true, userData: user,trendData:result})
-})
-         
+          postProfile.find({}, function (err, result) {
+            res.json({ status: true, userData: user, trendData: result })
+          })
+
         }
         else
           console.log("no user")
@@ -455,29 +455,41 @@ app.post("/middleRender1", (req, res) => {
 
 
 app.post("/search", (req, res) => {
-  postProfile.findOne({ topic: req.body.search }, function(err, search) {
+  var s = req.body.search;
 
-    console.log("search",search);
+  postProfile.find({ topic: { $regex: '.*' + s + '.*' ,'$options' : 'i' } }, function (err, search) {
+    if (err) {
+      console.log("err in search");
+    }
+    if (search) {
+   
+  // userProfile.findOne({ username: search.username }, function(err, user) {
+  //   for (var i = 0; i < user.post.length; i++) {
+  //     if (
+  //       JSON.stringify(user.post[i]._id) === JSON.stringify(search.postid)
+  //     ) {
+  //       res.send({ status:true,username: search.username, postData: user.post[i] });
+  //       console.log(postData)
+  //       break;
+  //     }
 
-    userProfile.findOne({ username: search.username }, function(err, user) {
-      for (var i = 0; i < user.post.length; i++) {
-        if (
-          JSON.stringify(user.post[i]._id) === JSON.stringify(search.postid)
-        ) {
-          res.send({ username: search.username, postData: user.post[i] });
-          break;
-        }
+  //   }
+  // });
 
-      }
-    });
-  });
+  res.send({ status:true, postData: search });
+
+
+}
+    else
+  res.send({ status: false })
+  }).sort({ postTime: -1 });
 });
 
 
 
 
 
-app.post("/settings",(req,res)=>{
+app.post("/settings", (req, res) => {
 
   res.send({ status: true });
   console.log("Setting in server side");
@@ -486,19 +498,19 @@ app.post("/settings",(req,res)=>{
 
 ///////////////Logout
 
-app.post("/logout",(req,res) => {
+app.post("/logout", (req, res) => {
 
-    res.send({ status:true });
-   
-    console.log("logout successfully");
+  res.send({ status: true });
+
+  console.log("logout successfully");
 
 });
 
 //////////move to home
 
-app.get("/restore" , (req,res) =>{
+app.get("/restore", (req, res) => {
 
-  res.send({ status:true });
+  res.send({ status: true });
 });
 
 
@@ -507,24 +519,24 @@ app.get("/restore" , (req,res) =>{
 
 app.post('/homePage', (req, res) => {
   console.log("Go to Main Page successfully done!");
-  userProfile.findOne({ _id: req.body.id }, function(err, result) {
-    
+  userProfile.findOne({ _id: req.body.id }, function (err, result) {
+
     if (result) {
-      
-        
-        postProfile
-          .find({}, function(err, posts) {
-            if (err) {
-              console.log(err);
-            }
-           
 
-            res.json({ status: true, userData: result, trendData: posts });
-          })
-          .sort({ postTime: -1 });
-      }
 
-});
+      postProfile
+        .find({}, function (err, posts) {
+          if (err) {
+            console.log(err);
+          }
+
+
+          res.json({ status: true, userData: result, trendData: posts });
+        })
+        .sort({ postTime: -1 });
+    }
+
+  });
 });
 
 
