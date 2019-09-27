@@ -280,7 +280,7 @@ app.post("/submitcode", (req, res) => {
     if (result) {
       if (result.code === req.body.code) {
 
-        res.send({ status: true, userdata: result });
+        res.send({ status: true, userData: result });
       } else {
         res.send({ status: false });
 

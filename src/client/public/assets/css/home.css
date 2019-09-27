@@ -3,10 +3,9 @@
 #welcomeuser{
   color:rgb(24, 112, 78);
 font-size: 20px;
-  
   position: absolute;
   top:35px;
-  left:82%;
+  right: 90px;
 
 
 }
@@ -100,26 +99,34 @@ Your Account dropdown
 
 .btn-drop{
 
-  background-color: rgb(158, 212, 158);
   margin: 15px 0px 0px 0px;
   padding: 3px 3px 3px 3px;
   border: none;
   border-radius: 8px;
-  color: #0d5c66;
-  background-color: #8cbbd1;
+
+  background: none;
+ 
   font-size: 30px;
   
   
 }
 .dropdown{
-  
- 
-
   margin: 50px 150px 50px 50px;
   float: right;
 
 }
+ul.dropdown-menu {
+  background-color: rgb(112, 112, 112);
+  
+}
+ul > li > a{
+  color: #fff !important;
+}
+ul > li > a:hover{
+  color: #000 !important;
 
+
+}
 /*
 */
 
@@ -254,8 +261,9 @@ button {
   background-color: #89e9f041;
   overflow:scroll;
   margin-left: 80px;
-;
+
 }
+
 
 /*
 */

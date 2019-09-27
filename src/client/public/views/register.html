@@ -128,10 +128,10 @@
           <label style="font-size: 30px">Enter Verification code</label>
           <br />
           <input class="form-control input-lg" autocomplete="off" id="Confirmcode" type="text" placeholder="Enter the Code"
-            size="80" required />
+          onkeydown = "if(event.keyCode == 13) document.getElementById('submit-btn1').click()" size="80" required />
           <br />
           <span id="verificationcomment"></span>
-          <button class="btn btn-primary" type="submit" onclick="verificationConfirm()">
+          <button id = "submit-btn1" class="btn btn-primary" type="submit" onclick="verificationConfirm()">
             Confirm
           </button>
         </div>

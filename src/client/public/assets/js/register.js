@@ -3,8 +3,8 @@
 var localUser;
 var localId;
 var postId;
-var localdata;
-var localmail;
+var localData;
+var localMail;
 
 // FORGOT PASSWORD
 function forgotPassword() {
@@ -48,7 +48,7 @@ function sendCode() {
 }
 
 function confirmCode() {
-  localmail = document.getElementById("input-email").value;
+  localMail = document.getElementById("input-email").value;
   superagent
     .post("/submitcode")
     .send({
@@ -59,9 +59,9 @@ function confirmCode() {
       var res = JSON.parse(result.text);
       
       if (res.status) {
-        localUser = res.userdata;
+        localUser = res.userData;
         $(document).ready(function () {
-          $("#divcontainer").load(
+          $("#container1").load(
             "../../views/change-password.html #container2",
             function () {
               console.log("change password");
@@ -71,7 +71,7 @@ function confirmCode() {
       } else{
         console.log("Wrong code", res.status);
         $(document).ready(function () {
-          $("#divcontainer").load(
+          $("#container1").load(
             "../../views/forgot-password.html",
             function () {
               document.getElementById("Emailspan").innerHTML =
@@ -89,7 +89,7 @@ function changePassword() {
     .post("/changepassword")
     .send({
       password: document.getElementById("password").value,
-      email: localmail
+      email: localMail
     })
     .end(function (err, result) {
       var res = JSON.parse(result.text);
@@ -100,7 +100,7 @@ function changePassword() {
       
       if (res.status) {
         $(document).ready(function() {
-          $("#container2").load("../../views/home.html", function() {
+          $("#container1").load("../../views/home.html", function() {
             document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
             
             if(res.userData.post.length>0){
@@ -116,6 +116,18 @@ function changePassword() {
             );
 
             }
+            else{
+              console.log("No posts in the middle");
+              middleRenderPost(
+
+                res.trendData[0].username,
+                res.trendData[0].topic,
+                res.trendData[0].description,
+                res.trendData[0].postTime,
+                res.trendData[0].comments
+              );
+      
+          }
 
             trendingTopics(res.trendData);
           });
@@ -126,7 +138,7 @@ function changePassword() {
 
 function cancelForgotPassword() {
   $(document).ready(function () {
-    $("#divcontainer").load("../../views/register.html", function () { });
+    $("#container1").load("../../views/register.html", function () { });
   });
 }
 
@@ -254,7 +266,34 @@ function verificationConfirm() {
         if (res.status) {
           $(document).ready(function () {
             $("#container1").load("/views/home.html", function () {
-              trendingTopics(res.trendData);
+
+
+              document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+             
+              if(res.userData.post.length>0){
+                yourDiscussion(res.userData);
+              }
+              else{
+
+                document.getElementById("yourdiscussion").innerHTML="";
+                const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center;"> 
+                You have not created any discussions yet </span> `;
+                document.getElementById("yourdiscussion").insertAdjacentHTML('beforeend', markup);
+             
+        
+        
+            }
+            middleRenderPost(
+  
+              res.trendData[0].username,
+              res.trendData[0].topic,
+              res.trendData[0].description,
+              res.trendData[0].postTime,
+              res.trendData[0].comments
+            );
+            trendingTopics(res.trendData);
+          
+
             });
           });
         }
@@ -291,22 +330,33 @@ function login() {
             $("#container1").load("/views/home.html", function() {
 
               document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
-              yourDiscussion(res.userData);
+              
               if(res.userData.post.length>0){
-                postId = res.userData.post[0]._id;
-                middleRenderPost(
-                  res.userData.username,
-                  res.userData.post[0].topic,
-                  res.userData.post[0].description,
-                  res.userData.post[0].postTime,
-                  res.userData.post[0].comments
-                );
+                yourDiscussion(res.userData);
+                
               }
-            
+              else{
+              
+                
+                document.getElementById("yourdiscussion").innerHTML="";
+                const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center;"> You have not created any discussions yet </span> `;
+                document.getElementById("yourdiscussion").insertAdjacentHTML('beforeend', markup);
+            }
+            middleRenderPost(
+  
+              res.trendData[0].username,
+              res.trendData[0].topic,
+              res.trendData[0].description,
+              res.trendData[0].postTime,
+              res.trendData[0].comments
+            );
 
-              trendingTopics(res.trendData);
+            trendingTopics(res.trendData);
+          
 
             });
+
+
           });
         }
       }
@@ -325,6 +375,8 @@ function newDiscussion() {
     if (res.status) {
       $(document).ready(function() {
         $("#container1").load("/views/new-discussion.html", function() {
+          document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+
 
          
 
@@ -346,25 +398,37 @@ function cancelDiscussion() {
         console.log(err);
       } else {
         var res = JSON.parse(result.text);
-        postId = res.userData.post[0]._id;
+        console.log("trendData", res.userData);
         $(document).ready(function() {
-          $("#discussion-container").load("/views/home.html", function() {
+          $("#container1").load("/views/home.html", function() {
 
             document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
-
-            middleRenderPost(
-              res.userData.username,
-              res.userData.post[0].topic,
-              res.userData.post[0].description,
-              res.userData.post[0].postTime,
-              res.userData.post[0].comments
-            );
+            if(res.userData.post.length  >0){
             yourDiscussion(res.userData);
-            trendingTopics(res.trendData);
-          });
+         
+            } 
+            else{
+             
+              document.getElementById("yourdiscussion").innerHTML="";
+              const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center;"> You have not created any discussions yet </span> `;
+              document.getElementById("yourdiscussion").insertAdjacentHTML('beforeend', markup);
+            
+      
+          }
+          middleRenderPost(
+
+            res.trendData[0].username,
+            res.trendData[0].topic,
+            res.trendData[0].description,
+            res.trendData[0].postTime,
+            res.trendData[0].comments
+          );
+          trendingTopics(res.trendData);
+
         });
-      }
     });
+  }
+});
 }
 
 //CREATE DISCUSSION
@@ -396,7 +460,7 @@ function createDiscussion() {
           postId = res.postData.post[0]._id;
           if (res.status) {
             $(document).ready(function() {
-              $("#discussion-container").load("/views/home.html", function() {
+              $("#container1").load("/views/home.html", function() {
 
                 document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
 
@@ -507,34 +571,7 @@ function getAttributes1(item) {
     });
 }
 
-// function renderButtons1(page, numResults, resPerPage) {
-//   const pages = Math.ceil(numResults / resPerPage);
-
-//   let button;
-//   if (page === 1 && pages > 1) {
-//     button = createButton1(page, "next");
-//   } else if (page < pages) {
-//     button = `${createButton1(page, "prev")}         
-//   ${createButton1(page, "next")}`;
-//   } else if (page === pages && pages > 1) {
-//     button = createButton1(page, "prev");
-//   }
-//   document
-//     .getElementById("Trending__pages")
-//     .insertAdjacentHTML("afterbegin", button);
-// }
-
-// function createButton1(page, type) {
-//   const markup = `
-//     <button class="btn-trend results__btn--${type}" data-goto=${
-//     type === "prev" ? page - 1 : page + 1
-//   }>
-//     <span>${type === "prev" ? "Prev" : "Next"}</span>
-//     </button>
-//     `;
-//   return markup;
-// }
-
+ 
 
 // MIDDLE RENDERING
 
@@ -543,9 +580,10 @@ function middleRenderPost(username, topic, description, postTime, comments, stat
   document.getElementById("post_content").innerHTML = "";
   document.getElementById("comment_content").innerHTML = "";
   var time = calculateTime(postTime);
-
+console.log("MidldleRender");
   const markup = `<h1 style = "white-space:pre"> ${topic}</h1>
-
+  
+  
   <article class="post"> 
   <h5>posted by ${username}</h5>
 
@@ -615,6 +653,7 @@ function editButton() {
 
 function editAction() {
 
+
   superagent.post("/editpage").send({ postId: postId, 
     userId: localId,}).end(function (err, result) {
     var res = JSON.parse(result.text);
@@ -622,10 +661,12 @@ function editAction() {
     if (res.status) {
       $(document).ready(function () {
         $("#container1").load("/views/edit-discussion.html", function () {
+          document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+
           console.log("cli",res.description)
           document.getElementById("edit-discussionTopic").value=res.topic;
            document.getElementById("edit-discussionDescription").value=res.description;
-         console.log("edit page")
+         console.log("edit page");
         });
       });
     }
@@ -636,6 +677,7 @@ function editAction() {
 
 
 function editDiscussion() {
+  console.log("PostID to be edited", postId, res.userData.post);
 
   var topic = document.getElementById("edit-discussionTopic").value;
   var description = document.getElementById("edit-discussionDescription").value;
@@ -644,6 +686,7 @@ function editDiscussion() {
   var username = localUser.username;
 
   if (topic.length > 0 && description.length > 0) {
+    
     superagent
       .post("/editdiscussion")
       .send({
@@ -665,10 +708,12 @@ function editDiscussion() {
             console.log("your dis",res.userData)
             console.log("tred disc",res.trendData)
             $(document).ready(function () {
-              $("#discussion-container").load("/views/home.html", function () {
+              $("#container1").load("/views/home.html", function () {
+                document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
+
                 for(var j=0;j<res.userData.post.length;j++){
 
-                  if(res.userData.post[j]._id==postId){
+                  if(res.userData.post[j]._id===postId){
                     middleRenderPost(
                       res.userData.username,
                       res.userData.post[j].topic,
@@ -679,6 +724,8 @@ function editDiscussion() {
 
                   }
                 }
+                console.log("res.userData", res.userData);
+                console.log("res.trendData", res.trendData);
                
                 yourDiscussion(res.userData);
                 trendingTopics(res.trendData);
@@ -723,44 +770,52 @@ function deleteAction() {
   console.log("post id", postId);
   console.log("userid", localId)
 
-  var answer = deletePopUP()
+  var answer = deletePopUP();
 
 
-  if (answer == "ok") {
-    document
-    .getElementById("yourdiscussion").innerHTML = "";
-    document
-    .getElementById("TrendDiscussion").innerHTML = "";
-    console.log(" deleted ")
+  if (answer === "ok") {
+  
+    console.log("deleted");
     superagent.post('/delete').send({ postId: postId, userId: localId }).end(function (err, result) {
       var res = JSON.parse(result.text)
       if (err) console.log("err")
       if (res.status) {
         console.log("your discussion", res.userData)
         console.log("trend topics", res.trendData)
+        if(res.userData.post.length >0 ){
 
         yourDiscussion(res.userData);
         postId = res.userData.post[0]._id;
-        
+
+        }
+      
+        else {
+          document.getElementById("yourdiscussion").innerHTML="";
+const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center;"> You have not created any discussions yet </span> `;
+document.getElementById("yourdiscussion").insertAdjacentHTML('beforeend', markup);
+        }
         middleRenderPost(
-          res.userData.username,
-          res.userData.post[0].topic,
-          res.userData.post[0].description,
-          res.userData.post[0].postTime,
-          res.userData.post[0].comments,
+          res.trendData[0].username,
+          res.trendData[0].topic,
+          res.trendData[0].description,
+          res.trendData[0].postTime,
+          res.trendData[0].comments,
           true
         );
-
+        console.log("res.userData", res.userData);
+        console.log("res.trendData", res.trendData);
         trendingTopics(res.trendData);
 
       }
-      else
-        console.log("status:false ")
+      else{
+        console.log("status:false");
 
-    })
+      }
+        
+    });
   }
   else
-    console.log("nothing is deleted ")
+    console.log("nothing is deleted ");
 }
 
 
@@ -989,26 +1044,42 @@ function homePage() {
       }
       $(document).ready(function() {
       
-       $("#divcontainer").load("../../views/home.html",function(){
+       $("#container1").load("../../views/home.html",function(){
         document.getElementById("welcomeuser").innerHTML=`${localUser.username}`
-        yourDiscussion(res.userData);
+       
         //postId = res.userData.post[0]._id;
         if(res.userData.post.length > 0){
-          middleRenderPost(
-            res.userData.username,
-            res.userData.post[0].topic,
-            res.userData.post[0].description,
-            res.userData.post[0].postTime,
-            res.userData.post[0].comments
-          );
+          yourDiscussion(res.userData);
+         
         }
-       
-        trendingTopics(res.trendData);
-       });
-      });
-      
-    });
+        else{
+              
+                
+          document.getElementById("yourdiscussion").innerHTML="";
+          const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center;"> You have not created any discussions yet </span> `;
+          document.getElementById("yourdiscussion").insertAdjacentHTML('beforeend', markup);
+      }
+      middleRenderPost(
 
+        res.trendData[0].username,
+        res.trendData[0].topic,
+        res.trendData[0].description,
+        res.trendData[0].postTime,
+        res.trendData[0].comments
+      );
+
+      trendingTopics(res.trendData);
+    
+
+      });
+
+
+    });
+  
+       
+ 
+
+});
 }
 
 
@@ -1025,173 +1096,4 @@ function homePage() {
 
 
 
-
-
-
-
-/////////////////////////////////////////
-
-/////////////////////////////////////////
-
-/////////////////////////////////////////
-// function yourDiscussion(postData) {
-//   renderPosts(postData.post);
-// }
-
-// function renderResults(posts, page, postsPerPage) {
-//   document.getElementById("results__pages").addEventListener("click", e => {
-//     const btn = e.target.closest(".btn-inline");
-//     if (btn) {
-// function renderPosts(posts) {
-//   //console.log("renderPosts", posts);
-//   for(var i=0;i<posts.length;i++){
-
-//   var time = calculateTime(posts[i].postTime);
-
-//   var description = posts[i].description;
-//   if (description.length > 40) {
-//     description = description.slice(0, 80) + "...";
-//   }
-//   const markup = `
-//   <div class = "template">
-//   <a  onclick="getAttributes(this)" class="results__link" href= "#${posts[i]._id}"  style = "color:rgb(199, 247, 255); text-decoration: none;">
-//   <article class="topic">
-//  <div style="font-size:25px; "> ${posts[i].topic}</div>  <div style="text-align:right;">${time}</div>
-//     <p style="font-size:18px;"> 
-//     ${description}
-//     </p>
-//     </article>
-//     </a>
-//     </div>
-// `;
-//   document
-//     .getElementById("yourdiscussion")
-//     .insertAdjacentHTML("beforeend", markup);
-// }
-// }
-
-
-// function getAttributes(item) {
-//   console.log("item", item);
-//   console.log(item.href);
-
-//   var urlArray = item.href.toString().split("#");
-//   console.log("href", urlArray[1]);
-//   console.log("type", typeof urlArray[1]);
-//   var postid = urlArray[1];
-//   console.log("Local id", localId);
-//   superagent
-//     .post("/middleRender")
-//     .send({ postId: postid, userId: localId })
-//     .end(function(err, result) {
-//       if (err) {
-//         console.log(error);
-//       } else {
-//         var res = JSON.parse(result.text);
-//         middleRenderPost(
-//           res.username,
-//           res.userData.topic,
-//           res.userData.description,
-//           res.userData.postTime
-//         );
-//       }
-//     });
-// }
-// // function location(item){
-// //   location.href = baseURL + item.href;
-// //   console.log("location" , location.href)
-// // }
-
-// function renderButtons(page, numResults, resPerPage) {
-//   const pages = Math.ceil(numResults / resPerPage);
-//   console.log(
-//     "resultsss",
-//     numResults + " " + resPerPage + " " + pages + " " + page
-//   );
-//   let button;
-//   if (page === 1 && pages > 1) {
-//     // enable next button only
-//     console.log("next button");
-//     button = createButton(page, "next");
-//     //button=`<button>next</button>`
-//   } else if (page < pages) {
-//     //Both buttons
-//     console.log("both button");
-//     button = `${createButton(page, "prev")}         
-//   ${createButton(page, "next")}`;
-//     //button=`<button>next</button>`
-//   } else if (page === pages && pages > 1) {
-//     //only previous button
-//     console.log("previous button");
-//     button = createButton(page, "prev");
-//     //button=`<button>next</button>`
-//   }
-//   document
-//     .getElementById("results__pages")
-//     .insertAdjacentHTML("afterbegin", button);
-// }
-
-// function createButton(page, type) {
-//   const markup = `
-//     <button class="btn-inline results__btn--${type}" data-goto=${
-//     type === "prev" ? page - 1 : page + 1
-//   }>
-//     <span>${type === "prev" ? "Prev" : "Next"}</span>
-//     </button>
-//     `;
-//   return markup;
-// }
-
-// function local() {
-//   mail = localStorage.getItem("Mail");
-//   user = localStorage.getItem("User");
-//   password = localStorage.getItem("Password");
-//   confirmPass = localStorage.getItem("confirmpassword");
-//   if (mail && user && password && confirmPass) {
-//     document.getElementById("submit").disabled = false;
-//   }
-// }
-
-// function calculateTime(postTime) {
-//   var currentTime = Date.parse(new Date());
-//   var diff = currentTime - postTime;
-//   var secs = Math.floor(diff / 1000);
-//   var hours = Math.floor(diff / 1000 / 60 / 60);
-//   //diff -= hours * 1000 * 60 * 60;
-//   var minutes = Math.floor(diff / 1000 / 60);
-
-//   if (hours == 0 && minutes == 0) {
-//     if (secs == 0) var time = "Just now";
-//     else if (secs == 1) var time = " 1 second ago";
-//     else var time = secs + " seconds ago";
-//   } else if (hours == 0 && minutes > 0) {
-//     if (minutes == 1) {
-//       var time = "1 minute ago";
-//     }
-//     var time = minutes + " minutes ago";
-//   } else if (hours > 0) {
-//     if (hours === 1) {
-//       var time = "1 hour ago";
-//     }
-//     var time = hours + " hours ago";
-//   }
-
-//   return time;
-// }
-
-// function addComment() {
-//   var comment = document.getElementById("commentBox").value;
-//   const markup = `
-//   <h2>${comment}</h2>
-//   `;
-//   document
-//     .getElementById("comment_content")
-//     .insertAdjacentHTML("afterbegin", markup);
-//   var userId = localId;
-//   console.log("add comment" + comment + "   " + userId + "   " + postId);
-//   superagent
-//     .post("/comment")
-//     .send({ comment: comment, userId: userId, postId: postId })
-//     .end(function(err, result) {});
-// }
 
