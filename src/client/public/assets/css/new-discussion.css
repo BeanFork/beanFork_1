@@ -1,12 +1,12 @@
+#welcomeuser{
+  color:rgb(24, 112, 78);
+font-size: 20px;
+  position: absolute;
+  top:35px;
+  right: 90px;
 
-.welcomeuser{
-  color:beige;
-font-size: 25px;
-  margin-left: 90%;
 
 }
-
-
 
 
 /* Banner - constant for all the pages 
@@ -45,29 +45,47 @@ Your Account dropdown
 
 /* Dropdown button
 */
+/*
+Your Account dropdown
+*/
+
+/* Dropdown button
+*/
 
 
 .btn-drop{
 
-  background-color: rgb(158, 212, 158);
   margin: 15px 0px 0px 0px;
   padding: 3px 3px 3px 3px;
   border: none;
   border-radius: 8px;
-  color: #101c22;
+
+  background: none;
+ 
+  font-size: 30px;
+  
   
 }
 .dropdown{
-  
-
-  left: 2px;
-  margin: 50px 50px 50px 50px;
+  margin: 50px 150px 50px 50px;
   float: right;
+
+}
+ul.dropdown-menu {
+  background-color: rgb(112, 112, 112);
+  
+}
+ul > li > a{
+  color: #fff !important;
+}
+ul > li > a:hover{
+  color: #000 !important;
+
+
 }
 
 
-
-/* bodya and variable containers
+/* body and variable containers
 */
 
 

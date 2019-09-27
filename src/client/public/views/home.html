@@ -33,10 +33,10 @@
         
       <div class="dropdown">
         <button class="dropdown-toggle btn-drop" type="button" data-toggle="dropdown">
-          <span class="caret"></span></button>
-        <ul class="dropdown-menu">
+          <span class="glyphicon glyphicon-cog fa-1x " style="color: black"><t><t></t></t><span class="caret"></span></span></button>
+        <ul class="dropdown-menu" >
           <li><a href = "#" onclick ="homePage()">Go To Main Page </a> </li>
-          <li><a href="#" onclick='settingsPage()'>Settings</a></li>
+          <li><a href="#" onclick='settingsPage()'>Account Settings</a></li>
           <li><a href="#" onclick='logOut()'>Logout</a></li>
         </ul>
       </div>
@@ -82,10 +82,11 @@
           <div class="middlepane">
 
             <button id="btn-create" onclick="newDiscussion()"> Create New <i class="fa fa-plus-square"></i> </button>
-           
-            <div id="post_content">
+            <div id="delete1"></div>
+           <div id="edit1"></div> 
+            <div id="post_content" >
             </div>
-            <div id="comment_content"></div> 
+            <div id="comment_content" class="comment_content"></div> 
 
           </div>
         </div>
@@ -101,14 +102,15 @@
           </div>
         </div>
 
-        <textarea id="commentBox" class="comment" rows="5" cols="80" placeholder="Add Your Comments"></textarea>
+        <textarea id="commentBox" class="comment" rows="5" cols="80" placeholder="Add Your Comments"  onkeydown = "if (event.keyCode == 13)
+        document.getElementById('button-add').click()" ></textarea>
         <!-- <input id="button-add" type="submit" onclick="addComment()" value="Add" /> -->
         <button id="button-add" style="font-size: 20px" onclick="addComment()">Add</button>
 
       </div>
     </div>
+    </body>
 </div>
-</body>
-</div>
+
 
 </html>

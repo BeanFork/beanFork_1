@@ -33,10 +33,11 @@
     <!-- BANNER -->
     <ul class="nav logincontainer">
       <div id="logincontainer">
-        <!-- <form action="/home" method="POST"> -->
+        <!-- <form actiomethod = "POST"> -->
 
-        <input id="loginUsername"  type="text" placeholder="Username" name="username" />
-        <input id="loginPassword" type="password" placeholder="Password" name="password" />
+        <input id="loginUsername"  type="text" placeholder="Username" name="username"  required/>
+        <input id="loginPassword" type="password" placeholder="Password" name="password"  onkeydown = "if (event.keyCode == 13)
+        document.getElementById('login').click()" required/>
         <button id="login" type="submit" onclick="login()">Log In</button><br>
         <a class="forgotPassword" href = "#" onclick="forgotPassword()"> 
           Forgotten Password?</a>
@@ -90,8 +91,7 @@
             onkeyup="passwordStrength()" size="80" name="password" required />
           <br />
           <p id="passwordmessage">
-            * Must contain atleast 8 character that are the combination of
-            letters in both uppercase and lowercase,numbers and symbols
+            * Must contain atleast 8 characters with the combination of uppercase, lowercase, numerical and special characters
           </p>
           <label><b>Confirm Password</b></label>
           <br />
@@ -128,10 +128,10 @@
           <label style="font-size: 30px">Enter Verification code</label>
           <br />
           <input class="form-control input-lg" autocomplete="off" id="Confirmcode" type="text" placeholder="Enter the Code"
-            size="80" required />
+          onkeydown = "if(event.keyCode == 13) document.getElementById('submit-btn1').click()" size="80" required />
           <br />
           <span id="verificationcomment"></span>
-          <button class="btn btn-primary" type="submit" onclick="verificationConfirm()">
+          <button id = "submit-btn1" class="btn btn-primary" type="submit" onclick="verificationConfirm()">
             Confirm
           </button>
         </div>

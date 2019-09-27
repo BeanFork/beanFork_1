@@ -1,9 +1,12 @@
 
 
-.welcomeuser{
-  color:beige;
-font-size: 25px;
-  margin-left: 90%;
+#welcomeuser{
+  color:rgb(24, 112, 78);
+font-size: 20px;
+  position: absolute;
+  top:35px;
+  right: 90px;
+
 
 }
 
@@ -96,22 +99,34 @@ Your Account dropdown
 
 .btn-drop{
 
-  background-color: rgb(158, 212, 158);
   margin: 15px 0px 0px 0px;
   padding: 3px 3px 3px 3px;
   border: none;
   border-radius: 8px;
-  color: #101c22;
+
+  background: none;
+ 
+  font-size: 30px;
+  
   
 }
 .dropdown{
-  
-
-  left: 2px;
-  margin: 50px 50px 50px 50px;
+  margin: 50px 150px 50px 50px;
   float: right;
-}
 
+}
+ul.dropdown-menu {
+  background-color: rgb(112, 112, 112);
+  
+}
+ul > li > a{
+  color: #fff !important;
+}
+ul > li > a:hover{
+  color: #000 !important;
+
+
+}
 /*
 */
 
@@ -152,7 +167,20 @@ Menu Button
 */
 
 
+#delete1{
+  margin-left: 85%;
 
+ position:absolute;
+ top:90px;
+
+}
+
+#edit1{
+  margin-left: 78%;
+
+ position: absolute;
+top: 90px;
+}
 
 
 
@@ -210,6 +238,18 @@ button {
   
 }
 
+.comment_content{
+
+  background-color: #abd4bb;
+  color: #3d6361;
+  padding: 15px 15px 15px 15px;
+  border-radius:13px;
+  width:700px;
+ margin-left:50px;
+ margin-top:20px;
+
+  
+}
 
 
 .rightpane {
@@ -221,8 +261,9 @@ button {
   background-color: #89e9f041;
   overflow:scroll;
   margin-left: 80px;
-;
+
 }
+
 
 /*
 */

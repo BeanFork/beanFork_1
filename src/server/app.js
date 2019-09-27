@@ -77,7 +77,7 @@ app.post("/signup", (req, res) => {
   user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8));
   user.code = verificationCode;
   user.save();
-  
+
 
   res.send({ status: true, email: req.body.email, userData: user });
 });
@@ -99,17 +99,17 @@ app.post("/signupverification", (req, res) => {
 //verification of code for signup
 
 app.post("/code", (req, res, next) => {
-  userProfile.findOne({ _id: req.body.id }, function(err, result) {
+  userProfile.findOne({ _id: req.body.id }, function (err, result) {
     if (result) {
       if (result.code === req.body.code) {
 
 
         postProfile
-          .find({}, function(err, posts) {
+          .find({}, function (err, posts) {
             if (err) {
               console.log(err);
             }
-          
+
 
             res.json({ status: true, userData: result, trendData: posts });
           })
@@ -129,18 +129,18 @@ app.post("/code", (req, res, next) => {
 
 
 app.post("/home", (req, res, next) => {
-  userProfile.findOne({ username: req.body.username }, function(err, result) {
-    
+  userProfile.findOne({ username: req.body.username }, function (err, result) {
+
     if (result) {
-      
+
       if (bcrypt.compareSync(req.body.password, result.password)) {
-        
+
         postProfile
-          .find({}, function(err, posts) {
+          .find({}, function (err, posts) {
             if (err) {
               console.log(err);
             }
-           
+
 
             res.json({ status: true, userData: result, trendData: posts });
           })
@@ -157,7 +157,7 @@ app.post("/home", (req, res, next) => {
 //User Existence
 
 app.post("/user", (req, res) => {
-  userProfile.findOne({ username: req.body.username }, function(err, result) {
+  userProfile.findOne({ username: req.body.username }, function (err, result) {
     if (result) {
       res.send({ status: true });
     } else {
@@ -169,8 +169,8 @@ app.post("/user", (req, res) => {
 //Email Existence
 
 app.post("/email", (req, res) => {
- 
-  userProfile.findOne({ email: req.body.email }, function(err, result) {
+
+  userProfile.findOne({ email: req.body.email }, function (err, result) {
     if (result) {
       res.send({ status: true });
     } else {
@@ -196,7 +196,7 @@ app.post("/newdiscussion", (req, res, next) => {
 //Creating the new discussion
 
 app.post("/creatediscussion", (req, res, next) => {
-  userProfile.findOne({ _id: req.body.id }, function(err, result) {
+  userProfile.findOne({ _id: req.body.id }, function (err, result) {
     if (err) {
       console.log(err);
     }
@@ -204,27 +204,27 @@ app.post("/creatediscussion", (req, res, next) => {
       topic: req.body.topic,
       description: req.body.description,
       postTime: req.body.postTime
-      
+
     };
 
     result.post.unshift(postObject);
-    
+
     result.save();
-    
+
     req.body.postid = result.post[0]._id;
-    
+
     var post = new postProfile(req.body);
     post.save();
 
-    
+
     res.json({ status: true, postData: result });
-   
+
   });
 });
 
 app.post("/newcreate", (req, res) => {
   postProfile
-    .find({}, function(err, posts) {
+    .find({}, function (err, posts) {
       if (err) {
         console.log(err);
       }
@@ -235,12 +235,12 @@ app.post("/newcreate", (req, res) => {
 });
 
 app.post("/cancelDiscussion", (req, res) => {
-  userProfile.findOne({ username: req.body.username }, function(err, result) {
+  userProfile.findOne({ username: req.body.username }, function (err, result) {
     if (result) {
-     
+
 
       postProfile
-        .find({}, function(err, posts) {
+        .find({}, function (err, posts) {
           if (err) {
             console.log(err);
           }
@@ -255,7 +255,7 @@ app.post("/cancelDiscussion", (req, res) => {
 ///////////////////////////////////////////////////////////////////
 
 app.post("/sendcode", (req, res) => {
-  userProfile.findOne({ email: req.body.email }, function(err, user) {
+  userProfile.findOne({ email: req.body.email }, function (err, user) {
     if (user) {
       var verificationCode = Math.random()
         .toString(36)
@@ -275,15 +275,15 @@ app.post("/sendcode", (req, res) => {
 });
 
 app.post("/submitcode", (req, res) => {
- 
-  userProfile.findOne({ email: req.body.email }, function(err, result) {
+
+  userProfile.findOne({ email: req.body.email }, function (err, result) {
     if (result) {
       if (result.code === req.body.code) {
-        
-        res.send({ status: true, userdata: result });
+
+        res.send({ status: true, userData: result });
       } else {
         res.send({ status: false });
-      
+
       }
     } else {
       console.log("email doesn't exist in database");
@@ -292,33 +292,114 @@ app.post("/submitcode", (req, res) => {
 });
 
 app.post("/changepassword", (req, res) => {
-  userProfile.findOne({ email: req.body.email }, function(err, user) {
+  userProfile.findOne({ email: req.body.email }, function (err, user) {
     if (user) {
       user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8));
 
       user.save();
 
       postProfile
-        .find({}, function(err, posts) {
+        .find({}, function (err, posts) {
           if (err) {
             console.log(err);
           }
-         
+
 
           res.json({ status: true, userData: user, trendData: posts });
         })
         .sort({ postTime: -1 });
 
-      
+
     }
   });
 });
 
 
+app.post('/editpage',(req,res)=>{
+  postProfile.findOne({postid:req.body.postId},function(err,result){
+
+    if(result){
+      console.log("server",result)
+
+      res.json({ status: true,topic:result.topic,description:result.description });
+    }
+  })
+  
+}
+)
+
+app.post('/editdiscussion',(req,res)=>{
+
+
+  postProfile.findOne({ postid: req.body.postId }, function (err, post1) {
+    if (post1) {
+      
+      post1.topic=req.body.topic;
+      post1.description=req.body.description;
+      post1.postTime=req.body.postTime;
+      post1.save();
+      
+      userProfile.findOne({ _id: req.body.userId }, function (err, user) {
+        if (user) {
+
+          for (var i = 0; i < user.post.length; i++) {
+            if (req.body.postId == user.post[i]._id) {
+              user.post[i].postTime=req.body.postTime;
+              user.post[i].topic=req.body.topic;
+              user.post[i].description=req.body.description;
+              user.save();
+            }
+          }
+postProfile.find({},function(err,result){
+  res.json({ status: true, userData: user,trendData:result})
+}).sort({ postTime: -1 });
+         
+        }
+        else
+          console.log("no user")
+      }).sort({ postTime: -1 });
+
+    }
+  })
+
+
+})
+
+app.post("/delete", (req, res) => {
+  postProfile.findOne({ postid: req.body.postId }, function (err, post1) {
+    if (post1) {
+      console.log(post1);
+      post1.remove();
+      
+      userProfile.findOne({ _id: req.body.userId }, function (err, user) {
+        if (user) {
+
+          for (var i = 0; i < user.post.length; i++) {
+            if (req.body.postId == user.post[i]._id) {
+              console.log("b", user.post[i])
+              user.post[i].remove();
+              user.save();
+            }
+          }
+postProfile.find({},function(err,result){
+  res.json({ status: true, userData: user,trendData:result})
+})
+         
+        }
+        else
+          console.log("no user")
+      })
+
+    }
+  })
+
+})
+
+
 app.post("/comment", (req, res) => {
-  postProfile.findOne({ postid: req.body.postId }, function(err, user) {
-    console.log("user",user)
-    userProfile.findOne({ username: user.username }, function(err, result) {
+  postProfile.findOne({ postid: req.body.postId }, function (err, user) {
+    console.log("user", user)
+    userProfile.findOne({ username: user.username }, function (err, result) {
       var commentObject = {
         comment: req.body.comment,
         username: req.body.username
@@ -331,7 +412,7 @@ app.post("/comment", (req, res) => {
           ) {
             result.post[i].comments.unshift(commentObject);
             result.save();
-            
+
             res.send({ username: user.username, postData: result.post[i] });
             break;
           }
@@ -344,14 +425,14 @@ app.post("/comment", (req, res) => {
 });
 
 app.post("/middleRender", (req, res) => {
-  userProfile.findOne({ _id: req.body.userId }, function(err, user) {
+  userProfile.findOne({ _id: req.body.userId }, function (err, user) {
     if (user) {
       for (var i = 0; i < user.post.length; i++) {
-       
+
         if (
           JSON.stringify(user.post[i]._id) === JSON.stringify(req.body.postId)
         ) {
-          
+
           res.send({ userData: user.post[i], username: user.username });
           break;
         }
@@ -361,11 +442,11 @@ app.post("/middleRender", (req, res) => {
 });
 
 app.post("/middleRender1", (req, res) => {
-  
-  postProfile.findOne({ _id: req.body.id }, function(err, user) {
-   
+
+  postProfile.findOne({ _id: req.body.id }, function (err, user) {
+
     if (user) {
-      userProfile.findOne({ username: user.username }, function(err, result) {
+      userProfile.findOne({ username: user.username }, function (err, result) {
         res.send({ trendData: user, userData: result });
       });
     }
@@ -486,914 +567,3 @@ app.listen(port, () => {
 
 
 
-
-
-///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
-
-///////////////////////////////////////
-
-
-// // Starting point of the application
-// var util = require("./util");
-// var express = require("express");
-// var app = express();
-// var path = require("path");
-// var port = 5000;
-// var bodyParser = require("body-parser");
-// var mongoose = require("mongoose");
-// const fs = require("fs");
-// var bcrypt = require("bcrypt");
-
-// mongoose.Promise = global.Promise;
-// mongoose.connect("mongodb://localhost:27017/userprofile");
-// /*mongoose.connect("mongodb+srv://beanforkaccess:Admin@123@beanfork-ddksd.mongodb.net/test?retryWrites=true&w=majority",{
-//   useNewUrlParser:true
-// })*/
-
-// var nameSchema = new mongoose.Schema({
-//   username: String,
-//   email: String,
-//   password: String,
-//   code: String,
-//   post: [
-//     {
-//       topic: String,
-//       description: String,
-//       postTime: Number,
-//       comments: [
-//         {
-//           userId: String,
-//           comment: String,
-//           username: String,
-//           postTime: String
-//         }
-//       ]
-//     }
-//   ]
-// });
-
-// var postSchema = new mongoose.Schema({
-//   username: String,
-//   topic: String,
-//   description: String,
-//   postTime: Number,
-//   userid: String,
-//   postid: String,
-//   comments: [
-//     {
-//       userId: String,
-//       comment: String
-//     }
-//   ]
-// });
-
-// var postProfile = mongoose.model("Post", postSchema);
-// var userProfile = mongoose.model("User", nameSchema);
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-// app.use(express.static(path.join(__dirname, "../client/public")));
-
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client/public/views/register.html"));
-// });
-
-// //signup and sending verification code
-
-// app.post("/signup", (req, res) => {
-//   var verificationCode = util.sendMail(req.body.email);
-
-//   console.log(verificationCode);
-
-//   var user = new userProfile(req.body);
-//   user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8));
-//   user.code = verificationCode;
-//   user.save();
-  
-
-//   res.send({ status: true, email: req.body.email, userData: user });
-// });
-
-// //Fetching the id to the local host
-
-// app.post("/signupverification", (req, res) => {
-//   userProfile.findOne({ email: req.body.email }, function(err, result) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.send({ id: result._id });
-//     }
-//   });
-// });
-
-// //verification of code for signup
-
-// app.post("/code", (req, res, next) => {
-//   userProfile.findOne({ _id: req.body.id }, function(err, result) {
-//     if (result) {
-//       if (result.code === req.body.code) {
-
-
-//         postProfile
-//           .find({}, function(err, posts) {
-//             if (err) {
-//               console.log(err);
-//             }
-          
-
-//             res.json({ status: true, userData: result, trendData: posts });
-//           })
-//           .sort({ postTime: -1 });
-//       } else {
-//         next({ status: 401, message: "Verification code is incorrect" });
-//       }
-//     } else {
-//       next({ status: 401, message: "Verification code is incorrect" });
-//     }
-//   });
-// });
-
-// /*login
-//  */
-
-
-
-// app.post("/home", (req, res, next) => {
-//   userProfile.findOne({ username: req.body.username }, function(err, result) {
-    
-//     if (result) {
-      
-//       if (result.password === req.body.password) {
-        
-//         postProfile
-//           .find({}, function(err, posts) {
-//             if (err) {
-//               console.log(err);
-//             }
-           
-
-//             res.json({ status: true, userData: result, trendData: posts });
-//           })
-//           .sort({ postTime: -1 });
-//       } else {
-//         next({ status: 401, message: "Incorrect Password" });
-//       }
-//     } else {
-//       next({ status: 401, message: "Incorrect Password" });
-//     }
-//   });
-// });
-
-// //User Existence
-
-// app.post("/user", (req, res) => {
-//   userProfile.findOne({ username: req.body.username }, function(err, result) {
-//     if (result) {
-//       res.send({ status: true });
-//     } else {
-//       res.send({ status: false });
-//     }
-//   });
-// });
-
-// //Email Existence
-
-// app.post("/email", (req, res) => {
- 
-//   userProfile.findOne({ email: req.body.email }, function(err, result) {
-//     if (result) {
-//       res.send({ status: true });
-//     } else {
-//       res.send({ status: false });
-//     }
-//   });
-// });
-
-// //Rendering Forgot password
-
-// app.post("/forgotpassword", (req, res) => {
-//   res.send({ status: true });
-// });
-
-// /**HOME.HTML */
-
-// //Rendering new discussion.html
-
-// app.post("/newdiscussion", (req, res, next) => {
-//   res.send({ status: true });
-// });
-
-// //Creating the new discussion
-
-// app.post("/creatediscussion", (req, res, next) => {
-//   userProfile.findOne({ _id: req.body.id }, function(err, result) {
-//     if (err) {
-//       console.log(err);
-//     }
-//     var postObject = {
-//       topic: req.body.topic,
-//       description: req.body.description,
-//       postTime: req.body.postTime
-      
-//     };
-
-//     result.post.unshift(postObject);
-    
-//     result.save();
-    
-//     req.body.postid = result.post[0]._id;
-    
-//     var post = new postProfile(req.body);
-//     post.save();
-
-    
-//     res.json({ status: true, postData: result });
-   
-//   });
-// });
-
-// app.post("/newcreate", (req, res) => {
-//   postProfile
-//     .find({}, function(err, posts) {
-//       if (err) {
-//         console.log(err);
-//       }
-
-//       res.json({ trendData: posts });
-//     })
-//     .sort({ postTime: -1 });
-// });
-
-// app.post("/cancelDiscussion", (req, res) => {
-//   userProfile.findOne({ username: req.body.username }, function(err, result) {
-//     if (result) {
-     
-
-//       postProfile
-//         .find({}, function(err, posts) {
-//           if (err) {
-//             console.log(err);
-//           }
-
-//           res.json({ status: true, userData: result, trendData: posts });
-//         })
-//         .sort({ postTime: -1 });
-//     }
-//   });
-// });
-
-// ///////////////////////////////////////////////////////////////////
-
-// app.post("/sendcode", (req, res) => {
-//   userProfile.findOne({ email: req.body.email }, function(err, user) {
-//     if (user) {
-//       var verificationCode = Math.random()
-//         .toString(36)
-//         .slice(-8);
-//       console.log(verificationCode);
-
-//       user.code = verificationCode;
-//       user.save();
-
-//       res.send({ status: true });
-//     } else {
-//       console.log("email doesn't exist in ");
-//       res.send({ status: false });
-//     }
-//   });
-
-// });
-
-// app.post("/submitcode", (req, res) => {
- 
-//   userProfile.findOne({ email: req.body.email }, function(err, result) {
-//     if (result) {
-//       if (result.code === req.body.code) {
-        
-//         res.send({ status: true, userdata: result });
-//       } else {
-//         res.send({ status: false });
-      
-//       }
-//     } else {
-//       console.log("email doesn't exist in database");
-//     }
-//   });
-// });
-
-// app.post("/changepassword", (req, res) => {
-//   userProfile.findOne({ email: req.body.email }, function(err, user) {
-//     if (user) {
-//       user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8));
-
-//       user.save();
-
-//       postProfile
-//         .find({}, function(err, posts) {
-//           if (err) {
-//             console.log(err);
-//           }
-         
-
-//           res.json({ status: true, userData: user, trendData: posts });
-//         })
-//         .sort({ postTime: -1 });
-
-      
-//     }
-//   });
-// });
-
-
-// app.post("/comment", (req, res) => {
-//   postProfile.findOne({ postid: req.body.postId }, function(err, user) {
-//     console.log("user",user)
-//     userProfile.findOne({ username: user.username }, function(err, result) {
-//       var commentObject = {
-//         comment: req.body.comment,
-//         username: req.body.username
-//       };
-//       if (result) {
-//         for (var i = 0; i < result.post.length; i++) {
-//           if (
-//             JSON.stringify(result.post[i]._id) ===
-//             JSON.stringify(req.body.postId)
-//           ) {
-//             result.post[i].comments.unshift(commentObject);
-//             result.save();
-            
-//             res.send({ username: user.username, postData: result.post[i] });
-//             break;
-//           }
-//         }
-//       } else {
-//         console.log("error");
-//       }
-//     });
-//   });
-// });
-
-// app.post("/middleRender", (req, res) => {
-//   userProfile.findOne({ _id: req.body.userId }, function(err, user) {
-//     if (user) {
-//       for (var i = 0; i < user.post.length; i++) {
-       
-//         if (
-//           JSON.stringify(user.post[i]._id) === JSON.stringify(req.body.postId)
-//         ) {
-          
-//           res.send({ userData: user.post[i], username: user.username });
-//           break;
-//         }
-//       }
-//     }
-//   });
-// });
-
-// app.post("/middleRender1", (req, res) => {
-  
-//   postProfile.findOne({ _id: req.body.id }, function(err, user) {
-   
-//     if (user) {
-//       userProfile.findOne({ username: user.username }, function(err, result) {
-//         res.send({ trendData: user, userData: result });
-//       });
-//     }
-//   });
-// });
-
-
-// app.post("/search", (req, res) => {
-//   postProfile.findOne({ topic: req.body.search }, function(err, search) {
-//     userProfile.findOne({ username: search.username }, function(err, user) {
-//       for (var i = 0; i < user.post.length; i++) {
-//         if (
-//           JSON.stringify(user.post[i]._id) === JSON.stringify(search.postid)
-//         ) {
-//           res.send({ username: search.username, postData: user.post[i] });
-//           break;
-//         }
-//       }
-//     });
-//   });
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// //Fetching the id to the local host
-
-
-
-// app.post("/settings",(req,res)=>{
-
-//   res.send({ status: true });
-//   console.log("Setting in server side");
-
-// });
-
-// ///////////////Logout
-
-// app.post("/logout",(req,res) => {
-
-//     res.send({ status:true });
-   
-//     console.log("logout successfully");
-
-// });
-
-// //////////move to home
-
-// app.post("/restore" , (req,res) =>{
-
-//   res.send({ status:true });
-// });
-
-
-// app.use((error, req, res, next) => {
-//   console.log(error);
-//   res.sendStatus(error.status || 500);
-// });
-
-// app.listen(port, () => {
-//   console.log("Server listening to port " + port);
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// // Starting point of the application
-// /*var util = require("./util");
-// var express = require("express");
-// var app = express();
-// var path = require("path");
-// var port = 5000;
-// var bodyParser = require("body-parser");
-// var mongoose = require("mongoose");
-// const fs = require("fs");
-// var bcrypt = require("bcrypt");
-
-
-// // const jwt = require('jsonwebtoken');
-
-// mongoose.Promise = global.Promise;
-// mongoose.connect("mongodb://localhost:27017/userprofile");
-// /*mongoose.connect("mongodb+srv://beanforkaccess:Admin@123@beanfork-ddksd.mongodb.net/test?retryWrites=true&w=majority",{
-//   useNewUrlParser:true
-// })
-
-// var nameSchema = new mongoose.Schema({
-//   username: String,
-//   email: String,
-//   password: String,
-//   code: String,
-//   post: [
-//     {
-//       topic: String,
-//       description: String,
-//       postTime: Number,
-//       comments: [
-//         {
-//           userId: String,
-//           comment: String
-//         }
-//       ]
-//     }
-//   ]
-// });
-
-
-
-
-// // nameSchema.methods.newAuthToken =  function() {
-// //   const user = this;
-// //   const token = jwt.sign({_id: user._id.toString()}, 'this is new blog11111', {expiresIn: "7 days" });
-// //   user.tokens = user.tokens.concat( { token } );
-// //    user.save();
-// //   return token;
-// // }
-
-
-// var userProfile = mongoose.model("User", nameSchema);
-
-
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-// app.use(express.static(path.join(__dirname, "../client/public")));
-
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client/public/views/register.html"));
-// });
-
-// //signup and sending verification code
-
-// app.post("/signup", (req, res) => {
-//   //  function verificationCode(){
-//   //     return Verificationcode = Math.random()
-//   //     .toString(36)
-//   //     .slice(-8);
-//   // }
-//   var verificationCode = util.sendMail(req.body.email);
-  
-
-//   console.log(verificationCode);
-
-//   var user = new userProfile(req.body);
-//   // try {
-//   //   const token =  user.newAuthToken();
-//   //   console.log("This is the password " + token, user);
-//   //   res.status(201).send({user, token});
-//   // }
-//   // catch(e) {
-//   //   res.status(400).send(e);
-//   // }
-//   //user.password =  bcrypt.hashSync(user.password, bcrypt.genSaltSync(8));
-//   user.code = verificationCode;
-
-//   // nameSchema.pre('save', async function(next){
-//   //   const user = this;
-//   //   console.log("user"+user);
-
-//   //   if(user.isModified('password')) {
-//   //     console.log(user.isModified('password'));
-     
-//   //     console.log(user.password); 
-//   //   }
-
-//   // next();
-//   // });
-
- 
-//   console.log("email", req.body.email);
-//   res.send({ status: true, email: req.body.email });
-// });
-
-
-
-
-
-// // const auth = async (req,res,next) => {
-// //   try {
-// //       const token = req.header('Authorization').replace('Bearer', '').trim()
-      
-// //       const decoded  = jwt.verify(token, 'thisismynewblog')
-     
-// //       const user  = await userProfile.findOne({ _id:decoded._id, 'tokens.token': token})
-
-// //       if(!user){
-// //           throw new Error()
-// //       }
-// //       req.token = token
-// //       req.user = user
-// //       next()
-// //   } catch (error) {
-// //       console.log(error)
-// //       res.status(401).send({error:'Please authenticate!'})
-// //   }
-// // }
-
-
-
-
-
-// //Fetching the id to the local host
-
-
-
-// app.post("/settings",(req,res)=>{
-
-//   res.send({ status: true });
-//   console.log("Setting in server side");
-
-// });
-
-// ///////////////Logout
-
-// app.post("/logout",(req,res) => {
-
-//     res.send({ status:true });
-   
-//     console.log("logout successfully");
-
-// });
-
-// //////////move to home
-
-// app.post("/restore" , (req,res) =>{
-
-//   res.send({ status:true });
-// });
-
-
-
-
-
-
-
-
-
-
-// app.post("/signupverification", (req, res) => {
-//   userProfile.findOne({ email: req.body.email }, function(err, result) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.send({ id: result._id });
-//     }
-//   });
-// });
-
-// //verification of code for signup
-
-// app.post("/code", (req, res, next) => {
-//   userProfile.findOne({ _id: req.body.id }, function(err, result) {
-//     console.log("this is code result", result);
-//     console.log(req.body.code);
-//     if (result) {
-//       if (result.code === req.body.code) {
-//         //res.sendFile(path.join(__dirname, "../client/public/views/home.html"));
-//         res.send({ status: true, username: result.username });
-//       } else {
-//         next({ status: 401, message: "Verification code is incorrect" });
-//       }
-//     } else {
-//       next({ status: 401, message: "Verification code is incorrect" });
-//     }
-//   });
-// });
-
-// /*login
-//  */
-
-// //const html = fs.readFileSync(path.join(__dirname, "../client/public/views/home.html"));
-// /*
-// app.post("/home", (req, res, next) => {
-//   userProfile.findOne({ username: req.body.username }, function(err, result) {
-//     console.log("findone", result);
-//     if (result) {
-//       console.log("username exists");
-//       console.log(req.body.password);
-
-//       if (result.password === req.body.password)
-        
-//       {
-//         console.log("password exists");
-
-//         res.send({ status: true, userData: result });
-//       } else {
-//         next({ status: 401, message: "Incorrect Password" });
-//       }
-//     } else {
-//       next({ status: 401, message: "Incorrect Password" });
-//     }
-//   });
-// });
-
-// //User Existence
-
-// app.post("/user", (req, res) => {
-//   userProfile.findOne({ username: req.body.username }, function(err, result) {
-//     if (result) {
-//       res.send({ status: true });
-//     } else {
-//       res.send({ status: false });
-//     }
-//   });
-// });
-
-// //Email Existence
-
-// app.post("/email", (req, res) => {
-//   console.log(req.body);
-//   userProfile.findOne({ email: req.body.email }, function(err, result) {
-//     if (result) {
-//       res.send({ status: true });
-//     } else {
-//       res.send({ status: false });
-//     }
-//   });
-// });
-
-// //Rendering Forgot password
-
-// app.post("/forgotpassword", (req, res) => {
-//   res.send({ status: true });
-// });
-
-// /**HOME.HTML */
-
-// //Rendering new discussion.html
-// /*
-// app.post("/newdiscussion", (req, res, next) => {
-//   res.send({ status: true });
-// });
-
-// //Creating the new discussion
-
-// app.post("/creatediscussion", (req, res, next) => {
-//   userProfile.findOne({ _id: req.body.id }, function(err, result) {
-//     if (err) {
-//       console.log(err);
-//     }
-//     var postObject = {
-//       topic: req.body.topic,
-//       description: req.body.description,
-//       postTime: req.body.postTime
-//     };
-//     result.post.unshift(postObject);
-//     // console.log("final result", result);
-//     result.save();
-//     //res.send({status: true , postdata:result})
-//     // res.json({ status:true,html: html.toString(), postdata: result });
-//     res.send({ status: true, postData: result });
-//     //res.send(result);
-//   });
-// });
-
-// ///////////////////////////////////////////////////////////////////
-
-// app.post("/sendcode", (req, res) => {
-//   userProfile.findOne({ email: req.body.email }, function(err, user) {
-//     if (user) {
-//       var verificationCode = Math.random()
-//         .toString(36)
-//         .slice(-8);
-//       console.log(verificationCode);
-
-//       user.code = verificationCode;
-//       console.log("Hiiiii");
-//       user.save();
-
-//       res.send({ status: true });
-//     } else {
-//       console.log("email doesn't exist in ");
-//       res.send({ status: false });
-//     }
-//   });
-
-
-//   */
-//   // var transporter = nodemailer.createTransport({
-//   //   service: 'Gmail',
-//   //   auth: {
-//   //     user: 'beanforkaccess@gmail.com',
-//   //     pass: 'Admin@123'
-//   //   }
-//   // });
-
-//   // res.sendFile(path.join(__dirname, "/view/home.html"));
-//   // transporter.sendMail({
-//   //   from: 'beanforkaccess@gmail.com',
-//   //   to: req.body.email,
-//   //   subject: 'Forgot Password',
-//   //   text: 'Verification code is ' + req.body.code
-
-//   // }, function (err) {
-//   //   if (err)
-//   //     console.log(err);
-//   // });
-//   /*
-// });
-
-// app.post("/submitcode", (req, res) => {
-//   //res.sendFile(__dirname + "/view/changePassword.html")
-//   userProfile.findOne({ email: req.body.email }, function(err, result) {
-//     if (result) {
-//       if (result.code === req.body.code) {
-//         console.log("code is true");
-//         res.send({ status: true, userdata: result });
-//       } else {
-//         res.send({ status: false });
-//         console.log("code is false");
-//       }
-//     } else {
-//       console.log("email doesn't exist in database");
-//     }
-//   });
-// });
-
-// app.post("/changepassword", (req, res) => {
-//   userProfile.findOne({ email: req.body.email }, function(err, user) {
-//     if (user) {
-//       user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8));
-
-//       user.save();
-//       res.send({ status: true });
-//     } else res.send({ status: false });
-//   });
-// });
-
-// app.post("/comment", (req, res) => {
-//   userProfile.findOne({ _id: req.body.userId }, function(err, user) {
-//     var commentObject = { comment: req.body.comment };
-//     if (user) {
-//       for (var i = 0; i < user.post.length; i++) {
-//         if (
-//           JSON.stringify(user.post[i]._id) === JSON.stringify(req.body.postId)
-//         ) {
-//           user.post[i].comments.unshift(commentObject);
-//           user.save();
-//           //console.log("user updated comment profile",user);
-//           break;
-//         }
-//       }
-//     } else {
-//       console.log("error");
-//     }
-//   });
-// });
-
-// app.post("/middleRender", (req, res) => {
-  
-//   userProfile.findOne({_id: req.body.userId}, function(err,user) {
-    
-//     if(user){
-//       for (var i = 0; i < user.post.length; i++) {
-//         console.log(typeof(JSON.stringify(user.post[i]._id)));
-//         console.log(typeof(JSON.stringify(req.body.postId)));
-//         if (JSON.stringify(user.post[i]._id) === JSON.stringify(req.body.postId))
-//         {
-//           console.log("middlerendering working");
-//           console.log("userprofile",user.post[i]);
-//           res.send({userData:user.post[i], username: user.username});
-//           break;
-//         }
-
-//       }
-//     }
-//   })
-// });
-
-// app.use((error, req, res, next) => {
-//   console.log(error);
-//   res.sendStatus(error.status || 500);
-// });
-// app.listen(port, () => {
-//   console.log("Server listening to port " + port);
-// });
-
-
-// */

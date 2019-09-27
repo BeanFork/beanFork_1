@@ -10,7 +10,13 @@ function settingsPage(){
                  $(document).ready(function () {
                     console.log("1st doc"); 
                    
-                    $("#divcontainer").load("../../views/settings.html");
+                    $("#container1").load("../../views/settings.html",function(){
+                        document.getElementById("welcomeuser").innerHTML=`${localUser.username}`;
+                    });
+                   
+                 
+                   
+
                 });
             
             }
@@ -25,7 +31,7 @@ function logOut(){
             }else{
                 console.log("Logout successfully");
                 $(document).ready(function (){
-                    $("#divcontainer").load("../../views/logout.html");
+                    $("#container1").load("../../views/logout.html");
                 });
 
             }
