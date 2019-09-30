@@ -162,6 +162,23 @@ body{
 
 }
 
+#buttonDiv{
+  background: #3d6361;
+  border: 2px solid rgb(66, 56, 56);
+  width:180px;
+  height:50px;
+  border-radius:50px;
+  position: absolute;
+  left:570px;
+  top:15px;
+  color: #e6eecf;
+
+  font-size: 20px;
+  text-align: left;
+  padding: 10px 10px 10px 20px;
+}
+
+
 /*
 Menu Button
 */

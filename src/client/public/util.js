@@ -5,12 +5,14 @@ function checkPassword() {
       document.getElementById("confirmpassword").value
     ) {
       document.getElementById("message").innerHTML = " ";
-      localStorage.setItem("confirmpassword",true)
+      return true;
+      //localStorage.setItem("confirmpassword",true)
       //document.getElementById("submit").disabled = false;
     } else {
       document.getElementById("message").innerHTML =
         "Passwords do not match";
-        localStorage.setItem("confirmpassword",false)
+        return false;
+       // localStorage.setItem("confirmpassword",false)
       //document.getElementById("submit").disabled = true;
     }
   }
@@ -28,24 +30,28 @@ function passwordStrength() {
   if (strong.test(password)) {
     // document.getElementById("password").style.backgroundColor="rgb(133,211,137)";
     document.getElementById("passwordmessage").innerHTML = "<p>STRONG!!!</p>";
+    return true;
     //document.getElementById("submit").disabled=false;
-    localStorage.setItem("Password",true)
+    //localStorage.setItem("Password",true)
     
   } else if (medium.test(password)) {
     document.getElementById("passwordmessage").innerHTML = "<p>MEDIUM!!</p>";
+    return false;
     // document.getElementById("password").style.backgroundColor="rgb(211,207,125)";
     //document.getElementById("submit").disabled=true;
-    localStorage.setItem("Password",false)
+    //localStorage.setItem("Password",false)
   } else if (enough.test(password)) {
     document.getElementById("passwordmessage").innerHTML = "<p>WEAK!!</p>";
+    return false;
     // document.getElementById("password").style.backgroundColor="rgb(231,148,148)";
     //document.getElementById("submit").disabled=true;
-    localStorage.setItem("Password",false)
+    //localStorage.setItem("Password",false)
   } else {
     document.getElementById("passwordmessage").innerHTML =
       "<p>Enter valid Password</p>";
+      return false;
     //document.getElementById("submit").disabled=true;
-    localStorage.setItem("Password",false)
+    //localStorage.setItem("Password",false)
   }
 }
 
