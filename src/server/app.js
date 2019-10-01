@@ -54,12 +54,9 @@ var postSchema = new mongoose.Schema({
 
 var postProfile = mongoose.model("Post", postSchema);
 var userProfile = mongoose.model("User", nameSchema);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(express.static(path.join(__dirname, "../client/public")));
-
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/public/views/register.html"));
 });
@@ -68,14 +65,11 @@ app.get("/", (req, res) => {
 
 app.post("/signup", (req, res) => {
   var verificationCode = util.sendMail(req.body.email);
-
   console.log(verificationCode);
-
   var user = new userProfile(req.body);
-  user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8));
+  user.password = bcrypt.hashSync(user.password,bcrypt.genSaltSync(8));
   user.code = verificationCode;
   user.save();
-
   res.send({ status: true, email: req.body.email, userData: user });
 });
 
@@ -92,9 +86,7 @@ app.post("/signupverification", (req, res) => {
     }
   });
 });
-
 //verification of code for signup
-
 app.post("/code", (req, res, next) => {
   userProfile.findOne({ _id: req.body.id }, function(err, result) {
     if (result) {
@@ -116,10 +108,8 @@ app.post("/code", (req, res, next) => {
     }
   });
 });
-
 /*login
  */
-
 app.post("/home", (req, res, next) => {
   userProfile.findOne({ username: req.body.username }, function(err, result) {
     if (result) {
@@ -141,9 +131,7 @@ app.post("/home", (req, res, next) => {
     }
   });
 });
-
 //User Existence
-
 app.post("/user", (req, res) => {
   userProfile.findOne({ username: req.body.username }, function(err, result) {
     if (result) {
@@ -155,7 +143,6 @@ app.post("/user", (req, res) => {
 });
 
 //Email Existence
-
 app.post("/email", (req, res) => {
   userProfile.findOne({ email: req.body.email }, function(err, result) {
     if (result) {

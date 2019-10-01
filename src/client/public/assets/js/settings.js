@@ -8,17 +8,10 @@ function settingsPage(){
             }else{
                  console.log("Sttings loaded")
                  $(document).ready(function () {
-                    console.log("1st doc"); 
-                   
                     $("#container1").load("../../views/settings.html",function(){
                         document.getElementById("welcomeuser").innerHTML=`${localUser.username}`;
                     });
-                   
-                 
-                   
-
-                });
-            
+                 });
             }
             });
 }

@@ -16,8 +16,7 @@ function forgotPassword() {
 
     if (result.status) {
       $(document).ready(function() {
-        $("#container1").load(
-          "../../views/forgot-password.html",
+        $("#container1").load("../../views/forgot-password.html",
           function() {}
         );
       });
@@ -140,13 +139,14 @@ function cancelForgotPassword() {
 // SIGN UP
 
 function signup() {
+  
+  var username = document.getElementById("username").value;
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
   document.getElementById("username").value ="";
   document.getElementById("email").value ="";
   document.getElementById("password").value="";
   document.getElementById("confirmpassword").value="";
-  var username = document.getElementById("username").value;
-  var email = document.getElementById("email").value;
-  var password = document.getElementById("password").value;
   document.getElementById("signupcontainer").classList.add("hide");
 
   document.getElementById("signupcontainer").classList.remove("show");
