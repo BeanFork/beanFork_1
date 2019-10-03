@@ -25,5 +25,7 @@
     "nodemailer": "^6.3.0",
     "nodemon": "^1.19.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "bcrypt": "^3.0.6"
+  }
 }

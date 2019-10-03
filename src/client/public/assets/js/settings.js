@@ -73,7 +73,7 @@ function homePage() {
         }
         $(document).ready(function() {
         
-         $("#divcontainer").load("../../views/home.html");
+         $("#container1").load("../../views/home.html");
         });
       });
   
