@@ -25,22 +25,31 @@
 
 
 <body>
-          <span id="welcomeuser" class="welcomeuser"></span>
-        <div class="banner text-left">
-            
-          <div class="dropdown">
-            <button class="dropdown-toggle btn-drop" type="button" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-cog fa-1x " style="color: black"><t><t></t></t><span class="caret"></span></span></button>
-          
-            <ul class="dropdown-menu">
-              <li><a href = "#" onclick ="homePage()">Go To Main Page </a> </li>
-              <li><a href="#" onclick='settingsPage()'>Account Settings</a></li>
-              <li><a href="#" onclick='logOut()'>Logout</a></li>
-            </ul>
-          </div>
-            <img class = "logo" src = "assets/img/bean.gif">
-            <h1><b> BeanFork </b></h1> <br>  
+        
+    <div class="bannerRegister text-left">
+        <span id="welcomeuser" class="welcomeuser" style="color: #fff"></span>
+    
+              <div class="dropdown" style="position: relative; bottom:40px;">
+                  <ul class="dropdown-menu">
+                      <li><a href = "#" onclick ="homePage()">Go To Main Page </a> </li>
+                      <li><a href="#" onclick='settingsPage()'>Account Settings</a></li>
+                      <li><a href="#" onclick='logOut()'>Log Out</a></li>
+                    </ul>
+                  <button class="dropdown-toggle btn-drop" type="button" data-toggle="dropdown" style="position: relative; ">
+                    <span class="glyphicon glyphicon-cog fa-1x " style="color: rgb(190, 199, 207)"><t><t></t></t><span class="caret"></span></span></button>
+               
                 </div>
+            <img class="logoRegister" src=" assets/img/bean.gif" />
+            <div style="font-size:40px; margin-top:20px; font-weight:300; color: #fff; font-family: Comic Sans MS, cursive, sans-serif;"> BeanFork </div>
+            <br />
+          </div>
+
+
+
+
+<!----------------------------------Banner----------------------------------------------------------------------->
+
+
     <div class="discussioncontainer" style = "text-align: left">
             <h3>Create New Discussion</h3>
             <form name="create-discussion" id="create-discussion">

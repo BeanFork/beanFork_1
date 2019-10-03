@@ -1,0 +1,83 @@
+
+#welcomeuser{
+    color:rgb(207, 218, 213);
+  font-size: 20px;
+    position: absolute;
+    top:45px;
+    right: 90px;
+  
+  
+  }
+  
+  
+  
+  .icon {
+    background-color: #31d9df;
+    color: #fff;
+    padding: 5px 20px;
+    text-align: left;
+  }
+  .bannerRegister{
+    background-color: #164b6e;
+    color: #fff;
+    text-align: left;
+    font-size: 20px;
+    height: 150px;
+    border-bottom: 5px solid #FFFFFF;
+    -webkit-box-shadow: 0px 15px 47px 1px rgba(0,0,0,0.73);
+  -moz-box-shadow: 0px 15px 47px 1px rgba(0,0,0,0.73);
+  box-shadow: 0px 15px 47px 1px rgba(0,0,0,0.73);
+   
+    
+    }
+    .bannerRegister b{
+      color: #ffffff;
+      font-size: 10px;
+      margin: auto;
+    }
+   
+  
+
+
+
+
+
+/*
+Your Account dropdown
+*/
+
+/* Dropdown button
+*/
+
+
+.btn-drop{
+
+    margin: 15px 0px 0px 0px;
+    padding: 3px 3px 3px 3px;
+    border: none;
+    border-radius: 8px;
+  
+    background: none;
+   
+    font-size: 30px;
+    
+    
+  }
+  .dropdown{
+    margin-top :-6%;
+    margin-right : 10%;
+    float: right;
+  
+  }
+  ul.dropdown-menu {
+    background-color: rgb(112, 112, 112);
+    
+  }
+  ul > li > a{
+    color: #fff !important;
+  }
+  ul > li > a:hover{
+    color: #000 !important;
+  
+  
+  }

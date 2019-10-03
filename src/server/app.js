@@ -59,7 +59,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "../client/public")));
-
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/public/views/register.html"));
 });
@@ -130,7 +129,7 @@ app.post("/home", (req, res, next) => {
               console.log(err);
             }
 
-            res.json({ status: true, userData: result, trendData: posts });
+            res.send({ status: true, userData: result, trendData: posts });
           })
           .sort({ postTime: -1 });
       } else {
