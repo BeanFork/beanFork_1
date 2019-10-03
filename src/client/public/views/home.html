@@ -52,7 +52,7 @@
           <ul class="dropdown-menu">
             <li><a href="#" onclick="homePage()">Go To Main Page </a></li>
             <li><a href="#" onclick="settingsPage()">Account Settings</a></li>
-            <li><a href="#" onclick="logOut()">Logout</a></li>
+            <li><a href="#" onclick="logOut()">Log Out</a></li>
           </ul>
         </div>
         <img class="logo" src="assets/img/bean.gif" />
@@ -95,57 +95,48 @@
 
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-3">
-            <div class="leftpane">
+          <div class="col-md-3" id = "leftpane">
+           
               <h3 class="trending">Trending</h3>
               <div id="TrendDiscussion"></div>
               <div id="Trending__pages"></div>
-            </div>
+            
           </div>
 
-          <div class="col-lg-5">
-            <div class="middlepane">
+          <div class="col-md-6" id = "middlepane">
+            
               
-                <button id="btn-create" onclick="newDiscussion()">
+                <div id="btn-create" onclick="newDiscussion()">
                   Create New
-                  <i onclick="newDiscussion()" class="fa fa-plus-square"></i>
-                </button>
+                  <i class="fa fa-plus-square"></i>
+                </div>
              
-              <div id="delete1"></div>
-              <div id="edit1"></div>
-              <div id="post_content"></div>
-
+                <div id="edit1"></div>
+               
+                <div id="delete1"></div>
+              
+             
+              <div id="post_content">
+                </div>
+       
+               
+              
               <div id="comment_content" class="comment_content"></div>
             </div>
-          </div>
+        
 
-          <div class="col-lg-3">
-            <div class="rightpane">
+          <div class="col-md-3" id = "rightpane">
+           
               <h3 class="myDiscussion">My Discussions</h3>
               <div id="yourdiscussion"></div>
               <div id="results__pages"></div>
-            </div>
+            
           </div>
 
-          <textarea
-            id="commentBox"
-            class="comment"
-            rows="5"
-            cols="80"
-            placeholder="Add Your Comments"
-            onkeydown="if (event.keyCode == 13)
-        document.getElementById('button-add').click()"
-          ></textarea>
-          <!-- <input id="button-add" type="submit" onclick="addComment()" value="Add" /> -->
-          <button
-            id="button-add"
-            style="font-size: 20px"
-            onclick="addComment()"
-          >
-            Add
-          </button>
+    
         </div>
       </div>
+    
     </body>
   </div>
 </html>

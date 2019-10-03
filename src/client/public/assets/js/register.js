@@ -6,6 +6,7 @@ var localMail;
 var mailCheck,
   userCheck,
   count = 0;
+  var flag = true;
 
 // FORGOT PASSWORD
 function forgotPassword() {
@@ -63,7 +64,7 @@ function confirmCode() {
         localUser = res.userData;
         $(document).ready(function() {
           $("#container1").load(
-            "../../views/change-password.html #container2",
+            "../../views/change-password.html",
             function() {
               console.log("change password");
             }
@@ -140,13 +141,14 @@ function cancelForgotPassword() {
 // SIGN UP
 
 function signup() {
+ 
+  var username = document.getElementById("username").value;
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
   document.getElementById("username").value ="";
   document.getElementById("email").value ="";
   document.getElementById("password").value="";
   document.getElementById("confirmpassword").value="";
-  var username = document.getElementById("username").value;
-  var email = document.getElementById("email").value;
-  var password = document.getElementById("password").value;
   document.getElementById("signupcontainer").classList.add("hide");
 
   document.getElementById("signupcontainer").classList.remove("show");
@@ -349,11 +351,12 @@ function login() {
                 yourDiscussion(res.userData);
               } else {
                 document.getElementById("yourdiscussion").innerHTML = "";
-                const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center;"> You have not created any discussions yet </span> `;
+                const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center; color: white"> You have not created any discussions yet </span> `;
                 document
                   .getElementById("yourdiscussion")
                   .insertAdjacentHTML("beforeend", markup);
               }
+              console.log("comments",res.trendData[0].comments);
               postId = res.trendData[0].postid;
               middleRenderPost(
                 res.trendData[0].username,
@@ -387,6 +390,7 @@ function newDiscussion() {
       });
     }
   });
+  console.log("onclick New discussion");
 }
 
 // CANCEL DISCUSSION
@@ -411,7 +415,7 @@ function cancelDiscussion() {
               yourDiscussion(res.userData);
             } else {
               document.getElementById("yourdiscussion").innerHTML = "";
-              const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center;"> You have not created any discussions yet </span> `;
+              const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center; color: white;"> You have not created any discussions yet </span> `;
               document
                 .getElementById("yourdiscussion")
                 .insertAdjacentHTML("beforeend", markup);
@@ -593,7 +597,13 @@ function middleRenderPost(
   <font size="2">${time}</font></br>
   <font size="4" class="content">
   ${description}
-  </font>`;
+  </font> 
+  
+  <a href = "#" id = "likePost" onclick = "likePost()"> <i id ="likeIcon" class = "fa fa-thumbs-o-up" aria-hidden = "true"></i>Like</a>
+  <a href = "#" id = "addComment" onclick = "showCommentBox()" ><i class = "fa fa-comment" aria-hidden ="true">  </i>Comment</a>
+
+  <div id= "commentSection">
+  </div>`;
   document
     .getElementById("post_content")
     .insertAdjacentHTML("afterbegin", markup);
@@ -633,7 +643,7 @@ function middleRenderPost(
 function editButton() {
   document.getElementById("edit1").innerHTML = "";
 
-  const markup = `<button class="btn" style="background-color:lightblue " onclick="editAction()">  
+  const markup = `<button id="delete1" class="btn" style="background-color:lightblue " onclick="editAction()">  
  <span><i class="glyphicon glyphicon-pencil" style="font-size:20px;color:black;text-shadow:2px 2px 4px #000000;"></i></span></button>`;
   return markup;
 }
@@ -770,7 +780,7 @@ function deleteAction() {
             postId = res.userData.post[0]._id;
           } else {
             document.getElementById("yourdiscussion").innerHTML = "";
-            const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center;"> You have not created any discussions yet </span> `;
+            const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center;color: white;"> You have not created any discussions yet </span> `;
             document
               .getElementById("yourdiscussion")
               .insertAdjacentHTML("beforeend", markup);
@@ -943,7 +953,7 @@ function addComment() {
   var username = localUser.username;
 
   console.log(localUser.username);
-
+if(comment !=  "") {
   superagent
     .post("/comment")
     .send({ comment: comment, username: username, postId: postId })
@@ -962,6 +972,8 @@ function addComment() {
         );
       }
     });
+}
+flag = true;
 }
 
 // SEARCH BAR
@@ -1054,7 +1066,7 @@ function homePage() {
             yourDiscussion(res.userData);
           } else {
             document.getElementById("yourdiscussion").innerHTML = "";
-            const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center;"> You have not created any discussions yet </span> `;
+            const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center; color: white;"> You have not created any discussions yet </span> `;
             document
               .getElementById("yourdiscussion")
               .insertAdjacentHTML("beforeend", markup);
@@ -1071,4 +1083,56 @@ function homePage() {
         });
       });
     });
+}
+
+
+function showCommentBox(){
+
+  const markup = `      
+  <textarea
+  id="commentBox"
+  class="comment"
+  rows="2"
+  cols="60"
+  placeholder="Write Comments..."
+  onkeydown="if (event.keyCode == 13)
+document.getElementById('button-add').click()"
+></textarea>
+<button
+  id="button-add"
+  onclick= "addComment()"
+>Add
+</button>
+<button
+style = "margin-bottom: 0%;"
+  id="button-cancel"
+  onclick="cancelComment()"
+>
+  Cancel
+</button>
+`;
+  
+  if(flag){
+    document.getElementById('commentSection').insertAdjacentHTML('beforeend', markup);
+    flag = false;
+  }
+  else {
+    flag =false;
+    cancelComment();
+  }
+}
+
+function cancelComment() {
+  flag = true;
+  document.getElementById('commentSection').innerHTML = " ";
+
+}
+
+
+
+function likePost() {
+  var x = document.getElementById('likeIcon');
+
+  x.classList.toggle('fa-thumbs-up');
+
 }
