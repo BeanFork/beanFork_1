@@ -1,6 +1,7 @@
 var localUser;
 var localId;
 var postId;
+var token = localStorage.getItem('token');
 var localData;
 var localMail;
 var mailCheck,
@@ -11,16 +12,16 @@ var likeStatus = false;
 
 // FORGOT PASSWORD
 function forgotPassword() {
-  superagent.post("/forgotPassword").end(function(err, result) {
+  superagent.post("/forgotPassword").end(function (err, result) {
     if (err) {
       console.log(err);
     }
 
     if (result.status) {
-      $(document).ready(function() {
+      $(document).ready(function () {
         $("#container1").load(
           "../../views/forgot-password.html",
-          function() {}
+          function () { }
         );
       });
     }
@@ -33,7 +34,7 @@ function sendCode() {
     .send({
       email: document.getElementById("input-email").value
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
 
       if (err) {
@@ -58,20 +59,20 @@ function confirmCode() {
       code: document.getElementById("input-code").value,
       email: document.getElementById("input-email").value
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
 
       if (res.status) {
         localUser = res.userData;
-        $(document).ready(function() {
-          $("#container1").load("../../views/change-password.html", function() {
+        $(document).ready(function () {
+          $("#container1").load("../../views/change-password.html", function () {
             console.log("change password");
           });
         });
       } else {
         console.log("Wrong code", res.status);
-        $(document).ready(function() {
-          $("#container1").load("../../views/forgot-password.html", function() {
+        $(document).ready(function () {
+          $("#container1").load("../../views/forgot-password.html", function () {
             document.getElementById("Emailspan").innerHTML =
               "<p>Verification code is incorrect</p>";
           });
@@ -87,7 +88,7 @@ function changePassword() {
       password: document.getElementById("password").value,
       email: localMail
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
       localId = res.userData._id;
       localUser = res.userData;
@@ -95,8 +96,8 @@ function changePassword() {
       console.log("useData", res.userData);
 
       if (res.status) {
-        $(document).ready(function() {
-          $("#container1").load("../../views/home.html", function() {
+        $(document).ready(function () {
+          $("#container1").load("../../views/home.html", function () {
             document.getElementById(
               "welcomeuser"
             ).innerHTML = `${localUser.username}`;
@@ -131,8 +132,8 @@ function changePassword() {
 }
 
 function cancelForgotPassword() {
-  $(document).ready(function() {
-    $("#container1").load("../../views/register.html", function() {});
+  $(document).ready(function () {
+    $("#container1").load("../../views/register.html", function () { });
   });
 }
 
@@ -160,7 +161,7 @@ function signup() {
       email: email,
       password: password
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
         console.log(err);
       } else {
@@ -181,7 +182,7 @@ function signupVerification(email) {
   superagent
     .post("/signupverification")
     .send({ email: email })
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
         console.log(err);
       } else {
@@ -223,7 +224,7 @@ function userExistence() {
     .send({
       username: document.getElementById("username").value
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
 
       if (res.status) {
@@ -242,7 +243,7 @@ function emailExistence() {
   superagent
     .post("/email")
     .send({ email: document.getElementById("email").value })
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
 
       if (res.status) {
@@ -263,19 +264,19 @@ function verificationConfirm() {
     superagent
       .post("/code")
       .send({ code: document.getElementById("Confirmcode").value, id: id })
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
           document.getElementById(
             "verificationcomment"
           ).innerHTML = `<p>Verification code is incorrect!!!!${2 -
-            count} attempts more </p>`;
+          count} attempts more </p>`;
           count = count + 1;
         } else {
           var res = JSON.parse(result.text);
 
           if (res.status) {
-            $(document).ready(function() {
-              $("#container1").load("/views/home.html", function() {
+            $(document).ready(function () {
+              $("#container1").load("/views/home.html", function () {
                 document.getElementById(
                   "welcomeuser"
                 ).innerHTML = `${localUser.username}`;
@@ -327,24 +328,25 @@ function login() {
       username: username,
       password: password
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
+     
       if (err) {
         console.log(err);
         document.getElementById("loginverification").innerHTML =
           "<p>Username or password is incorrect</p>";
       } else {
         var res = JSON.parse(result.text);
-
+ console.log("T",res.token)
         localUser = res.userData;
 
         localId = res.userData._id;
         if (res.status) {
-          $(document).ready(function() {
-            $("#container1").load("/views/home.html", function() {
+          $(document).ready(function () {
+            $("#container1").load("/views/home.html", function () {
               document.getElementById(
                 "welcomeuser"
               ).innerHTML = `${localUser.username}`;
-
+              localStorage.setItem('token', res.token);
               if (res.userData.post.length > 0) {
                 yourDiscussion(res.userData);
               } else {
@@ -375,19 +377,30 @@ function login() {
 // NEW DISCUSSION
 
 function newDiscussion() {
-  superagent.post("/newdiscussion").end(function(err, result) {
+
+  superagent.post("/newdiscussion").set('token',token).end(function (err, result) {
+    if(err)
+    {  console.log("unauthorized user")
+         $("#container1").load("/views/logout.html", function () {
+          document.getElementById("welcome").innerHTML=" ";
+        
+           document.getElementById("welcome").innerHTML="session expired";
+         })
+       }
+       else {
     var res = JSON.parse(result.text);
 
     if (res.status) {
-      $(document).ready(function() {
-        $("#container1").load("/views/new-discussion.html", function() {
+      $(document).ready(function () {
+        $("#container1").load("/views/new-discussion.html", function () {
           document.getElementById(
             "welcomeuser"
           ).innerHTML = `${localUser.username}`;
         });
       });
-    }
+    }}
   });
+
 }
 
 // CANCEL DISCUSSION
@@ -395,16 +408,22 @@ function newDiscussion() {
 function cancelDiscussion() {
   superagent
     .post("/cancelDiscussion")
+    .set('token',token)
     .send({ username: localUser.username })
 
-    .end(function(err, result) {
-      if (err) {
-        console.log(err);
-      } else {
+    .end(function (err, result) {
+      if(err)
+    {  console.log("unauthorized user")
+         $("#container1").load("/views/logout.html", function () {
+          document.getElementById("welcome").innerHTML=" ";
+        
+           document.getElementById("welcome").innerHTML="session expired";
+         })
+       }else {
         var res = JSON.parse(result.text);
         console.log("trendData", res.userData);
-        $(document).ready(function() {
-          $("#container1").load("/views/home.html", function() {
+        $(document).ready(function () {
+          $("#container1").load("/views/home.html", function () {
             document.getElementById(
               "welcomeuser"
             ).innerHTML = `${localUser.username}`;
@@ -445,6 +464,7 @@ function createDiscussion() {
   if (topic.length > 0 && description.length > 0) {
     superagent
       .post("/creatediscussion")
+      .set('token',token)
       .send({
         topic: topic,
         description: description,
@@ -453,15 +473,20 @@ function createDiscussion() {
         postTime: postTime,
         username: username
       })
-      .end(function(err, result) {
-        if (err) {
-          console.log(err);
-        } else {
+      .end(function (err, result) {
+        if(err)
+    {  console.log("unauthorized user")
+         $("#container1").load("/views/logout.html", function () {
+          document.getElementById("welcome").innerHTML=" ";
+        
+           document.getElementById("welcome").innerHTML="session expired";
+         })
+       }else {
           var res = JSON.parse(result.text);
           postId = res.postData.post[0]._id;
           if (res.status) {
-            $(document).ready(function() {
-              $("#container1").load("/views/home.html", function() {
+            $(document).ready(function () {
+              $("#container1").load("/views/home.html", function () {
                 document.getElementById(
                   "welcomeuser"
                 ).innerHTML = `${localUser.username}`;
@@ -474,10 +499,19 @@ function createDiscussion() {
                   res.postData.post[0].comments
                 );
                 yourDiscussion(res.postData);
-                superagent.post("/newcreate").end(function(err, result) {
+                superagent.post("/newcreate").set('token',token).end(function (err, result) {
+                  if(err)
+                  {  console.log("unauthorized user")
+                       $("#container1").load("/views/logout.html", function () {
+                        document.getElementById("welcome").innerHTML=" ";
+                      
+                         document.getElementById("welcome").innerHTML="session expired";
+                       })
+                     }else {
                   var res = JSON.parse(result.text);
 
                   trendingTopics(res.trendData);
+                     }
                 });
               });
             });
@@ -548,10 +582,16 @@ function getAttributes1(item) {
   superagent
     .post("/middleRender1")
     .send({ id: id })
-    .end(function(err, result) {
-      if (err) {
-        console.log(error);
-      } else {
+    .set('token',token)
+    .end(function (err, result) {
+      if(err)
+      {  console.log("unauthorized user")
+           $("#container1").load("/views/logout.html", function () {
+            document.getElementById("welcome").innerHTML=" ";
+          
+             document.getElementById("welcome").innerHTML="session expired";
+           })
+         } else {
         var res = JSON.parse(result.text);
 
         postId = res.trendData.postid;
@@ -621,6 +661,8 @@ function middleRenderPost(
       .classList.remove("comment_content");
   }
 
+
+
   if (localUser.username === username) {
     console.log("local user", localUser.username, "username", username);
 
@@ -653,15 +695,26 @@ function editButton() {
 //EDIT ACTION
 
 function editAction() {
+  var token = localStorage.getItem('token');
   superagent
-    .post("/editpage")
+    .post("/editpage").set('token',token)
     .send({ postId: postId, userId: localId })
-    .end(function(err, result) {
-      var res = JSON.parse(result.text);
+    .end(function (err, result) {
+      if(err)
+    {  console.log("unauthorized user")
+         $("#container1").load("/views/logout.html", function () {
+          document.getElementById("welcome").innerHTML=" ";
+        
+           document.getElementById("welcome").innerHTML="session expired";
+         })
+       }
 
+        if(result) {
+          
+      var res = JSON.parse(result.text);
       if (res.status) {
-        $(document).ready(function() {
-          $("#container1").load("/views/edit-discussion.html", function() {
+        $(document).ready(function () {
+          $("#container1").load("/views/edit-discussion.html", function () {
             document.getElementById(
               "welcomeuser"
             ).innerHTML = `${localUser.username}`;
@@ -674,6 +727,8 @@ function editAction() {
           });
         });
       }
+    }
+
     });
 }
 
@@ -689,6 +744,7 @@ function editDiscussion() {
   if (topic.length > 0 && description.length > 0) {
     superagent
       .post("/editdiscussion")
+      .set('token',token)
       .send({
         topic: topic,
         description: description,
@@ -697,17 +753,22 @@ function editDiscussion() {
         postTime: postTime,
         username: username
       })
-      .end(function(err, result) {
-        if (err) {
-          console.log(err);
-        } else {
+      .end(function (err, result) {
+        if(err)
+        {  console.log("unauthorized user")
+             $("#container1").load("/views/logout.html", function () {
+              document.getElementById("welcome").innerHTML=" ";
+            
+               document.getElementById("welcome").innerHTML="session expired";
+             })
+           } else {
           var res = JSON.parse(result.text);
 
           if (res.status) {
             console.log("your dis", res.userData);
             console.log("tred disc", res.trendData);
-            $(document).ready(function() {
-              $("#container1").load("/views/home.html", function() {
+            $(document).ready(function () {
+              $("#container1").load("/views/home.html", function () {
                 document.getElementById(
                   "welcomeuser"
                 ).innerHTML = `${localUser.username}`;
@@ -770,10 +831,19 @@ function deleteAction() {
     document.getElementById("TrendDiscussion").innerHTML = "";
     superagent
       .post("/delete")
+      .set('token',token)
       .send({ postId: postId, userId: localId })
-      .end(function(err, result) {
+      .end(function (err, result) {
+        if(err)
+        {  console.log("unauthorized user")
+             $("#container1").load("/views/logout.html", function () {
+              document.getElementById("welcome").innerHTML=" ";
+            
+               document.getElementById("welcome").innerHTML="session expired";
+             })
+           }
         var res = JSON.parse(result.text);
-        if (err) console.log("err");
+ 
         if (res.status) {
           console.log("your discussion", res.userData);
           console.log("trend topics", res.trendData);
@@ -844,8 +914,9 @@ function getAttributes(item) {
 
   superagent
     .post("/middleRender")
+    .set('token',token)
     .send({ postId: postId, userId: localId })
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
         console.log(error);
       } else {
@@ -862,33 +933,6 @@ function getAttributes(item) {
     });
 }
 
-// function renderButtons(page, numResults, resPerPage) {
-//   const pages = Math.ceil(numResults / resPerPage);
-
-//   let button;
-//   if (page === 1 && pages > 1) {
-//     button = createButton(page, "next");
-//   } else if (page < pages) {
-//     button = `${createButton(page, "prev")}
-//   ${createButton(page, "next")}`;
-//   } else if (page === pages && pages > 1) {
-//     button = createButton(page, "prev");
-//   }
-//   document
-//     .getElementById("results__pages")
-//     .insertAdjacentHTML("afterbegin", button);
-// }
-
-// function createButton(page, type) {
-//   const markup = `
-//     <button class="btn-inline results__btn--${type}" data-goto=${
-//     type === "prev" ? page - 1 : page + 1
-//   }>
-//     <span>${type === "prev" ? "Prev" : "Next"}</span>
-//     </button>
-//     `;
-//   return markup;
-// }
 
 // CALCULATING POST TIME
 
@@ -928,11 +972,17 @@ function addComment() {
   if (comment != "") {
     superagent
       .post("/comment")
+      .set('token',token)
       .send({ comment: comment, username: username, postId: postId })
-      .end(function(err, result) {
-        if (err) {
-          console.log(err);
-        } else {
+      .end(function (err, result) {
+        if(err)
+        {  console.log("unauthorized user")
+             $("#container1").load("/views/logout.html", function () {
+              document.getElementById("welcome").innerHTML=" ";
+            
+               document.getElementById("welcome").innerHTML="session expired";
+             })
+           }else {
           var res = JSON.parse(result.text);
 
           middleRenderPost(
@@ -976,7 +1026,16 @@ function searchBar() {
   superagent
     .post("/search")
     .send({ search: search })
-    .end(function(err, result) {
+    .set('token',token)
+    .end(function (err, result) {
+      if(err)
+      {  console.log("unauthorized user")
+           $("#container1").load("/views/logout.html", function () {
+            document.getElementById("welcome").innerHTML=" ";
+          
+             document.getElementById("welcome").innerHTML="session expired";
+           })
+         }else {
       var res = JSON.parse(result.text);
       console.log(res, "res");
       if (res.status) {
@@ -1002,6 +1061,7 @@ function searchBar() {
           }
         }
       }
+    
       if (res.status == false) {
         console.log("not found");
         document.getElementById("post_content").innerHTML = "";
@@ -1010,6 +1070,7 @@ function searchBar() {
           .getElementById("post_content")
           .insertAdjacentHTML("afterbegin", markup);
       }
+    }
 
       //if (res.status == false)
       //document.getElementById('span-search').innerHTML = "Topic doesn't exist";
@@ -1024,13 +1085,19 @@ function homePage() {
   superagent
     .post("/homePage")
     .send({ id: localId })
-    .end(function(err, result) {
+    .set('token',token)
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
-      if (err) {
-        console.log(err);
-      }
-      $(document).ready(function() {
-        $("#container1").load("../../views/home.html", function() {
+      if(err)
+      {  console.log("unauthorized user")
+           $("#container1").load("/views/logout.html", function () {
+            document.getElementById("welcome").innerHTML=" ";
+          
+             document.getElementById("welcome").innerHTML="session expired";
+           })
+         }else {
+      $(document).ready(function () {
+        $("#container1").load("../../views/home.html", function () {
           document.getElementById(
             "welcomeuser"
           ).innerHTML = `${localUser.username}`;
@@ -1057,6 +1124,7 @@ function homePage() {
           trendingTopics(res.trendData);
         });
       });
+    }
     });
 }
 
