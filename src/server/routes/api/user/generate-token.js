@@ -1,12 +1,12 @@
 var jwt=require("jsonwebtoken")
 module.exports=(req,res,next)=>{
     const token = jwt.sign({
-    email: req.body.email,
-    userId: req.body._id
+    username: req.body.username,
     },
     "secretkeys1", {
-    expiresIn: "200s"
+    expiresIn: "100s"
     });
+    console.log("username checkng jwt ",req.body.username)
     res.locals.token=token;
    next();
 }

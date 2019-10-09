@@ -85,14 +85,14 @@ app.post("/signup", (req, res) => {
 
 //Fetching the id to the local host
 
-app.post("/signupverification", (req, res) => {
+app.post("/signupverification",tokenGen, (req, res) => {
   console.log("email", req.body.email);
   userProfile.findOne({ _id: req.body.email }, function (err, result) {
     if (err) {
       console.log(err);
     } else {
       console.log("id", result);
-      res.send({ id: result._id });
+      res.send({ id: result._id,token:res.locals.token });
     }
   });
 });
@@ -269,7 +269,7 @@ app.post("/submitcode", (req, res) => {
   userProfile.findOne({ email: req.body.email }, function (err, result) {
     if (result) {
       if (result.code === req.body.code) {
-        res.send({ status: true, userData: result });
+        res.send({ status: true, userData: result,username:result.username });
       } else {
         res.send({ status: false });
       }
@@ -279,7 +279,7 @@ app.post("/submitcode", (req, res) => {
   });
 });
 
-app.post("/changepassword", (req, res) => {
+app.post("/changepassword", tokenGen,(req, res) => {
   userProfile.findOne({ email: req.body.email }, function (err, user) {
     if (user) {
       user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8));
@@ -292,7 +292,7 @@ app.post("/changepassword", (req, res) => {
             console.log(err);
           }
 
-          res.json({ status: true, userData: user, trendData: posts });
+          res.json({ status: true, userData: user, trendData: posts ,token:res.locals.token});
         })
         .sort({ postTime: -1 });
     }
