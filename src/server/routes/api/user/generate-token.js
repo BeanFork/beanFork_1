@@ -6,9 +6,9 @@ module.exports=(req,res,next)=>{
     username: req.body.username,
     },
     process.env.SECRET_KEY, {
-    expiresIn: "10s"
+    expiresIn: "200s"
     });
-    console.log("secret keyzz ",process.env.SECRET_KEY)
+    console.log("tokens gen ",token)
     res.locals.token=token;
    next();
 }
