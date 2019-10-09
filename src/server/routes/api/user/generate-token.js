@@ -1,12 +1,14 @@
+require('dotenv').config();
 var jwt=require("jsonwebtoken")
+
 module.exports=(req,res,next)=>{
     const token = jwt.sign({
     username: req.body.username,
     },
-    "secretkeys1", {
-    expiresIn: "100s"
+    process.env.SECRET_KEY, {
+    expiresIn: "10s"
     });
-    console.log("username checkng jwt ",req.body.username)
+    console.log("secret keyzz ",process.env.SECRET_KEY)
     res.locals.token=token;
    next();
 }

@@ -204,6 +204,8 @@ function signupVerification(email) {
     });
 }
 
+
+
 function mailidFormat() {
   var email = document.getElementById("email").value;
   var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;

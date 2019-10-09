@@ -6,12 +6,16 @@ var path = require("path");
 var port = 5000;
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
-const fs = require("fs");
-const jwt = require('jsonwebtoken')
+// const fs = require("fs");
+// const jwt = require('jsonwebtoken')
 var bcrypt = require("bcrypt");
+require('dotenv').config();
+// run "export node_env=dev"
+
 var checkAuth = require("./routes/api/user/authenticate-token");
 var tokenGen = require("./routes/api/user/generate-token");
-var x;
+
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/userprofile");
@@ -178,6 +182,7 @@ app.post("/email", (req, res) => {
 //Rendering Forgot password
 
 app.post("/forgotpassword", (req, res) => {
+
   res.send({ status: true });
 });
 
