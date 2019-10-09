@@ -7,10 +7,15 @@ var port = 5000;
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 const fs = require("fs");
+const jwt = require('jsonwebtoken')
 var bcrypt = require("bcrypt");
+var checkAuth = require("./routes/api/user/authenticate-token");
+var tokenGen = require("./routes/api/user/generate-token");
+var x;
 
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/userprofile");
+
 /*mongoose.connect("mongodb+srv://beanforkaccess:Admin@123@beanfork-ddksd.mongodb.net/test?retryWrites=true&w=majority",{
   useNewUrlParser:true
 })*/
@@ -80,14 +85,14 @@ app.post("/signup", (req, res) => {
 
 //Fetching the id to the local host
 
-app.post("/signupverification", (req, res) => {
+app.post("/signupverification",tokenGen, (req, res) => {
   console.log("email", req.body.email);
-  userProfile.findOne({ _id: req.body.email }, function(err, result) {
+  userProfile.findOne({ _id: req.body.email }, function (err, result) {
     if (err) {
       console.log(err);
     } else {
       console.log("id", result);
-      res.send({ id: result._id });
+      res.send({ id: result._id,token:res.locals.token });
     }
   });
 });
@@ -95,11 +100,11 @@ app.post("/signupverification", (req, res) => {
 //verification of code for signup
 
 app.post("/code", (req, res, next) => {
-  userProfile.findOne({ _id: req.body.id }, function(err, result) {
+  userProfile.findOne({ _id: req.body.id }, function (err, result) {
     if (result) {
       if (result.code === req.body.code) {
         postProfile
-          .find({}, function(err, posts) {
+          .find({}, function (err, posts) {
             if (err) {
               console.log(err);
             }
@@ -119,17 +124,20 @@ app.post("/code", (req, res, next) => {
 /*login
  */
 
-app.post("/home", (req, res, next) => {
-  userProfile.findOne({ username: req.body.username }, function(err, result) {
+app.post("/home", tokenGen, (req, res, next) => {
+  userProfile.findOne({ username: req.body.username }, function (err, result) {
     if (result) {
+      
       if (bcrypt.compareSync(req.body.password, result.password)) {
         postProfile
-          .find({}, function(err, posts) {
+          .find({}, function (err, posts) {
             if (err) {
               console.log(err);
             }
 
-            res.send({ status: true, userData: result, trendData: posts });
+          console.log("req",res.locals.token );
+            
+            res.send({ status: true, userData: result, trendData: posts,token:res.locals.token});
           })
           .sort({ postTime: -1 });
       } else {
@@ -141,10 +149,12 @@ app.post("/home", (req, res, next) => {
   });
 });
 
+
+
 //User Existence
 
 app.post("/user", (req, res) => {
-  userProfile.findOne({ username: req.body.username }, function(err, result) {
+  userProfile.findOne({ username: req.body.username }, function (err, result) {
     if (result) {
       res.send({ status: true });
     } else {
@@ -156,7 +166,7 @@ app.post("/user", (req, res) => {
 //Email Existence
 
 app.post("/email", (req, res) => {
-  userProfile.findOne({ email: req.body.email }, function(err, result) {
+  userProfile.findOne({ email: req.body.email }, function (err, result) {
     if (result) {
       res.send({ status: true });
     } else {
@@ -175,14 +185,15 @@ app.post("/forgotpassword", (req, res) => {
 
 //Rendering new discussion.html
 
-app.post("/newdiscussion", (req, res, next) => {
+app.post("/newdiscussion",checkAuth, (req, res, next) => {
+
   res.send({ status: true });
 });
 
 //Creating the new discussion
 
-app.post("/creatediscussion", (req, res, next) => {
-  userProfile.findOne({ _id: req.body.id }, function(err, result) {
+app.post("/creatediscussion",checkAuth, (req, res, next) => {
+  userProfile.findOne({ _id: req.body.id }, function (err, result) {
     if (err) {
       console.log(err);
     }
@@ -205,9 +216,9 @@ app.post("/creatediscussion", (req, res, next) => {
   });
 });
 
-app.post("/newcreate", (req, res) => {
+app.post("/newcreate",checkAuth, (req, res) => {
   postProfile
-    .find({}, function(err, posts) {
+    .find({}, function (err, posts) {
       if (err) {
         console.log(err);
       }
@@ -217,11 +228,11 @@ app.post("/newcreate", (req, res) => {
     .sort({ postTime: -1 });
 });
 
-app.post("/cancelDiscussion", (req, res) => {
-  userProfile.findOne({ username: req.body.username }, function(err, result) {
+app.post("/cancelDiscussion",checkAuth, (req, res) => {
+  userProfile.findOne({ username: req.body.username }, function (err, result) {
     if (result) {
       postProfile
-        .find({}, function(err, posts) {
+        .find({}, function (err, posts) {
           if (err) {
             console.log(err);
           }
@@ -236,7 +247,7 @@ app.post("/cancelDiscussion", (req, res) => {
 ///////////////////////////////////////////////////////////////////
 
 app.post("/sendcode", (req, res) => {
-  userProfile.findOne({ email: req.body.email }, function(err, user) {
+  userProfile.findOne({ email: req.body.email }, function (err, user) {
     if (user) {
       var verificationCode = Math.random()
         .toString(36)
@@ -255,10 +266,10 @@ app.post("/sendcode", (req, res) => {
 });
 
 app.post("/submitcode", (req, res) => {
-  userProfile.findOne({ email: req.body.email }, function(err, result) {
+  userProfile.findOne({ email: req.body.email }, function (err, result) {
     if (result) {
       if (result.code === req.body.code) {
-        res.send({ status: true, userData: result });
+        res.send({ status: true, userData: result,username:result.username });
       } else {
         res.send({ status: false });
       }
@@ -268,42 +279,47 @@ app.post("/submitcode", (req, res) => {
   });
 });
 
-app.post("/changepassword", (req, res) => {
-  userProfile.findOne({ email: req.body.email }, function(err, user) {
+app.post("/changepassword", tokenGen,(req, res) => {
+  userProfile.findOne({ email: req.body.email }, function (err, user) {
     if (user) {
       user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8));
 
       user.save();
 
       postProfile
-        .find({}, function(err, posts) {
+        .find({}, function (err, posts) {
           if (err) {
             console.log(err);
           }
 
-          res.json({ status: true, userData: user, trendData: posts });
+          res.json({ status: true, userData: user, trendData: posts ,token:res.locals.token});
         })
         .sort({ postTime: -1 });
     }
   });
 });
 
-app.post("/editpage", (req, res) => {
-  postProfile.findOne({ postid: req.body.postId }, function(err, result) {
-    if (result) {
-      console.log("server", result);
+app.post("/editpage",checkAuth, (req, res,next) => {
 
-      res.json({
-        status: true,
-        topic: result.topic,
-        description: result.description
-      });
-    }
+ console.log("1")
+      postProfile.findOne({ postid: req.body.postId }, function (err, result) {
+        if (result) {
+          console.log("server", result);
+
+          console.log("2")
+          res.json({
+            status: true,
+            topic: result.topic,
+            description: result.description,
+            
+          });
+        }
+
   });
 });
 
-app.post("/editdiscussion", (req, res) => {
-  postProfile.findOne({ postid: req.body.postId }, function(err, post1) {
+app.post("/editdiscussion",checkAuth, (req, res) => {
+  postProfile.findOne({ postid: req.body.postId }, function (err, post1) {
     if (post1) {
       post1.topic = req.body.topic;
       post1.description = req.body.description;
@@ -311,7 +327,7 @@ app.post("/editdiscussion", (req, res) => {
       post1.save();
 
       userProfile
-        .findOne({ _id: req.body.userId }, function(err, user) {
+        .findOne({ _id: req.body.userId }, function (err, user) {
           if (user) {
             for (var i = 0; i < user.post.length; i++) {
               if (req.body.postId == user.post[i]._id) {
@@ -322,7 +338,7 @@ app.post("/editdiscussion", (req, res) => {
               }
             }
             postProfile
-              .find({}, function(err, result) {
+              .find({}, function (err, result) {
                 res.json({ status: true, userData: user, trendData: result });
               })
               .sort({ postTime: -1 });
@@ -333,13 +349,13 @@ app.post("/editdiscussion", (req, res) => {
   });
 });
 
-app.post("/delete", (req, res) => {
-  postProfile.findOne({ postid: req.body.postId }, function(err, post1) {
+app.post("/delete",checkAuth, (req, res) => {
+  postProfile.findOne({ postid: req.body.postId }, function (err, post1) {
     if (post1) {
       console.log(post1);
       post1.remove();
 
-      userProfile.findOne({ _id: req.body.userId }, function(err, user) {
+      userProfile.findOne({ _id: req.body.userId }, function (err, user) {
         if (user) {
           for (var i = 0; i < user.post.length; i++) {
             if (req.body.postId == user.post[i]._id) {
@@ -348,7 +364,7 @@ app.post("/delete", (req, res) => {
               user.save();
             }
           }
-          postProfile.find({}, function(err, result) {
+          postProfile.find({}, function (err, result) {
             res.json({ status: true, userData: user, trendData: result });
           });
         } else console.log("no user");
@@ -357,10 +373,10 @@ app.post("/delete", (req, res) => {
   });
 });
 
-app.post("/comment", (req, res) => {
-  postProfile.findOne({ postid: req.body.postId }, function(err, user) {
+app.post("/comment",checkAuth, (req, res) => {
+  postProfile.findOne({ postid: req.body.postId }, function (err, user) {
     console.log("user", user);
-    userProfile.findOne({ username: user.username }, function(err, result) {
+    userProfile.findOne({ username: user.username }, function (err, result) {
       var commentObject = {
         comment: req.body.comment,
         username: req.body.username
@@ -385,8 +401,8 @@ app.post("/comment", (req, res) => {
   });
 });
 
-app.post("/middleRender", (req, res) => {
-  userProfile.findOne({ _id: req.body.userId }, function(err, user) {
+app.post("/middleRender",checkAuth, (req, res) => {
+  userProfile.findOne({ _id: req.body.userId }, function (err, user) {
     if (user) {
       for (var i = 0; i < user.post.length; i++) {
         if (
@@ -400,21 +416,21 @@ app.post("/middleRender", (req, res) => {
   });
 });
 
-app.post("/middleRender1", (req, res) => {
-  postProfile.findOne({ _id: req.body.id }, function(err, user) {
+app.post("/middleRender1",checkAuth, (req, res) => {
+  postProfile.findOne({ _id: req.body.id }, function (err, user) {
     if (user) {
-      userProfile.findOne({ username: user.username }, function(err, result) {
+      userProfile.findOne({ username: user.username }, function (err, result) {
         res.send({ trendData: user, userData: result });
       });
     }
   });
 });
 
-app.post("/search", (req, res) => {
+app.post("/search",checkAuth, (req, res) => {
   var s = req.body.search;
 
   postProfile
-    .find({ topic: { $regex: ".*" + s + ".*", $options: "i" } }, function(
+    .find({ topic: { $regex: ".*" + s + ".*", $options: "i" } }, function (
       err,
       search
     ) {
@@ -429,7 +445,7 @@ app.post("/search", (req, res) => {
     .sort({ postTime: -1 });
 });
 
-app.post("/settings", (req, res) => {
+app.post("/settings",checkAuth, (req, res) => {
   res.send({ status: true });
   console.log("Setting in server side");
 });
@@ -450,12 +466,12 @@ app.get("/restore", (req, res) => {
 
 // Go to Main Page
 
-app.post("/homePage", (req, res) => {
+app.post("/homePage",checkAuth, (req, res) => {
   console.log("Go to Main Page successfully done!");
-  userProfile.findOne({ _id: req.body.id }, function(err, result) {
+  userProfile.findOne({ _id: req.body.id }, function (err, result) {
     if (result) {
       postProfile
-        .find({}, function(err, posts) {
+        .find({}, function (err, posts) {
           if (err) {
             console.log(err);
           }
