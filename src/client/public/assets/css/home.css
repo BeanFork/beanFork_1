@@ -257,13 +257,14 @@ Menu Button
 */
 
 #edit1{
-  top: 10%;
-  left: 90%;
+ 
   position:relative;
+  /* left: 650px;
+    top: 40px; */
 
 }
 #delete1{
-  top: -10%;
+  /* top: -10%; */
   left: 90%;
   position:relative; 
 

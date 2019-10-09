@@ -8,12 +8,15 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 const fs = require("fs");
 var bcrypt = require("bcrypt");
+var jwt=require("jsonwebtoken")
+var checkAuth=require("./routes/api/user/verify-token")
 
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/userprofile");
 /*mongoose.connect("mongodb+srv://beanforkaccess:Admin@123@beanfork-ddksd.mongodb.net/test?retryWrites=true&w=majority",{
   useNewUrlParser:true
 })*/
+
 
 var nameSchema = new mongoose.Schema({
   username: String,
@@ -129,8 +132,15 @@ app.post("/home", (req, res, next) => {
             if (err) {
               console.log(err);
             }
+            const token = jwt.sign({
+              email: result.email,
+              userId: result._id
+            },
+            "secretkey", {
+              expiresIn: "10s"
+            });
 
-            res.json({ status: true, userData: result, trendData: posts });
+            res.json({ status: true, userData: result, trendData: posts ,token:token});
           })
           .sort({ postTime: -1 });
       } else {
@@ -289,19 +299,38 @@ app.post("/changepassword", (req, res) => {
   });
 });
 
-app.post("/editpage", (req, res) => {
-  postProfile.findOne({ postid: req.body.postId }, function(err, result) {
-    if (result) {
-      console.log("server", result);
+// app.post("/editpage", (req, res) => {
+//   postProfile.findOne({ postid: req.body.postId }, function(err, result) {
+//     if (result) {
+//       console.log("server", result);
 
-      res.json({
-        status: true,
-        topic: result.topic,
-        description: result.description
+//       res.json({
+//         status: true,
+//         topic: result.topic,
+//         description: result.description
+//       });
+//     }
+//   });
+// });
+
+
+app.post("/editpage",checkAuth, (req, res,next) => {
+
+      postProfile.findOne({ postid: req.body.postId }, function (err, result) {
+        if (result) {
+          console.log("server", result);  
+          res.json({
+            status: true,
+            topic: result.topic,
+            description: result.description
+          });
+        }
       });
-    }
-  });
-});
+    
+})
+
+
+
 
 app.post("/editdiscussion", (req, res) => {
   postProfile.findOne({ postid: req.body.postId }, function(err, post1) {
@@ -455,13 +484,14 @@ app.post("/homePage", (req, res) => {
   console.log("Go to Main Page successfully done!");
   userProfile.findOne({ _id: req.body.id }, function(err, result) {
     if (result) {
+      
       postProfile
         .find({}, function(err, posts) {
           if (err) {
             console.log(err);
           }
 
-          res.json({ status: true, userData: result, trendData: posts });
+          res.json({ status: true, userData: result, trendData: posts});
         })
         .sort({ postTime: -1 });
     }

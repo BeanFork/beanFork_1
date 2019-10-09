@@ -1,12 +1,13 @@
 var localUser;
 var localId;
+var token=localStorage.getItem('token');
 var postId;
 var localData;
 var localMail;
 var mailCheck,
   userCheck,
   count = 0;
-  var flag = true;
+var flag = true;
 
 // FORGOT PASSWORD
 function forgotPassword() {
@@ -63,12 +64,9 @@ function confirmCode() {
       if (res.status) {
         localUser = res.userData;
         $(document).ready(function() {
-          $("#container1").load(
-            "../../views/change-password.html",
-            function() {
-              console.log("change password");
-            }
-          );
+          $("#container1").load("../../views/change-password.html", function() {
+            console.log("change password");
+          });
         });
       } else {
         console.log("Wrong code", res.status);
@@ -102,7 +100,7 @@ function changePassword() {
             document.getElementById(
               "welcomeuser"
             ).innerHTML = `${localUser.username}`;
-
+              alert("checking");
             if (res.userData.post.length > 0) {
               postId = res.userData.post[0]._id;
 
@@ -141,14 +139,13 @@ function cancelForgotPassword() {
 // SIGN UP
 
 function signup() {
- 
   var username = document.getElementById("username").value;
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
-  document.getElementById("username").value ="";
-  document.getElementById("email").value ="";
-  document.getElementById("password").value="";
-  document.getElementById("confirmpassword").value="";
+  document.getElementById("username").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("password").value = "";
+  document.getElementById("confirmpassword").value = "";
   document.getElementById("signupcontainer").classList.add("hide");
 
   document.getElementById("signupcontainer").classList.remove("show");
@@ -270,7 +267,8 @@ function verificationConfirm() {
         if (err) {
           document.getElementById(
             "verificationcomment"
-          ).innerHTML = `<p>Verification code is incorrect!!!!${2-count} attempts more </p>`;
+          ).innerHTML = `<p>Verification code is incorrect!!!!${2 -
+            count} attempts more </p>`;
           count = count + 1;
         } else {
           var res = JSON.parse(result.text);
@@ -340,6 +338,8 @@ function login() {
         localUser = res.userData;
 
         localId = res.userData._id;
+       console.log("token",res.token)
+        localStorage.setItem('token',res.token)
         if (res.status) {
           $(document).ready(function() {
             $("#container1").load("/views/home.html", function() {
@@ -356,7 +356,7 @@ function login() {
                   .getElementById("yourdiscussion")
                   .insertAdjacentHTML("beforeend", markup);
               }
-              console.log("comments",res.trendData[0].comments);
+              console.log("comments", res.trendData[0].comments);
               postId = res.trendData[0].postid;
               middleRenderPost(
                 res.trendData[0].username,
@@ -584,6 +584,7 @@ function middleRenderPost(
   comments,
   status
 ) {
+  console.log("status", status, "username", username);
   document.getElementById("post_content").innerHTML = "";
   document.getElementById("comment_content").innerHTML = "";
   var time = calculateTime(postTime);
@@ -623,7 +624,9 @@ function middleRenderPost(
       .classList.remove("comment_content");
   }
 
-  if (status || localUser.username === username) {
+  if (localUser.username === username) {
+    console.log("local user", localUser.username, "username", username);
+
     const buttons123 = deleteButton();
     document
       .getElementById("delete1")
@@ -634,16 +637,18 @@ function middleRenderPost(
       .getElementById("edit1")
       .insertAdjacentHTML("beforeend", buttonsEdit);
   } else {
+    console.log("null the edit and delete");
     document.getElementById("delete1").innerHTML = "";
 
     document.getElementById("edit1").innerHTML = "";
   }
 }
 
+//EDIT
 function editButton() {
   document.getElementById("edit1").innerHTML = "";
 
-  const markup = `<button id="delete1" class="btn" style="background-color:lightblue " onclick="editAction()">  
+  const markup = `<button class="btn" style="background-color:lightblue " onclick="editAction()">  
  <span><i class="glyphicon glyphicon-pencil" style="font-size:20px;color:black;text-shadow:2px 2px 4px #000000;"></i></span></button>`;
   return markup;
 }
@@ -651,10 +656,23 @@ function editButton() {
 //EDIT ACTION
 
 function editAction() {
+ 
+  console.log("edit is clicked",token)
   superagent
     .post("/editpage")
-    .send({ postId: postId, userId: localId })
+    .send({ postId: postId, userId: localId})
+.set('token',token)
     .end(function(err, result) {
+      if(err){
+        alert("UnAuthorised user")
+        $(document).ready(function() {
+          $("#container1").load("/views/logout.html", function() {
+           
+          })
+        })
+
+      }
+else { 
       var res = JSON.parse(result.text);
 
       if (res.status) {
@@ -672,6 +690,7 @@ function editAction() {
           });
         });
       }
+    }
     });
 }
 
@@ -953,27 +972,27 @@ function addComment() {
   var username = localUser.username;
 
   console.log(localUser.username);
-if(comment !=  "") {
-  superagent
-    .post("/comment")
-    .send({ comment: comment, username: username, postId: postId })
-    .end(function(err, result) {
-      if (err) {
-        console.log(err);
-      } else {
-        var res = JSON.parse(result.text);
+  if (comment != "") {
+    superagent
+      .post("/comment")
+      .send({ comment: comment, username: username, postId: postId })
+      .end(function(err, result) {
+        if (err) {
+          console.log(err);
+        } else {
+          var res = JSON.parse(result.text);
 
-        middleRenderPost(
-          res.username,
-          res.postData.topic,
-          res.postData.description,
-          res.postData.postTime,
-          res.postData.comments
-        );
-      }
-    });
-}
-flag = true;
+          middleRenderPost(
+            res.username,
+            res.postData.topic,
+            res.postData.description,
+            res.postData.postTime,
+            res.postData.comments
+          );
+        }
+      });
+  }
+  flag = true;
 }
 
 // SEARCH BAR
@@ -1085,9 +1104,7 @@ function homePage() {
     });
 }
 
-
-function showCommentBox(){
-
+function showCommentBox() {
   const markup = `      
   <textarea
   id="commentBox"
@@ -1111,28 +1128,25 @@ style = "margin-bottom: 0%;"
   Cancel
 </button>
 `;
-  
-  if(flag){
-    document.getElementById('commentSection').insertAdjacentHTML('beforeend', markup);
+
+  if (flag) {
+    document
+      .getElementById("commentSection")
+      .insertAdjacentHTML("beforeend", markup);
     flag = false;
-  }
-  else {
-    flag =false;
+  } else {
+    flag = false;
     cancelComment();
   }
 }
 
 function cancelComment() {
   flag = true;
-  document.getElementById('commentSection').innerHTML = " ";
-
+  document.getElementById("commentSection").innerHTML = " ";
 }
 
-
-
 function likePost() {
-  var x = document.getElementById('likeIcon');
+  var x = document.getElementById("likeIcon");
 
-  x.classList.toggle('fa-thumbs-up');
-
+  x.classList.toggle("fa-thumbs-up");
 }

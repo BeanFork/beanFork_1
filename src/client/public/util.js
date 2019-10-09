@@ -18,7 +18,9 @@ function checkPassword() {
   }
 }
 
+
 function passwordStrength() {
+  console.log("function called")
   var password = document.getElementById("password").value;
   var strong = new RegExp(
     "^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$"
