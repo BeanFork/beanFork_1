@@ -117,10 +117,10 @@ app.post("/code", (req, res, next) => {
           })
           .sort({ postTime: -1 });
       } else {
-        next({ status: false, message: "Verification code is incorrect" });
+        res.json({ status: false, message: "Verification code is incorrect" });
       }
     } else {
-      next({ status: 401, message: "Verification code is incorrect" });
+      res.json({ status: false, message: "Verification code is incorrect" });
     }
   });
 });
@@ -139,7 +139,7 @@ app.post("/home", tokenGen, (req, res, next) => {
               console.log(err);
             }
 
-          console.log("req",res.locals.token );
+          console.log("tokens gen",res.locals.token );
             
             res.send({ status: true, userData: result, trendData: posts,token:res.locals.token});
           })
@@ -487,6 +487,35 @@ app.post("/homePage",checkAuth, (req, res) => {
     }
   });
 });
+
+app.post("/manualChangePassword", (req, res) => {
+
+  userProfile.findOne({email: req.body.email}, function(err, result) {
+  if(err){
+  console.log("Cannot change password manually");
+  }
+  else {
+  console.log("Called successfully");
+  res.json({status: true, userData: result});
+  }
+  
+  });
+  
+  });
+
+  app.post("/deleteDb",(req,res)=>{
+    console.log("username" , req.body.username)
+    userProfile.findOne({username : req.body.username},function(err,result){
+      if(err){
+
+      }
+
+      else{
+        console.log("result",result)
+       result.remove()
+      }
+    })
+  })
 
 app.use((error, req, res, next) => {
   console.log(error);
