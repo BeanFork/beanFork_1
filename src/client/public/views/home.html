@@ -1,129 +1,119 @@
-  
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
-    />
-    <link href="assets/css/home.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+  <link href="assets/css/home.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
-    <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
-    <script src="https://code.jquery.com/jquery-2.1.1.js"> </script>
-    <!-- <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script
+    src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
+  <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
+  <script src="https://code.jquery.com/jquery-2.1.1.js"> </script>
+  <!-- <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
 <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script> -->
 
-<script src="assets/js/settings.js"></script>
-<script src = "assets/js/register.js"> </script>
-  </head>
-<div id = "container1"> 
+  <script src="assets/js/settings.js"></script>
+  <script src="assets/js/register.js"> </script>
+</head>
+<div id="container1">
+
   <body>
 
-      <div class="bannerRegister text-left">
-          <img class="logoRegister" src=" assets/img/bean.gif" />
-          <div style="font-size:40px; margin-top:2%; font-weight:300; color: #fff; font-family: Comic Sans MS, cursive, sans-serif;"> BeanFork </div>
-          <br />
-          
-          <div class="dropdown" style="position: absolute; margin-top: -5%;
+    <div class="bannerRegister text-left">
+      <img class="logoRegister" src=" assets/img/bean.gif" />
+      <div
+        style="font-size:40px; margin-top:2%; font-weight:300; color: #fff; font-family: Comic Sans MS, cursive, sans-serif;">
+        BeanFork </div>
+      <br />
+
+      <div class="dropdown" style="position: absolute; margin-top: -5%;
           margin-left: 88%;">
-          <button id = "welcomeuser" class="dropbtn" type="button">User</button>
-          <div class="dropdown-content">
-          <a href = "#" onclick ="homePage()" style = "text-decoration: none;">Go To Main Page </a>
-          <a href = "#" onclick ="settingsPage()" style = "text-decoration: none;">Account Settings </a>
-          <a href="#" onclick='logOut()' style = "text-decoration: none;" >Log Out</a>
-          </div>
-          </div>
-          
-      
-        <div class="text-center">
-          <div class="container">
-            <div class="row">
-              <div id="custom-search-input">
-                <div class="input-group col-md-8">
-                  <input
-                    type="text"
-                    id="search"
-                    class="search-query form-control"
-                    placeholder="Search"
-                    autofocus="autofocus"
-                    onkeyup="searchKeyup()"
-                    onkeydown="if (event.keyCode == 13)
-                document.getElementById('btnSearch').click()"
-                  />
-                  <span class="input-group-btn">
-                    <button
-                      class="btn btn-danger"
-                      onclick="searchBar()"
-                      type="button"
-                      id="btnSearch"
-                    >
-                      <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                  </span>
-                </div>
+        <button id="welcomeuser" class="dropbtn" type="button">User</button>
+        <div class="dropdown-content">
+          <a href="#" onclick="homePage()" style="text-decoration: none;">Go To Main Page </a>
+          <a href="#" onclick="settingsPage()" style="text-decoration: none;">Account Settings </a>
+          <a href="#" onclick='logOut()' style="text-decoration: none;">Log Out</a>
+        </div>
+      </div>
+
+
+      <div class="text-center">
+        <div class="container">
+          <div class="row">
+            <div id="custom-search-input">
+              <div class="input-group col-md-8">
+                <input type="text" id="search" class="search-query form-control" placeholder="Search"
+                  autofocus="autofocus" onkeyup="searchKeyup()" onkeydown="if (event.keyCode == 13)
+                document.getElementById('btnSearch').click()" />
+                <span class="input-group-btn">
+                  <button class="btn btn-danger" onclick="searchBar()" type="button" id="btnSearch">
+                    <span class="glyphicon glyphicon-search"></span>
+                  </button>
+                </span>
               </div>
             </div>
-            </div>
           </div>
+        </div>
+      </div>
     </div>
 
 
-      <!-------------------------- Banner Portion-------------------------------------------->
+    <!-------------------------- Banner Portion-------------------------------------------->
 
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-3" id = "leftpane">
-           
-              <h3 class="trending">Trending</h3>
-              <div id="TrendDiscussion"></div>
-              <div id="Trending__pages"></div>
-            
-          </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3" id="leftpane">
 
-          <div class="col-md-6" id = "middlepane">
-            
-              
-                <div id="btn-create" onclick="newDiscussion()">
-                  Create New
-                  <i class="fa fa-plus-square"></i>
-                </div>
-             
-                <div id="edit1"></div>
-               
-                <div id="delete1"></div>
-              
-             
-              <div id="post_content">
-                </div>
-       
-               
-              
-              <div id="comment_content" class="comment_content"></div>
-            </div>
-        
+          <h3 class="trending">Trending</h3>
+          <div id="TrendDiscussion"></div>
+          <div id="Trending__pages"></div>
 
-          <div class="col-md-3" id = "rightpane" >
-           
-              <h3 class="myDiscussion" style="overflow: scroll;">My Discussions</h3>
-              <div id="yourdiscussion"></div>
-              <div id="results__pages"></div>
-            
-          </div>
-
-    
         </div>
+
+        <div class="col-md-6" id="middlepane">
+
+
+          <div id="btn-create" onclick="newDiscussion()">
+            Create New
+            <i class="fa fa-plus-square"></i>
+          </div>
+
+          <div id="edit1"></div>
+
+          <div id="delete1"></div>
+
+
+          <div id="post_content">
+          </div>
+
+
+
+          <div id="comment_content" class="comment_content"></div>
+        </div>
+
+
+        <div class="col-md-3" id="rightpane">
+
+          <h3 class="myDiscussion" style="overflow: scroll;">My Discussions</h3>
+          <div id="yourdiscussion"></div>
+          <div id="results__pages"></div>
+
+        </div>
+
+
       </div>
-    
-    </body>
-  </div>
+    </div>
+
+  </body>
+</div>
+
 </html>

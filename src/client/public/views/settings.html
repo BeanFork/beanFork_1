@@ -2,97 +2,97 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
-<link href="assets/css/settings.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+    <link href="assets/css/settings.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<script
-src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
-<script src="https://cdn.jsdelivr.net/npm/superagent"></script>
-<script src="https://code.jquery.com/jquery-2.1.1.js"> </script>
-<!-- <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script
+        src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
+    <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
+    <script src="https://code.jquery.com/jquery-2.1.1.js"> </script>
+    <!-- <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
 <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script> -->
 
-<script src="assets/js/settings.js"></script>
-<script src="assets/js/register.js"> </script>
+    <script src="assets/js/settings.js"></script>
+    <script src="assets/js/register.js"> </script>
 </head>
 <div id="container1">
 
-<div class="bannerRegister text-left">
-<img class="logoRegister" src=" assets/img/bean.gif" />
-<div
-style="font-size:40px; margin-top:2%; font-weight:300; color: #fff; font-family: Comic Sans MS, cursive, sans-serif;">
-BeanFork </div>
-<br />
-</div>
+    <div class="bannerRegister text-left">
+        <img class="logoRegister" src=" assets/img/bean.gif" />
+        <div
+            style="font-size:40px; margin-top:2%; font-weight:300; color: #fff; font-family: Comic Sans MS, cursive, sans-serif;">
+            BeanFork </div>
+        <br />
+    </div>
 
 
 
 
-<!-------------------------- Banner Portion----------------------------------------->
+    <!-------------------------- Banner Portion----------------------------------------->
 
 
 
-<div class="container-fluid">
-<div class="row">
+    <div class="container-fluid">
+        <div class="row">
 
 
-<div id="accountDetails" class="col-md-4" style="color: white; margin-left: 35%">
-<!-- <form > -->
-    <br>
-<h1 style="text-align: left">Account Settings</h1>
-<br>
+            <div id="accountDetails" class="col-md-4" style="color: white; margin-left: 35%">
+                <!-- <form > -->
+                <br>
+                <h1 style="text-align: left">Account Settings</h1>
+                <br>
 
-<label><b style="font-size: 15px;">Current Email Address</b></label>
-<br />
-<input class="form-control input-lg" id="emailSettings" type="text" size="80" name="email"
-readonly="readonly" />
-<br />
-
-
-<label><b style="font-size: 15px;">Current Username</b></label>
-<br />
-<input class="form-control input-lg" id="usernameSettings" type="text" size="80" name="username"
-readonly="readonly" />
-<br />
-
-<button style="background-color: rgb(14, 69, 77); color: rgb(200, 234, 240);font-size: 19px;"
-class="btn btn-primary" id="submit" type="submit" onclick="changePasswordManual()">
-Change Your Password
-</button>
-<br>
-
-<br>
+                <label><b style="font-size: 15px;">Current Email Address</b></label>
+                <br />
+                <input class="form-control input-lg" id="emailSettings" type="text" size="80" name="email"
+                    readonly="readonly" />
+                <br />
 
 
-<button style="background-color: rgb(14, 69, 77); color: rgb(200, 234, 240);font-size: 19px;"
-class="btn btn-primary" id="submit" type="submit" onclick="homePage()">
-Go to Main Page
-</button>
+                <label><b style="font-size: 15px;">Current Username</b></label>
+                <br />
+                <input class="form-control input-lg" id="usernameSettings" type="text" size="80" name="username"
+                    readonly="readonly" />
+                <br />
+
+                <button style="background-color: rgb(14, 69, 77); color: rgb(200, 234, 240);font-size: 19px;"
+                    class="btn btn-primary" id="submit" type="submit" onclick="changePasswordManual()">
+                    Change Your Password
+                </button>
+                <br>
+
+                <br>
 
 
-
-
-</div>
-</div>
+                <button style="background-color: rgb(14, 69, 77); color: rgb(200, 234, 240);font-size: 19px;"
+                    class="btn btn-primary" id="submit" type="submit" onclick="homePage()">
+                    Go to Main Page
+                </button>
 
 
 
 
+            </div>
+        </div>
 
 
-</div>
 
 
-</body>
+
+
+    </div>
+
+
+    </body>
 </div>
 
 </html>

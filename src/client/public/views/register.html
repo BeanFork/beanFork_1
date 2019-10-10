@@ -1,227 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
-    <link href="assets/css/register.css" rel="stylesheet" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"    />
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <!-- <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+  <link href="assets/css/register.css" rel="stylesheet" type="text/css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" />
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <!-- <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
   <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script> -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
-    <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
-    <script src="util.js"></script>
-    <script src="assets/js/register.js"></script>
-    <script src="assets/js/settings.js"></script>
-    <title>
-      BeanFork - Login or Register
-    </title>
-    <link href="assets/css/register.css" rel="stylesheet" type="text/css" />
-  </head>
-  <script>
-    function test() {
-      var mailCheck = mailidFormat();
-      var userCheck = usernameLength();
-      var passwordCheck = passwordStrength();
-      var confoirmPassword = checkPassword();
-      if(mailCheck&& userCheck && passwordCheck && confoirmPassword){
-        document.getElementById("submit").disabled = false;
-        return true;
-      }
-      else return false;
+  <script
+    src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Promise,Symbol,Object.setPrototypeOf,Object.getOwnPropertySymbols"></script>
+  <script src="https://cdn.jsdelivr.net/npm/superagent"></script>
+  <script src="util.js"></script>
+  <script src="assets/js/register.js"></script>
+  <script src="assets/js/settings.js"></script>
+  <title>
+    BeanFork - Login or Register
+  </title>
+  <link href="assets/css/register.css" rel="stylesheet" type="text/css" />
+</head>
+<script>
+  function test() {
+    var mailCheck = mailidFormat();
+    var userCheck = usernameLength();
+    var passwordCheck = passwordStrength();
+    var confoirmPassword = checkPassword();
+    if (mailCheck && userCheck && passwordCheck && confoirmPassword) {
+      document.getElementById("submit").disabled = false;
+      return true;
     }
-    function signupCheck(){
-      if(test()){
-        signup();
-      }
-      else{
-        document.getElementById("signUpMessage").innerHTML="<h1>Enter valid inputs</h1>";
-      }
+    else return false;
+  }
+  function signupCheck() {
+    if (test()) {
+      signup();
     }
-  </script>
+    else {
+      document.getElementById("signUpMessage").innerHTML = "<h1>Enter valid inputs</h1>";
+    }
+  }
+</script>
 
-  <div class="container1" id="container1">
-    <body>
-      <!-- BANNER -->
-      <div class="nav logincontainer">
-        <div id="logincontainer">
-          <!-- <form actiomethod = "POST"> -->
-          <input
-            id="loginUsername"
-            type="text"
-            placeholder="Username"
-            name="username"
-            required
-          />
-          <input
-            id="loginPassword"
-            type="password"
-            placeholder="Password"
-            name="password"
-            onkeydown="if (event.keyCode == 13)
-        document.getElementById('login').click()"
-            required
-          />
-          <button id="login" type="submit" onclick="login()">Log In</button
-          ><br />
-          <a class="forgotPassword" href="#" onclick="forgotPassword()">
-            Forgotten Password?</a
-          >
-          <br />
-          <span id="loginverification" style="color: #fff;" ></span>
-          <!-- </form> -->
-        </div>
-      </div>
-      <div class="bannerRegister text-left">
-        <img class="logoRegister" src=" assets/img/bean.gif" />
-        <div style="font-size:40px; margin-top:20px; font-weight:300; color: #fff; font-family: Comic Sans MS, cursive, sans-serif;"> BeanFork </div>
+<div class="container1" id="container1">
+
+  <body>
+    <!-- BANNER -->
+    <div class="nav logincontainer">
+      <div id="logincontainer">
+        <!-- <form actiomethod = "POST"> -->
+        <input id="loginUsername" type="text" placeholder="Username" name="username" required />
+        <input id="loginPassword" type="password" placeholder="Password" name="password" onkeydown="if (event.keyCode == 13)
+        document.getElementById('login').click()" required />
+        <button id="login" type="submit" onclick="login()">Log In</button><br />
+        <a class="forgotPassword" href="#" onclick="forgotPassword()">
+          Forgotten Password?</a>
         <br />
+        <span id="loginverification" style="color: #fff;"></span>
+        <!-- </form> -->
       </div>
-      <!-- ////// -->
+    </div>
+    <div class="bannerRegister text-left">
+      <img class="logoRegister" src=" assets/img/bean.gif" />
+      <div
+        style="font-size:40px; margin-top:20px; font-weight:300; color: #fff; font-family: Comic Sans MS, cursive, sans-serif;">
+        BeanFork </div>
+      <br />
+    </div>
+    <!-- ////// -->
 
 
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-6">
-            <h1>A FORUM DISCUSSION GROUP</h1>
-            <blockquote>
-              <p>
-                Discuss <br /><br /><br /><br />Comment <br /><br /><br /><br />
-                Seek Answers <br /><br /><br /><br />
-                Master Yourself <br /><br /><br /><br />Discover Yourself
-              </p>
-            </blockquote>
-          </div>
-          <div id="signupcontainer" class="col-lg-4 ">
-            <!-- <form > -->
-            <h1 style="text-align: center ">Sign Up</h1>
-
-            <label><b>Email</b></label>
-            <br />
-            <input
-              class="form-control input-lg"
-              id="email"
-              type="text"
-              autocomplete="on"
-              placeholder="Enter Email"
-              size="80"
-              name="email"
-              onkeyup="test()"
-              required
-            />
-            <br />
-            <p id="idValidation"></p>
-            <span id="emailcheck"></span>
-            <label><b>Username</b></label>
-            <br />
-            <input
-              class="form-control input-lg"
-              id="username"
-              type="text"
-              autocomplete="on"
-              placeholder="Enter UserName"
-              size="80"
-              name="username"
-              onkeyup="test()"
-              required
-            />
-            <br />
-            <span id="usernamecheck"></span>
-            <label><b>Password</b></label>
-            <br />
-            <input
-              class="form-control input-lg"
-              id="password"
-              type="password"
-              placeholder="Enter Password"
-              onkeyup="test()"
-              size="80"
-              name="password"
-              required
-            />
-            <br />
-            <p id="passwordmessage">
-              * Must contain atleast 8 characters with the combination of
-              uppercase, lowercase, numerical and special characters
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1>A FORUM DISCUSSION GROUP</h1>
+          <blockquote>
+            <p>
+              Discuss <br /><br /><br /><br />Comment <br /><br /><br /><br />
+              Seek Answers <br /><br /><br /><br />
+              Master Yourself <br /><br /><br /><br />Discover Yourself
             </p>
-            <label><b>Confirm Password</b></label>
-            <br />
-            <div id="new">
-              <input
-                class="form-control input-lg"
-                id="confirmpassword"
-                type="password"
-                placeholder="Confirm Password"
-                onkeyup="test()"
-                size="80"
-                name="confirmpassword"
-                required
-              />
-            </div>
-            <span id="message"></span>
-            <br />
-            <span id="verificationfield"></span>
-            <span id="signUpMeassage"> </span>
-            <div class="clearfix btn-group">
-              <br />
-              <button
-                class="btn btn-primary cancelbtn"
-                id="cancel"
-                type="reset"
-              >
-                Cancel
-              </button>
-              <button
-                class="btn btn-primary signupbtn"
-                id="submit"
-                type="submit"
-                onclick="signupCheck()"
-                disabled
-              >
-                Sign Up
-              </button>
-            </div>
+          </blockquote>
+        </div>
+        <div id="signupcontainer" class="col-lg-4 ">
+          <!-- <form > -->
+          <h1 style="text-align: center ">Sign Up</h1>
+
+          <label><b>Email</b></label>
+          <br />
+          <input class="form-control input-lg" id="email" type="text" autocomplete="on" placeholder="Enter Email"
+            size="80" name="email" onkeyup="test()" required />
+          <br />
+          <p id="idValidation"></p>
+          <span id="emailcheck"></span>
+          <label><b>Username</b></label>
+          <br />
+          <input class="form-control input-lg" id="username" type="text" autocomplete="on" placeholder="Enter UserName"
+            size="80" name="username" onkeyup="test()" required />
+          <br />
+          <span id="usernamecheck"></span>
+          <label><b>Password</b></label>
+          <br />
+          <input class="form-control input-lg" id="password" type="password" placeholder="Enter Password"
+            onkeyup="test()" size="80" name="password" required />
+          <br />
+          <p id="passwordmessage">
+            * Must contain atleast 8 characters with the combination of
+            uppercase, lowercase, numerical and special characters
+          </p>
+          <label><b>Confirm Password</b></label>
+          <br />
+          <div id="new">
+            <input class="form-control input-lg" id="confirmpassword" type="password" placeholder="Confirm Password"
+              onkeyup="test()" size="80" name="confirmpassword" required />
           </div>
-
-          <div class="col-lg-4 hide" id="new1">
+          <span id="message"></span>
+          <br />
+          <span id="verificationfield"></span>
+          <span id="signUpMeassage"> </span>
+          <div class="clearfix btn-group">
             <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <h1 style="text-align: center">One More Step!!</h1>
-            <br />
-            <br />
-
-            <label style="font-size: 30px">Enter Verification code</label>
-            <br />
-            <input
-              class="form-control input-lg"
-              autocomplete="off"
-              id="Confirmcode"
-              type="text"
-              placeholder="Enter the Code"
-              onkeydown="if(event.keyCode == 13) document.getElementById('submit-btn1').click()"
-              size="80"
-              required
-            />
-            <br />
-            <span id="verificationcomment"></span>
-            <button
-              id="submit-btn1"
-              class="btn btn-primary"
-              type="submit"
-              onclick="verificationConfirm()"
-            >
-              Confirm
+            <button class="btn btn-primary cancelbtn" id="cancel" type="reset">
+              Cancel
+            </button>
+            <button class="btn btn-primary signupbtn" id="submit" type="submit" onclick="signupCheck()" disabled>
+              Sign Up
             </button>
           </div>
         </div>
+
+        <div class="col-lg-4 hide" id="new1">
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <h1 style="text-align: center">One More Step!!</h1>
+          <br />
+          <br />
+
+          <label style="font-size: 30px">Enter Verification code</label>
+          <br />
+          <input class="form-control input-lg" autocomplete="off" id="Confirmcode" type="text"
+            placeholder="Enter the Code"
+            onkeydown="if(event.keyCode == 13) document.getElementById('submit-btn1').click()" size="80" required />
+          <br />
+          <span id="verificationcomment"></span>
+          <button id="submit-btn1" class="btn btn-primary" type="submit" onclick="verificationConfirm()">
+            Confirm
+          </button>
+        </div>
       </div>
-    </body>
-  </div>
+    </div>
+  </body>
+</div>
+
 </html>
