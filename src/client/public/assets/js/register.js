@@ -13,16 +13,16 @@ var likeStatus = false;
 
 // FORGOT PASSWORD
 function forgotPassword() {
-  superagent.post("/forgotPassword").end(function(err, result) {
+  superagent.post("/forgotPassword").end(function (err, result) {
     if (err) {
       console.log(err);
     }
 
     if (result.status) {
-      $(document).ready(function() {
+      $(document).ready(function () {
         $("#container1").load(
           "../../views/forgot-password.html",
-          function() {}
+          function () { }
         );
       });
     }
@@ -35,7 +35,7 @@ function sendCode() {
     .send({
       email: document.getElementById("input-email").value
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
 
       if (err) {
@@ -60,22 +60,22 @@ function confirmCode() {
       code: document.getElementById("input-code").value,
       email: document.getElementById("input-email").value
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
 
       if (res.status) {
         localUser = res.userData;
-        $(document).ready(function() {
-          $("#container1").load("../../views/change-password.html", function() {
-            console.log("change password");
+        $(document).ready(function () {
+          $("#container1").load("../../views/change-password.html", function () {
+
             localUsername = res.username;
-            console.log("use 1", res.username);
+
           });
         });
       } else {
         console.log("Wrong code", res.status);
-        $(document).ready(function() {
-          $("#container1").load("../../views/forgot-password.html", function() {
+        $(document).ready(function () {
+          $("#container1").load("../../views/forgot-password.html", function () {
             document.getElementById("Emailspan").innerHTML =
               "<p>Verification code is incorrect</p>";
           });
@@ -93,22 +93,22 @@ function changePassword() {
       email: localUser.email,
       username: localUser.username
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
       localId = res.userData._id;
       localUser = res.userData;
 
-      console.log("useData", res.userData);
+
       if (err) {
         console.log(err, "err");
       }
       if (res.status) {
-        $(document).ready(function() {
-          $("#container1").load("../../views/home.html", function() {
+        $(document).ready(function () {
+          $("#container1").load("../../views/home.html", function () {
             document.getElementById(
               "welcomeuser"
             ).innerHTML = `${localUser.username}`;
-            console.log("change pass tokenzzzz ", res.token);
+
 
             localStorage.setItem("token", res.token);
 
@@ -142,8 +142,8 @@ function changePassword() {
 }
 
 function cancelForgotPassword() {
-  $(document).ready(function() {
-    $("#container1").load("../../views/register.html", function() {});
+  $(document).ready(function () {
+    $("#container1").load("../../views/register.html", function () { });
   });
 }
 
@@ -171,7 +171,7 @@ function signup() {
       email: email,
       password: password
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
         console.log(err);
       } else {
@@ -192,13 +192,13 @@ function signupVerification(email) {
   superagent
     .post("/signupverification")
     .send({ email: email })
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
         console.log(err);
       } else {
         var res = JSON.parse(result.text);
         localId = res.id;
-        console.log("signup ", res.token);
+       
         localStorage.setItem("token", res.token);
       }
     });
@@ -236,7 +236,7 @@ function userExistence() {
     .send({
       username: document.getElementById("username").value
     })
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
 
       if (res.status) {
@@ -255,7 +255,7 @@ function emailExistence() {
   superagent
     .post("/email")
     .send({ email: document.getElementById("email").value })
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
 
       if (res.status) {
@@ -272,19 +272,21 @@ function emailExistence() {
 
 function verificationConfirm() {
   var id = localId;
+
   if (count < 2) {
+
     superagent
       .post("/code")
       .send({ code: document.getElementById("Confirmcode").value, id: id })
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
           console.log(err);
         } else {
           var res = JSON.parse(result.text);
 
           if (res.status) {
-            $(document).ready(function() {
-              $("#container1").load("/views/home.html", function() {
+            $(document).ready(function () {
+              $("#container1").load("/views/home.html", function () {
                 document.getElementById(
                   "welcomeuser"
                 ).innerHTML = `${localUser.username}`;
@@ -310,20 +312,22 @@ function verificationConfirm() {
               });
             });
           } else {
+
+
             document.getElementById(
               "verificationcomment"
             ).innerHTML = `<p>Verification code is incorrect!!!!${2 -
-              count} attempts more </p>`;
+            count} attempts more </p>`;
             count = count + 1;
           }
         }
       });
   } else {
-    
-    superagent.post("/deleteDb").send({ username: localUser.username }).end(function(err,result){
+
+    superagent.post("/deleteDb").send({ username: localUser.username }).end(function (err, result) {
 
     });
-    console.log("count", localUser.username);
+
     document.getElementById("new1").classList.add("hide");
 
     document.getElementById("new1").classList.remove("show");
@@ -347,26 +351,26 @@ function login() {
         username: username,
         password: password
       })
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
           console.log(err);
           document.getElementById("loginverification").innerHTML =
             "<p>Username or password is incorrect</p>";
         } else {
           var res = JSON.parse(result.text);
-          console.log("T", res.token);
+          
           localUser = res.userData;
 
           localId = res.userData._id;
           if (res.status) {
-            $(document).ready(function() {
-              $("#container1").load("/views/home.html", function() {
+            $(document).ready(function () {
+              $("#container1").load("/views/home.html", function () {
                 document.getElementById(
                   "welcomeuser"
                 ).innerHTML = `${localUser.username}`;
 
                 localStorage.setItem("token", res.token);
-                console.log("local stores as", res.token);
+
                 if (res.userData.post.length > 0) {
                   yourDiscussion(res.userData);
                 } else {
@@ -405,10 +409,10 @@ function newDiscussion() {
   superagent
     .post("/newdiscussion")
     .set("token", token)
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
-        console.log("unauthorized user");
-        $("#container1").load("/views/logout.html", function() {
+
+        $("#container1").load("/views/logout.html", function () {
           document.getElementById("welcome").innerHTML = " ";
 
           document.getElementById("welcome").innerHTML = "session expired";
@@ -417,8 +421,8 @@ function newDiscussion() {
         var res = JSON.parse(result.text);
 
         if (res.status) {
-          $(document).ready(function() {
-            $("#container1").load("/views/new-discussion.html", function() {
+          $(document).ready(function () {
+            $("#container1").load("/views/new-discussion.html", function () {
               document.getElementById(
                 "welcomeuser"
               ).innerHTML = `${localUser.username}`;
@@ -437,19 +441,19 @@ function cancelDiscussion() {
     .set("token", token)
     .send({ username: localUser.username })
 
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
-        console.log("unauthorized user");
-        $("#container1").load("/views/logout.html", function() {
+
+        $("#container1").load("/views/logout.html", function () {
           document.getElementById("welcome").innerHTML = " ";
 
           document.getElementById("welcome").innerHTML = "session expired";
         });
       } else {
         var res = JSON.parse(result.text);
-        console.log("trendData", res.userData);
-        $(document).ready(function() {
-          $("#container1").load("/views/home.html", function() {
+
+        $(document).ready(function () {
+          $("#container1").load("/views/home.html", function () {
             document.getElementById(
               "welcomeuser"
             ).innerHTML = `${localUser.username}`;
@@ -499,10 +503,10 @@ function createDiscussion() {
         postTime: postTime,
         username: username
       })
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
-          console.log("unauthorized user");
-          $("#container1").load("/views/logout.html", function() {
+
+          $("#container1").load("/views/logout.html", function () {
             document.getElementById("welcome").innerHTML = " ";
 
             document.getElementById("welcome").innerHTML = "session expired";
@@ -511,8 +515,8 @@ function createDiscussion() {
           var res = JSON.parse(result.text);
           postId = res.postData.post[0]._id;
           if (res.status) {
-            $(document).ready(function() {
-              $("#container1").load("/views/home.html", function() {
+            $(document).ready(function () {
+              $("#container1").load("/views/home.html", function () {
                 document.getElementById(
                   "welcomeuser"
                 ).innerHTML = `${localUser.username}`;
@@ -528,10 +532,10 @@ function createDiscussion() {
                 superagent
                   .post("/newcreate")
                   .set("token", token)
-                  .end(function(err, result) {
+                  .end(function (err, result) {
                     if (err) {
-                      console.log("unauthorized user");
-                      $("#container1").load("/views/logout.html", function() {
+
+                      $("#container1").load("/views/logout.html", function () {
                         document.getElementById("welcome").innerHTML = " ";
 
                         document.getElementById("welcome").innerHTML =
@@ -553,38 +557,10 @@ function createDiscussion() {
       "<p>***Both the fields are mandatory</p>";
 }
 
-// TRENDING TOPICS RENDERING
 
-// function trendingTopics(posts) {
-//   renderPages(posts, 1, 5);
-// }
-
-// function renderPages(posts, page, postsPerPage) {
-//   document.getElementById("Trending__pages").addEventListener("click", e => {
-//     const btn = e.target.closest(".btn-trend");
-//     if (btn) {
-//       const gotoPage = parseInt(btn.dataset.goto, 10);
-//       document.getElementById("TrendDiscussion").innerHTML = "";
-//       document.getElementById("Trending__pages").innerHTML = "";
-//       renderPages(posts, gotoPage, 5);
-//     }
-//   });
-//   if (posts.length > postsPerPage) {
-//     const starting = (page - 1) * postsPerPage;
-//     const ending = page * postsPerPage;
-
-//     posts.slice(starting, ending).forEach(renderTrendingPosts);
-//     renderButtons1(page, posts.length, postsPerPage);
-//   } else {
-//     const starting = (page - 1) * postsPerPage;
-//     const ending = page * postsPerPage;
-
-//     posts.slice(starting, ending).forEach(renderTrendingPosts);
-//   }
-// }
 
 function trendingTopics(posts) {
-  console.log("post", posts);
+
 
   for (var i = 0; i < posts.length; i++) {
     const markup = `
@@ -613,10 +589,10 @@ function getAttributes1(item) {
     .post("/middleRender1")
     .send({ id: id })
     .set("token", token)
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
-        console.log("unauthorized user");
-        $("#container1").load("/views/logout.html", function() {
+
+        $("#container1").load("/views/logout.html", function () {
           document.getElementById("welcome").innerHTML = " ";
 
           document.getElementById("welcome").innerHTML = "session expired";
@@ -656,7 +632,7 @@ function middleRenderPost(
   document.getElementById("post_content").innerHTML = "";
   document.getElementById("comment_content").innerHTML = "";
   var time = calculateTime(postTime);
-  console.log("MidldleRender");
+
   const markup = `<h1 style = "white-space:pre"> ${topic}</h1>
   <article class="post">
   <h5>posted by ${username}</h5>
@@ -692,7 +668,7 @@ function middleRenderPost(
   }
 
   if (localUser.username === username) {
-    console.log("local user", localUser.username, "username", username);
+
 
     const buttons123 = deleteButton();
     document
@@ -704,7 +680,7 @@ function middleRenderPost(
       .getElementById("edit1")
       .insertAdjacentHTML("beforeend", buttonsEdit);
   } else {
-    console.log("null the edit and delete");
+
     document.getElementById("delete1").innerHTML = "";
 
     document.getElementById("edit1").innerHTML = "";
@@ -728,10 +704,10 @@ function editAction() {
     .post("/editpage")
     .set("token", token)
     .send({ postId: postId, userId: localId })
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
-        console.log("unauthorized user");
-        $("#container1").load("/views/logout.html", function() {
+
+        $("#container1").load("/views/logout.html", function () {
           document.getElementById("welcome").innerHTML = " ";
 
           document.getElementById("welcome").innerHTML = "session expired";
@@ -741,17 +717,17 @@ function editAction() {
       if (result) {
         var res = JSON.parse(result.text);
         if (res.status) {
-          $(document).ready(function() {
-            $("#container1").load("/views/edit-discussion.html", function() {
+          $(document).ready(function () {
+            $("#container1").load("/views/edit-discussion.html", function () {
               document.getElementById(
                 "welcomeuser"
               ).innerHTML = `${localUser.username}`;
 
-              console.log("cli", res.description);
+
               document.getElementById("edit-discussionTopic").value = res.topic;
               document.getElementById("edit-discussionDescription").value =
                 res.description;
-              console.log("edit page");
+
             });
           });
         }
@@ -760,7 +736,6 @@ function editAction() {
 }
 
 function editDiscussion() {
-  //console.log("PostID to be edited", postId, res.userData.post);
 
   var topic = document.getElementById("edit-discussionTopic").value;
   var description = document.getElementById("edit-discussionDescription").value;
@@ -781,10 +756,10 @@ function editDiscussion() {
         postTime: postTime,
         username: username
       })
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
-          console.log("unauthorized user");
-          $("#container1").load("/views/logout.html", function() {
+
+          $("#container1").load("/views/logout.html", function () {
             document.getElementById("welcome").innerHTML = " ";
 
             document.getElementById("welcome").innerHTML = "session expired";
@@ -793,10 +768,10 @@ function editDiscussion() {
           var res = JSON.parse(result.text);
 
           if (res.status) {
-            console.log("your dis", res.userData);
-            console.log("tred disc", res.trendData);
-            $(document).ready(function() {
-              $("#container1").load("/views/home.html", function() {
+
+
+            $(document).ready(function () {
+              $("#container1").load("/views/home.html", function () {
                 document.getElementById(
                   "welcomeuser"
                 ).innerHTML = `${localUser.username}`;
@@ -812,8 +787,7 @@ function editDiscussion() {
                     );
                   }
                 }
-                console.log("res.userData", res.userData);
-                console.log("res.trendData", res.trendData);
+
 
                 yourDiscussion(res.userData);
                 trendingTopics(res.trendData);
@@ -848,23 +822,22 @@ function deletePopUP() {
 //DELETION ACTION
 
 function deleteAction() {
-  console.log("post id", postId);
-  console.log("userid", localId);
+
 
   var answer = deletePopUP();
 
   if (answer === "ok") {
-    console.log("deleted");
+
     document.getElementById("yourdiscussion").innerHTML = "";
     document.getElementById("TrendDiscussion").innerHTML = "";
     superagent
       .post("/delete")
       .set("token", token)
       .send({ postId: postId, userId: localId })
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
-          console.log("unauthorized user");
-          $("#container1").load("/views/logout.html", function() {
+
+          $("#container1").load("/views/logout.html", function () {
             document.getElementById("welcome").innerHTML = " ";
 
             document.getElementById("welcome").innerHTML = "session expired";
@@ -873,8 +846,7 @@ function deleteAction() {
         var res = JSON.parse(result.text);
 
         if (res.status) {
-          console.log("your discussion", res.userData);
-          console.log("trend topics", res.trendData);
+
           if (res.userData.post.length > 0) {
             yourDiscussion(res.userData);
             postId = res.userData.post[0]._id;
@@ -894,8 +866,7 @@ function deleteAction() {
             res.trendData[0].comments,
             true
           );
-          console.log("res.userData", res.userData);
-          console.log("res.trendData", res.trendData);
+
           trendingTopics(res.trendData);
         } else {
           console.log("status:false");
@@ -944,10 +915,10 @@ function getAttributes(item) {
     .post("/middleRender")
     .set("token", token)
     .send({ postId: postId, userId: localId })
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
-        console.log("unauthorized user");
-        $("#container1").load("/views/logout.html", function() {
+
+        $("#container1").load("/views/logout.html", function () {
           document.getElementById("welcome").innerHTML = " ";
 
           document.getElementById("welcome").innerHTML = "session expired";
@@ -1000,16 +971,16 @@ function addComment() {
   document.getElementById("commentBox").value = "";
   var username = localUser.username;
 
-  console.log(localUser.username);
+
   if (comment != "") {
     superagent
       .post("/comment")
       .set("token", token)
       .send({ comment: comment, username: username, postId: postId })
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
-          console.log("unauthorized user");
-          $("#container1").load("/views/logout.html", function() {
+
+          $("#container1").load("/views/logout.html", function () {
             document.getElementById("welcome").innerHTML = " ";
 
             document.getElementById("welcome").innerHTML = "session expired";
@@ -1034,7 +1005,7 @@ function addComment() {
 
 function searchKeyup() {
   var search = document.getElementById("search").value;
-  console.log("search length", search.length);
+
   if (search.length >= 3) {
     document.getElementById("btnSearch").disabled = false;
   } else {
@@ -1053,25 +1024,25 @@ function searchBar() {
   document.getElementById("delete1").innerHTML = "";
   document.getElementById("edit1").innerHTML = "";
   document.getElementById("search").value = "";
-  //console.log("search text",search);
+
 
   superagent
     .post("/search")
     .send({ search: search })
     .set("token", token)
-    .end(function(err, result) {
+    .end(function (err, result) {
       if (err) {
-        console.log("unauthorized user");
-        $("#container1").load("/views/logout.html", function() {
+
+        $("#container1").load("/views/logout.html", function () {
           document.getElementById("welcome").innerHTML = " ";
 
           document.getElementById("welcome").innerHTML = "session expired";
         });
       } else {
         var res = JSON.parse(result.text);
-        console.log(res, "res");
+
         if (res.status) {
-          console.log(res.postData);
+
 
           for (var i = 0; i < res.postData.length; i++) {
             const searchList = generateSearchList();
@@ -1083,7 +1054,7 @@ function searchBar() {
               .insertAdjacentHTML("afterbegin", searchList);
 
             function generateSearchList() {
-              console.log("res.postData[i]._id", res.postData[i]._id);
+
               const markup = ` <ul>
 <li><a onclick="getAttributes1(this)" class = "results__link" href= "#${res.postData[i]._id}" style="text-decoration: none;c
  "><div style="font-size:25px;
@@ -1095,7 +1066,7 @@ function searchBar() {
         }
 
         if (res.status == false) {
-          console.log("not found");
+
           document.getElementById("post_content").innerHTML = "";
           const markup = `<h1>Topic doesn't exists</h1>`;
           document
@@ -1113,23 +1084,23 @@ function searchBar() {
 Go to Main Page 
 */
 function homePage() {
-  console.log("homepage function called");
+
   superagent
     .post("/homePage")
     .send({ id: localId })
     .set("token", token)
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
       if (err) {
-        console.log("unauthorized user");
-        $("#container1").load("/views/logout.html", function() {
+
+        $("#container1").load("/views/logout.html", function () {
           document.getElementById("welcome").innerHTML = " ";
 
           document.getElementById("welcome").innerHTML = "session expired";
         });
       } else {
-        $(document).ready(function() {
-          $("#container1").load("../../views/home.html", function() {
+        $(document).ready(function () {
+          $("#container1").load("../../views/home.html", function () {
             document.getElementById(
               "welcomeuser"
             ).innerHTML = `${localUser.username}`;
@@ -1246,11 +1217,11 @@ function unlikePost() {
 }
 
 function changePasswordManual() {
-  console.log("function called");
+
   superagent
     .post("/manualChangePassword")
     .send({ email: localUser.email })
-    .end(function(err, result) {
+    .end(function (err, result) {
       console.log(result);
       if (result) {
         var res = JSON.parse(result.text);
@@ -1258,10 +1229,10 @@ function changePasswordManual() {
         if (res.status) {
           localUser = res.userData;
 
-          $(document).ready(function() {
+          $(document).ready(function () {
             $("#container1").load(
               "../../views/change-password.html",
-              function() {}
+              function () { }
             );
           });
         }
@@ -1273,23 +1244,23 @@ function changePasswordManual() {
 Go to Main Page 
 */
 function homePage() {
-  console.log("homePage function called");
+
   superagent
     .post("/homePage")
     .send({ id: localUser._id })
     .set("token", token)
-    .end(function(err, result) {
+    .end(function (err, result) {
       var res = JSON.parse(result.text);
       if (err) {
-        console.log("unauthorized user");
-        $("#container1").load("/views/logout.html", function() {
+
+        $("#container1").load("/views/logout.html", function () {
           document.getElementById("welcome").innerHTML = " ";
 
           document.getElementById("welcome").innerHTML = "session expired";
         });
       }
-      $(document).ready(function() {
-        $("#container1").load("../../views/home.html", function() {
+      $(document).ready(function () {
+        $("#container1").load("../../views/home.html", function () {
           document.getElementById(
             "welcomeuser"
           ).innerHTML = `${localUser.username}`;
