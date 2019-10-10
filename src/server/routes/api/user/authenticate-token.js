@@ -8,7 +8,6 @@ module.exports=(req,res,next)=>{
        next({status:403})
           console.log("jwt error",err)
         } 
-        else
-        console.log("no errors in jwt");
+        
         next();
 })}

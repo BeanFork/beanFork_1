@@ -198,7 +198,7 @@ function signupVerification(email) {
       } else {
         var res = JSON.parse(result.text);
         localId = res.id;
-        console.log("signup ", res.token);
+       
         localStorage.setItem("token", res.token);
       }
     });
@@ -358,7 +358,7 @@ function login() {
             "<p>Username or password is incorrect</p>";
         } else {
           var res = JSON.parse(result.text);
-          console.log("Token", res.token);
+          
           localUser = res.userData;
 
           localId = res.userData._id;
