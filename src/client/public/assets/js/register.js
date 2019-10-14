@@ -1,3 +1,5 @@
+
+
 var localUser;
 var localId;
 var postId;
@@ -21,7 +23,7 @@ function forgotPassword() {
     if (result.status) {
       $(document).ready(function () {
         $("#container1").load(
-          "../../views/forgot-password.html",
+          "/views/forgot-password.html",
           function () { }
         );
       });
@@ -66,7 +68,7 @@ function confirmCode() {
       if (res.status) {
         localUser = res.userData;
         $(document).ready(function () {
-          $("#container1").load("../../views/change-password.html", function () {
+          $("#container1").load("/views/change-password.html", function () {
 
             localUsername = res.username;
 
@@ -75,7 +77,7 @@ function confirmCode() {
       } else {
         console.log("Wrong code", res.status);
         $(document).ready(function () {
-          $("#container1").load("../../views/forgot-password.html", function () {
+          $("#container1").load("/views/forgot-password.html", function () {
             document.getElementById("Emailspan").innerHTML =
               "<p>Verification code is incorrect</p>";
           });
@@ -104,7 +106,7 @@ function changePassword() {
       }
       if (res.status) {
         $(document).ready(function () {
-          $("#container1").load("../../views/home.html", function () {
+          $("#container1").load("/views/home.html", function () {
             document.getElementById(
               "welcomeuser"
             ).innerHTML = `${localUser.username}`;
@@ -143,7 +145,7 @@ function changePassword() {
 
 function cancelForgotPassword() {
   $(document).ready(function () {
-    $("#container1").load("../../views/register.html", function () { });
+    $("#container1").load("/views/register.html", function () { });
   });
 }
 
@@ -218,14 +220,17 @@ function mailidFormat() {
 }
 
 function usernameLength() {
-  var usernamelength = document.getElementById("username").value.length;
+  var username = document.getElementById("username").value;
   var usernameRegex = /^[a-zA-Z0-9]{5,}$/;
 
-  if (usernamelength < 5) {
+  if (usernameRegex.test(username) === false) {
     document.getElementById("usernamecheck").innerHTML =
-      "<p>Username must contain a minimum of 5 characters</p>";
+      "<p>Username must contain a minimum of 5 characters and special characters are not allowed</p>";
   } else {
+    document.getElementById("usernamecheck").innerHTML =
+      "";
     var result = userExistence();
+
     return result;
   }
 }
@@ -244,7 +249,7 @@ function userExistence() {
           "<p>Username already exists</p>";
         userCheck = false;
       } else {
-        document.getElementById("usernamecheck").innerHTML = "<p>Unique!!!</p>";
+        document.getElementById("usernamecheck").innerHTML = "";
         userCheck = true;
       }
     });
@@ -342,7 +347,8 @@ function verificationConfirm() {
 function login() {
   var username = document.getElementById("loginUsername").value;
   var password = document.getElementById("loginPassword").value;
-  if (username !== "" && password !== "") {
+//  if((document.getElementById("loginUsername").value  && document.getElementById("loginPassword").value)!== ""){
+   
     document.getElementById("loginUsername").value = "";
     document.getElementById("loginPassword").value = "";
     superagent
@@ -396,10 +402,10 @@ function login() {
           }
         }
       });
-  } else {
-    document.getElementById("loginverification").innerHTML =
-      "<p>Username or password is incorrect</p>";
-  }
+  // else {
+  //   document.getElementById("loginverification").innerHTML =
+  //     "<p>Username or password is incorrect</p>";
+  // }
 }
 
 // NEW DISCUSSION
@@ -567,7 +573,7 @@ function trendingTopics(posts) {
     <div class = "trendingTemplate"> 
     <a onclick="getAttributes1(this)" class="results__link" href= "#${posts[i]._id}" style = "color:rgb(199, 247, 255); text-decoration: none;">
     <article class="topic">
-    <div style="font-size:25px; "> ${posts[i].topic}</div> posted by ${posts[i].username}
+    <div style="font-size:19px; "> ${posts[i].topic}</div> posted by ${posts[i].username}
     </article>
     </a>
     </div>
@@ -642,7 +648,7 @@ function middleRenderPost(
   ${description}
   </font>
   <div id = "likeSection">
-  <a href = "#" id = "likePost" onclick = "likePost()"> <i id ="likeIcon" class = "fa fa-thumbs-o-up" aria-hidden = "true"></i>Like</a>
+<a href = "#" id = "likePost" onclick = "likePost()"> <i id ="likeIcon" class = "fa fa-thumbs-o-up" aria-hidden = "true"></i>Like</a>
   <a href = "#" id = "addComment" onclick = "showCommentBox()" ><i class = "fa fa-comment" aria-hidden ="true"> </i>Comment</a>
   </div>
   
@@ -882,15 +888,15 @@ function yourDiscussion(postData) {
     var time = calculateTime(posts[i].postTime);
     var description = posts[i].description;
 
-    if (description.length > 40) {
-      description = description.slice(0, 80) + "...";
+    if (description.length > 50) {
+      description = description.slice(0, 50) + "...";
     }
     const markup = `
   <div class = "template"> 
   <a  onclick="getAttributes(this)" class = "results__link" href= "#${posts[i]._id}" style = "color:rgb(199, 247, 255); text-decoration: none;">
   <article class="topic">
 
-  <div style="font-size:25px; "> ${posts[i].topic}</div>  <div style="text-align:right;">${time}</div>
+  <div style="font-size:18px; "> ${posts[i].topic}</div>  <div style="text-align:right;">${time}</div>
     <p style="font-size:18px;"> 
 
     ${description}
@@ -941,25 +947,36 @@ function getAttributes(item) {
 
 function calculateTime(postTime) {
   var currentTime = Date.parse(new Date());
-  var diff = currentTime - postTime;
-  var secs = Math.floor(diff / 1000);
-  var hours = Math.floor(diff / 1000 / 60 / 60);
-  var minutes = Math.floor(diff / 1000 / 60);
+  var del = Math.abs(currentTime - postTime)/1000;
+ 
+  var secs = Math.floor(del);
+  var minutes = Math.floor(del/60);
+  var hours = Math.floor(del/3600);
+  var days = Math.floor(del/86400);
 
-  if (hours == 0 && minutes == 0) {
-    if (secs == 0) var time = "Just now";
-    else if (secs == 1) var time = " 1 second ago";
+  if (hours === 0 && minutes === 0) {
+    if (secs === 0) var time = "Just now";
+    else if (secs === 1) var time = " 1 second ago";
     else var time = secs + " seconds ago";
-  } else if (hours == 0 && minutes > 0) {
-    if (minutes == 1) {
+  } else if (hours === 0 && minutes > 0) {
+    if (minutes === 1) {
       var time = "1 minute ago";
     }
     var time = minutes + " minutes ago";
-  } else if (hours > 0) {
-    if (hours == 1) {
+  } else if (hours > 0 && hours < 24) {
+    if (hours === 1) {
       var time = "1 hour ago";
     }
+    else 
     var time = hours + " hours ago";
+  }
+  else if (hours >= 24) {
+    if(days === 1) {
+      var time = "1 day ago";
+    }
+    else {
+      var time = days + " days ago";
+    }
   }
 
   return time;
@@ -1100,7 +1117,7 @@ function homePage() {
         });
       } else {
         $(document).ready(function () {
-          $("#container1").load("../../views/home.html", function () {
+          $("#container1").load("/views/home.html", function () {
             document.getElementById(
               "welcomeuser"
             ).innerHTML = `${localUser.username}`;
@@ -1178,20 +1195,17 @@ function likePost() {
 
   if (likeStatus) {
     const markup = `
-  <a href = "#" id = "likePost" onclick = "unlikePost()"> <i id ="likeIcon" class = "fa fa-thumbs-up" aria-hidden = "true"></i>Unlike</a>
+  <a href = "#" id = "likePost" onclick = "unlikePost()"> <i id ="likeIcon" class = "fa fa-thumbs-up" aria-hidden = "true"></i>Liked</a>
   <a href = "#" id = "addComment" onclick = "showCommentBox()" ><i class = "fa fa-comment" aria-hidden ="true"> </i>Comment</a>
-
-  
   <div id= "commentSection">
   </div>`;
     document
       .getElementById("likeSection")
       .insertAdjacentHTML("afterbegin", markup);
 
-    var icon = document.getElementById("likeIcon");
-
-    // icon.classList.toggle("fa-thumbs-up");
   }
+
+ 
 }
 
 function unlikePost() {
@@ -1216,12 +1230,24 @@ function unlikePost() {
   }
 }
 
+/* Manual change password
+*/
+
 function changePasswordManual() {
 
   superagent
     .post("/manualChangePassword")
+    .set("token", token)
     .send({ email: localUser.email })
     .end(function (err, result) {
+      if(err){
+
+      $("#container1").load("/views/logout.html", function () {
+        document.getElementById("welcome").innerHTML = " ";
+
+        document.getElementById("welcome").innerHTML = "session expired";
+      });
+      }
       console.log(result);
       if (result) {
         var res = JSON.parse(result.text);
@@ -1231,14 +1257,125 @@ function changePasswordManual() {
 
           $(document).ready(function () {
             $("#container1").load(
-              "../../views/change-password.html",
-              function () { }
+              "/views/change-password.html",
+              function () { 
+               callChangePassword(localUser.email);
+              }
             );
           });
         }
       }
     });
 }
+
+function callChangePassword(email) {
+  superagent
+  .put("/callChangePassword")
+  .send(
+    { email: email,
+      password: document.getElementById("password").value})
+    .end( function(err, result){
+      if(err) {
+        $("#container1").load("/views/logout.html", function () {
+          document.getElementById("welcome").innerHTML = " ";
+          document.getElementById("welcome").innerHTML = "session expired";
+        });
+      }
+      else{
+        var res = JSON.parse(result.text);
+        if(res.status){
+        $(document).ready(function () {
+          $("#container1").load("/views/home.html", function () {
+            document.getElementById(
+              "welcomeuser"
+            ).innerHTML = `${localUser.username}`;
+           
+            if (res.userData.post.length > 0) {
+              yourDiscussion(res.userData);
+            } 
+       
+            else {
+              document.getElementById("yourdiscussion").innerHTML = "";
+              const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center; 
+              color: white;"> You have not created any discussions yet </span> `;
+              document
+                .getElementById("yourdiscussion")
+                .insertAdjacentHTML("beforeend", markup);
+            }
+            middleRenderPost(
+              res.trendData[0].username,
+              res.trendData[0].topic,
+              res.trendData[0].description,
+              res.trendData[0].postTime,
+              res.trendData[0].comments
+            );
+          
+            trendingTopics(res.trendData);
+     
+        
+          });
+         
+        });
+      }
+      
+    }
+    });
+        
+   
+  }
+
+
+
+/*Cancel Change password manual
+*/ 
+
+function cancelChangePasswordManual() {
+
+  superagent
+  .post("/cancelChangePasswordManual")
+  .set("token", token)
+  .send({username: localUser.username})
+  .end( function(err, result)
+  {
+    if (err) {
+
+      $("#container1").load("/views/logout.html", function () {
+        document.getElementById("welcome").innerHTML = " ";
+
+        document.getElementById("welcome").innerHTML = "session expired";
+      });
+    } else {
+      var res = JSON.parse(result.text);
+
+      $(document).ready(function () {
+        $("#container1").load("/views/home.html", function () {
+          document.getElementById(
+            "welcomeuser"
+          ).innerHTML = `${localUser.username}`;
+          if (res.userData.post.length > 0) {
+            yourDiscussion(res.userData);
+          } else {
+            document.getElementById("yourdiscussion").innerHTML = "";
+            const markup = `<br><br><br><span id = "message-yourdiscussion" style = "text-align: center; 
+            color: white;"> You have not created any discussions yet </span> `;
+            document
+              .getElementById("yourdiscussion")
+              .insertAdjacentHTML("beforeend", markup);
+          }
+          middleRenderPost(
+            res.trendData[0].username,
+            res.trendData[0].topic,
+            res.trendData[0].description,
+            res.trendData[0].postTime,
+            res.trendData[0].comments
+          );
+          trendingTopics(res.trendData);
+        });
+      });
+    }
+  });
+}
+
 
 /*
 Go to Main Page 
@@ -1260,7 +1397,7 @@ function homePage() {
         });
       }
       $(document).ready(function () {
-        $("#container1").load("../../views/home.html", function () {
+        $("#container1").load("/views/home.html", function () {
           document.getElementById(
             "welcomeuser"
           ).innerHTML = `${localUser.username}`;

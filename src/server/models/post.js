@@ -11,6 +11,7 @@ var postSchema = new mongoose.Schema({
   postTime: Number,
   userid: String,
   postid: String,
+  likeCount : Number,
   comments: [
     {
       userId: String,

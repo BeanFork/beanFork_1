@@ -115,7 +115,7 @@
           <br />
           <div id="new">
             <input class="form-control input-lg" id="confirmpassword" type="password" placeholder="Confirm Password"
-              onkeyup="test()" size="80" name="confirmpassword" required />
+              onkeyup="test()" size="80" name="confirmpassword" onkeydown = "if(event.keyCode === 13) document.getElementById('submit').click()" required />
           </div>
           <span id="message"></span>
           <br />

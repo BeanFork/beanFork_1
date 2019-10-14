@@ -8,7 +8,7 @@ var path = require("path");
 var port = 5000;
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
-
+var saved = false;
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/userprofile");
 
@@ -81,7 +81,7 @@ app.post("/code", (req, res, next) => {
           })
           .sort({ postTime: -1 });
       } else {
-        res.json({ status: false, message: "Verification code izz incorrect" });
+        res.json({ status: false, message: "Verification code is incorrect" });
       }
     }
   });
@@ -331,7 +331,7 @@ app.post("/delete", checkAuth, (req, res) => {
           }
           postProfile.find({}, function (err, result) {
             res.json({ status: true, userData: user, trendData: result });
-          });
+          }).sort({ postTime: -1});
         } else console.log("no user");
       });
     }
@@ -448,19 +448,65 @@ app.post("/homePage", checkAuth, (req, res) => {
   });
 });
 
-app.post("/manualChangePassword", (req, res) => {
+app.post("/manualChangePassword", checkAuth, (req, res) => {
 
-  userProfile.findOne({ email: req.body.email }, function (err, result) {
+  userProfile.findOne({ email: req.body.email }, function (err, user) {
     if (err) {
       console.log("Cannot change password manually");
     }
     else {
       console.log("Called successfully");
-      res.json({ status: true, userData: result });
-    }
-
+      res.json({status: true, userData: user });
+      }
   });
 
+});
+app.post("/cancelChangePasswordManual", checkAuth, (req, res) => {
+  userProfile.findOne({ username: req.body.username}, function(err, result) {
+    if(err) {
+      console.log(err);
+    }
+    else {
+      postProfile.find({}, 
+        function(e, posts){
+          if(e){
+            console.log(e);
+          }
+          res.json({ status: true, userData: result, trendData: posts});
+
+        })
+        .sort({ postTime: -1});
+      console.log("result", result);
+    }
+  });
+
+});
+
+app.put("/callChangePassword", (req, res) => {
+  userProfile.findOne({ email: req.body.email }, function (err, user) {
+    if(err){
+      console.log(err);
+    }
+    if (user) {
+  user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8));
+  user.save();
+  postProfile
+    .find({}, function (err, posts) {
+      if (err) {
+        console.log(err);
+      }
+      if(saved){
+        res.json({ status: true, userData: user, trendData: posts });
+       
+      }
+      if(!saved){
+        res.json({ status: false, userData: user, trendData: posts});
+      }
+        
+    })
+    .sort({ postTime: -1 });
+  }
+});
 });
 
 app.post("/deleteDb", (req, res) => {
@@ -475,7 +521,10 @@ app.post("/deleteDb", (req, res) => {
       result.remove()
     }
   })
-})
+});
+
+
+
 
 app.use((error, req, res, next) => {
   console.log(error);
