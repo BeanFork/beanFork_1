@@ -5,12 +5,12 @@ var userProfile = require("./models/user")
 var express = require("express");
 var app = express();
 var path = require("path");
-var port = 5000;
+var port = 5005;
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost:27017/userprofile");
+//mongoose.connect("mongodb://localhost:27017/userprofile");
 
 var bcrypt = require("bcrypt");
 require('dotenv').config();
@@ -21,9 +21,9 @@ var tokenGen = require("./routes/api/user/generate-token");
 
 
 
-/*mongoose.connect("mongodb+srv://beanforkaccess:Admin@123@beanfork-ddksd.mongodb.net/test?retryWrites=true&w=majority",{
+mongoose.connect("mongodb+srv://beanforkaccess:Admin@123@beanfork-ddksd.mongodb.net/test?retryWrites=true&w=majority",{
   useNewUrlParser:true
-})*/
+})
 
 
 
